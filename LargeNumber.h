@@ -7,33 +7,31 @@
 
 #include <string>
 
-using namespace std;
-
-struct SplittedNumber {
-    string integerPart;
-    string fractionalPart;
-};
-
 class LargeNumber {
 private:
-    string number;
+    std::string number;
     bool memory;
 
-    // Function to add two positive numbers
-    LargeNumber additionImpl(LargeNumber const &a, LargeNumber const &b);
+    void additionImpl(const LargeNumber &another, LargeNumber &newNumber);
 
-    string sumFractionalParts(string a, string b);
+    void sumFractionalParts(const LargeNumber &another, std::string &fraction);
 
-    string sumIntegerParts(string a, string b);
+    void sumIntegerParts(const LargeNumber &another, std::string &integer);
 
-    SplittedNumber split(const string &number);
+    void getFractionalPart(std::string &fraction) const;
+
+    void getIntegerPart(std::string &integer) const;
 
 public:
-    LargeNumber(string number) : number(std::move(number)) {};
+    LargeNumber(std::string number) : number(std::move(number)) {};
 
     LargeNumber operator+(LargeNumber const &anotherNumber);
 
-    string toString();
+    void setNumber(std::string &newNumber) {
+        number = newNumber;
+    }
+
+    std::string toString() const;
 };
 
 #endif //ND1_LARGENUMBER_H

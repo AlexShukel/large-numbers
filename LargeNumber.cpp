@@ -5,41 +5,51 @@
 #include <algorithm>
 #include "LargeNumber.h"
 
-SplittedNumber LargeNumber::split(const string &number) {
-    string integerPart, fractionalPart;
+static inline bool isFractionalPartSeparator(char c) {
+    return c == '.' || c == ',';
+}
+
+void LargeNumber::getFractionalPart(std::string &fraction) const {
     bool isIntegerPart = true;
 
     for (auto c: number) {
-        if (c == '.') {
+        if (isFractionalPartSeparator(c)) {
             isIntegerPart = false;
-        } else if (isIntegerPart) {
-            integerPart.push_back(c);
-        } else {
-            fractionalPart.push_back(c);
+        } else if (!isIntegerPart) {
+            fraction.push_back(c);
         }
     }
-
-    return {
-            .integerPart = integerPart,
-            .fractionalPart = fractionalPart
-    };
 }
 
-string LargeNumber::sumFractionalParts(string a, string b) {
-    string fractionalPartResult;
+void LargeNumber::getIntegerPart(std::string &integer) const {
+    bool isIntegerPart = true;
 
-    // b must be greater than a by length
-    if (a.length() > b.length()) {
-        string tmp = a;
-        a = b;
-        b = tmp;
+    for (auto c: number) {
+        if (isFractionalPartSeparator(c)) {
+            isIntegerPart = false;
+        } else if (isIntegerPart) {
+            integer.push_back(c);
+        }
+    }
+}
+
+void LargeNumber::sumFractionalParts(const LargeNumber &another, std::string &fraction) {
+    std::string numberPart, anotherNumberPart;
+    getFractionalPart(numberPart);
+    another.getFractionalPart(anotherNumberPart);
+
+    // anotherNumber must be greater than number by length
+    if (numberPart.length() > anotherNumberPart.length()) {
+        std::string tmp = numberPart;
+        numberPart = anotherNumberPart;
+        anotherNumberPart = tmp;
     }
 
-    string unchangedPart = b.substr(a.size(),
-                                    b.size() - a.size());
+    std::string unchangedPart = anotherNumberPart.substr(numberPart.size(),
+                                                    anotherNumberPart.size() - numberPart.size());
 
-    for (long i = a.size() - 1; i >= 0; --i) {
-        int tempResult = (a[i] - 48) + (b[i] - 48);
+    for (long i = numberPart.size() - 1; i >= 0; --i) {
+        int tempResult = (numberPart[i] - 48) + (anotherNumberPart[i] - 48);
 
         if (memory) {
             ++tempResult;
@@ -51,35 +61,35 @@ string LargeNumber::sumFractionalParts(string a, string b) {
             tempResult -= 10;
         }
 
-        fractionalPartResult.push_back((char) (tempResult + 48));
+        fraction.push_back((char) (tempResult + 48));
     }
 
-    reverse(fractionalPartResult.begin(), fractionalPartResult.end());
-    fractionalPartResult.append(unchangedPart);
+    reverse(fraction.begin(), fraction.end());
+    fraction.append(unchangedPart);
 
-    int i = fractionalPartResult.size() - 1;
-    while (fractionalPartResult[i] == '0' && i >= 0) {
-        fractionalPartResult.pop_back();
+    int i = fraction.size() - 1;
+    while (fraction[i] == '0' && i >= 0) {
+        fraction.pop_back();
         --i;
     }
-
-    return fractionalPartResult;
 }
 
-string LargeNumber::sumIntegerParts(string a, string b) {
-    string integerPartResult;
+void LargeNumber::sumIntegerParts(const LargeNumber &another, std::string &integer) {
+    std::string numberPart, anotherNumberPart;
+    getIntegerPart(numberPart);
+    another.getIntegerPart(anotherNumberPart);
 
-    // b must be greater than a by length
-    if (b.size() < a.size()) {
-        string tmp = a;
-        a = b;
-        b = tmp;
+    // anotherNumber must be greater than number by length
+    if (anotherNumberPart.size() < numberPart.size()) {
+        std::string tmp = numberPart;
+        numberPart = anotherNumberPart;
+        anotherNumberPart = tmp;
     }
 
     int i = 0;
-    while (i < a.size()) {
-        int tempResult = (a[a.size() - 1 - i] - 48) +
-                         (b[b.size() - 1 - i] - 48);
+    while (i < numberPart.size()) {
+        int tempResult = (numberPart[numberPart.size() - 1 - i] - 48) +
+                         (anotherNumberPart[anotherNumberPart.size() - 1 - i] - 48);
 
         if (memory) {
             ++tempResult;
@@ -91,12 +101,12 @@ string LargeNumber::sumIntegerParts(string a, string b) {
             memory = true;
         }
 
-        integerPartResult.push_back((char) (tempResult + 48));
+        integer.push_back((char) (tempResult + 48));
         ++i;
     }
 
-    while (i < b.size()) {
-        int tempResult = b[b.size() - 1 - i] - 48;
+    while (i < anotherNumberPart.size()) {
+        int tempResult = anotherNumberPart[anotherNumberPart.size() - 1 - i] - 48;
 
         if (memory) {
             ++tempResult;
@@ -108,45 +118,41 @@ string LargeNumber::sumIntegerParts(string a, string b) {
             memory = true;
         }
 
-        integerPartResult.push_back((char) (tempResult + 48));
+        integer.push_back((char) (tempResult + 48));
         ++i;
     }
 
     if (memory) {
-        integerPartResult.push_back('1');
+        integer.push_back('1');
     }
 
-    reverse(integerPartResult.begin(), integerPartResult.end());
-
-    return integerPartResult;
+    reverse(integer.begin(), integer.end());
 }
 
-LargeNumber LargeNumber::additionImpl(const LargeNumber &a, const LargeNumber &b) {
-    SplittedNumber num1 = split(a.number);
-    SplittedNumber num2 = split(b.number);
-
-    string fractionalPartResult = sumFractionalParts(num1.fractionalPart, num2.fractionalPart);
-    string integerPartResult = sumIntegerParts(num1.integerPart, num2.integerPart);
+void LargeNumber::additionImpl(const LargeNumber &another, LargeNumber &newNumber) {
+    std::string fractionalPartResult, integerPartResult;
+    sumFractionalParts(another, fractionalPartResult);
+    sumIntegerParts(another, integerPartResult);
 
     // Create resulting string
-    string result;
+    std::string result;
     result.append(integerPartResult);
     if (!fractionalPartResult.empty()) {
         result.append(".");
         result.append(fractionalPartResult);
     }
 
-    LargeNumber newNumber(result);
-    return newNumber;
+    newNumber.setNumber(result);
 }
 
 LargeNumber LargeNumber::operator+(const LargeNumber &anotherNumber) {
     // TODO: handle negative values
-    LargeNumber sum = additionImpl(number, anotherNumber);
+    LargeNumber sum("");
+    additionImpl(anotherNumber, sum);
 
     return sum;
 }
 
-string LargeNumber::toString() {
+std::string LargeNumber::toString() const {
     return number;
 }
