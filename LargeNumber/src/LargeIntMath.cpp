@@ -3,6 +3,8 @@
 //
 
 #include "LargeIntMath.h"
+#include <limits>
+#include <bitset>
 
 template<class T>
 LargeIntMath<T>::LargeIntMath() {
@@ -16,38 +18,40 @@ LargeIntMath<T>::LargeIntMath(std::vector<T> coefficients, bool sign): coefficie
 
 template<class T>
 void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
-    bool isThisLonger = this->coefficients.size() >= addend.coefficients.size();
-    int maxSize = isThisLonger ? this->coefficients.size() : addend.coefficients.size();
-    int thisInitialSize = this->coefficients.size();
-    bool carry = false;
+    auto firstIt = coefficients.begin();
+    auto secondIt = addend.coefficients.begin();
 
-    if (!isThisLonger) {
-        this->coefficients.resize(maxSize);
-    }
+    T carry = 0;
 
-    for (int i = 0; i < maxSize; ++i) {
-        T firstMember = i < thisInitialSize ? this->coefficients[i] : 0;
-        T secondMember = i < addend.coefficients.size() ? addend.coefficients[i] : 0;
+    while (firstIt != coefficients.end() || secondIt != addend.coefficients.end()) {
+        T firstMember = firstIt != coefficients.end() ? *firstIt : getSupplementDigit();
+        T secondMember = secondIt != addend.coefficients.end() ? *secondIt : getSupplementDigit();
 
-        T sum = firstMember + secondMember;
-
-        if (carry) {
-            sum += 1;
-        }
+        T sum = firstMember + secondMember + carry;
 
         carry = (firstMember > sum) || (secondMember > sum) ||
                 (carry && (firstMember == sum || secondMember == sum));
 
-        if (carry) {
-            this->coefficients[i] = sum - pow(2, sizeof(T) * 8);
+        if (firstIt != coefficients.end()) {
+            *firstIt = sum;
+            ++firstIt;
         } else {
-            this->coefficients[i] = sum;
+            coefficients.push_back(sum);
+            firstIt = coefficients.end();
+        }
+
+        if (secondIt != addend.coefficients.end()) {
+            ++secondIt;
         }
     }
 
-    if (carry) {
-        this->coefficients.push_back(carry);
-    }
+    std::bitset<COEFFICIENT_SIZE> additional(getSupplementDigit() + addend.getSupplementDigit() + carry);
+    sign = additional[COEFFICIENT_SIZE - 1];
+}
+
+template<class T>
+inline T LargeIntMath<T>::getSupplementDigit() const {
+    return sign ? std::numeric_limits<T>::max() : 0;
 }
 
 template

@@ -20,32 +20,62 @@ TEST(utils, getBinary) {
     EXPECT_EQ("10000000", getBinary("128"));
 }
 
-TEST(utils, getNumberCoefficients) {
+TEST(utils, getNumberCoefficientsPositive) {
     std::vector<uint8_t> v1;
-    getNumberCoefficients<uint8_t>(v1, "0");
+    getNumberCoefficients<uint8_t>(v1, "0", false);
     ASSERT_EQ(v1.size(), 1);
     EXPECT_EQ(v1[0], 0);
 
     std::vector<uint8_t> v2;
-    getNumberCoefficients<uint8_t>(v2, "1");
+    getNumberCoefficients<uint8_t>(v2, "1", false);
     ASSERT_EQ(v2.size(), 1);
     EXPECT_EQ(v2[0], 1);
 
     std::vector<uint8_t> v3;
-    getNumberCoefficients<uint8_t>(v3, "11111111");
+    getNumberCoefficients<uint8_t>(v3, "11111111", false);
     ASSERT_EQ(v3.size(), 1);
     EXPECT_EQ(v3[0], 255);
 
     std::vector<uint8_t> v4;
-    getNumberCoefficients<uint8_t>(v4, "1010110011111111");
+    getNumberCoefficients<uint8_t>(v4, "1010110011111111", false);
     ASSERT_EQ(v4.size(), 2);
     EXPECT_EQ(v4[0], 255);
     EXPECT_EQ(v4[1], 172);
 
     std::vector<uint8_t> v5;
-    getNumberCoefficients<uint8_t>(v5, "11010110011111111");
+    getNumberCoefficients<uint8_t>(v5, "11010110011111111", false);
     ASSERT_EQ(v5.size(), 3);
     EXPECT_EQ(v5[0], 255);
     EXPECT_EQ(v5[1], 172);
     EXPECT_EQ(v5[2], 1);
+}
+
+TEST(utils, getNumberCoefficientsNegative) {
+    std::vector<uint8_t> v1;
+    getNumberCoefficients<uint8_t>(v1, "0", true);
+    ASSERT_EQ(v1.size(), 1);
+    EXPECT_EQ(v1[0], 0);
+
+    std::vector<uint8_t> v2;
+    getNumberCoefficients<uint8_t>(v2, "1", true);
+    ASSERT_EQ(v2.size(), 1);
+    EXPECT_EQ(v2[0], 255);
+
+    std::vector<uint8_t> v3;
+    getNumberCoefficients<uint8_t>(v3, "11111111", true);
+    ASSERT_EQ(v3.size(), 1);
+    EXPECT_EQ(v3[0], 1);
+
+    std::vector<uint8_t> v4;
+    getNumberCoefficients<uint8_t>(v4, "1010110011111111", true);
+    ASSERT_EQ(v4.size(), 2);
+    EXPECT_EQ(v4[0], 1);
+    EXPECT_EQ(v4[1], 83);
+
+    std::vector<uint8_t> v5;
+    getNumberCoefficients<uint8_t>(v5, "11010110011111111", true);
+    ASSERT_EQ(v5.size(), 3);
+    EXPECT_EQ(v5[0], 1);
+    EXPECT_EQ(v5[1], 83);
+    EXPECT_EQ(v5[2], 254);
 }

@@ -13,7 +13,7 @@ bool isZero(const std::string &number);
 std::string getBinary(std::string number);
 
 template<typename T>
-void getNumberCoefficients(std::vector<T> &coefficients, const std::string &binary) {
+void getNumberCoefficients(std::vector<T> &coefficients, const std::string &binary, bool sign) {
     int power = 1, temp = 0;
 
     int i = 0;
@@ -37,6 +37,17 @@ void getNumberCoefficients(std::vector<T> &coefficients, const std::string &bina
 
     if (coefficients.empty()) {
         coefficients.push_back(0);
+    }
+
+    // Invert bits and add one
+    if (sign) {
+        for (int j = 0; j < coefficients.size(); ++j) {
+            coefficients[j] = ~coefficients[j];
+
+            if (j == 0) {
+                coefficients[j] += 1;
+            }
+        }
     }
 }
 

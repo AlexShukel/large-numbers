@@ -46,7 +46,7 @@ LargeInt<T>::LargeInt(const std::string &number) {
     std::string binary = getBinary(numberCopy);
 
     std::vector<T> coefficients;
-    getNumberCoefficients<T>(coefficients, binary);
+    getNumberCoefficients<T>(coefficients, binary, sign);
 
     implementation = new Implementation(LargeIntMath<T>(coefficients, sign));
 }
