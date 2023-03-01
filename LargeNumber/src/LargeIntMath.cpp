@@ -3,6 +3,7 @@
 //
 
 #include "LargeIntMath.h"
+#include "utils.h"
 #include <limits>
 #include <bitset>
 
@@ -52,6 +53,14 @@ void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
 template<class T>
 inline T LargeIntMath<T>::getSupplementDigit() const {
     return sign ? std::numeric_limits<T>::max() : 0;
+}
+
+template<class T>
+std::string LargeIntMath<T>::toString() const {
+    std::string binary;
+    getBinaryFromCoefficients(binary, coefficients, sign);
+    std::string decimal = getDecimal(binary, sign);
+    return decimal;
 }
 
 template

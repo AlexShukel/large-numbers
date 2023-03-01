@@ -18,5 +18,5 @@ add_subdirectory(LargeNumber)
 
 add_executable(ND1 main.cpp)
 
-#target_link_libraries(ND1 largeNumbers)
-#target_include_directories(ND1 PUBLIC LargeNumber/src)
+target_link_libraries(ND1 largeNumbers)
+target_include_directories(ND1 PUBLIC LargeNumber/src)

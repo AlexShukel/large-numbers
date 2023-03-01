@@ -41,15 +41,15 @@ TEST(LargeIntMath, AddNegativeNumbers) {
     LargeIntMath<byte> n1(c1, false);
 
     std::vector<byte> c2;
-    getNumberCoefficients(c2, "11", true);
+    getCoefficientsFromBinary(c2, "11", true);
     LargeIntMath<byte> n2(c2, true);
 
     std::vector<byte> c3;
-    getNumberCoefficients(c3, "110", true);
+    getCoefficientsFromBinary(c3, "110", true);
     LargeIntMath<byte> n3(c3, true);
 
     std::vector<byte> c4;
-    getNumberCoefficients(c4, "1101110110000110", true);
+    getCoefficientsFromBinary(c4, "1101110110000110", true);
     LargeIntMath<byte> n4(c4, true);
 
     n1.add(n2);
@@ -73,11 +73,11 @@ TEST(LargeIntMath, AddReverseNumbers) {
     EXPECT_EQ(n1.getValue(), 0);
 
     std::vector<byte> c3;
-    getNumberCoefficients(c3, "11000100101010101010101010", false);
+    getCoefficientsFromBinary(c3, "11000100101010101010101010", false);
     LargeIntMath<byte> n3(c3, false);
 
     std::vector<byte> c4;
-    getNumberCoefficients(c4, "11000100101010101010101010", true);
+    getCoefficientsFromBinary(c4, "11000100101010101010101010", true);
     LargeIntMath<byte> n4(c4, true);
 
     n3.add(n4);

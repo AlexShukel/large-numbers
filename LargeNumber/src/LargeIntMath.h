@@ -8,13 +8,13 @@
 
 #include <vector>
 #include <cmath>
-#include "LargeInt.h"
+#include <string>
 
 template<class T>
 class LargeIntMath {
 private:
     static constexpr size_t COEFFICIENT_SIZE = sizeof(T) * 8;
-    static constexpr size_t COEFFICIENT_BYTE_SIZE = pow(2, COEFFICIENT_SIZE);
+    size_t COEFFICIENT_BYTE_SIZE = pow(2, COEFFICIENT_SIZE);
 
     // 1 means '-' and 0 means '+'
     bool sign;
@@ -26,10 +26,12 @@ public:
 
     LargeIntMath(std::vector<T> coefficients, bool sign);
 
+    std::string toString() const;
+
     inline T getSupplementDigit() const;
 
     void add(const LargeIntMath<T> &addend);
-    
+
 #ifdef TEST_MODE
     int getValue() const {
         int v = 0, i = 0;

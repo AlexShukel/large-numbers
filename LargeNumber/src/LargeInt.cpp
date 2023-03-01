@@ -2,20 +2,9 @@
 // Created by alexs on 2023-02-19.
 //
 
-#include <algorithm>
 #include "LargeInt.h"
 #include "LargeIntMath.h"
 #include "utils.h"
-
-template<class T>
-class LargeInt<T>::Implementation {
-public:
-    LargeIntMath<T> math;
-
-    Implementation() = default;
-
-    explicit Implementation(const LargeIntMath<T> &math) : math(math) {}
-};
 
 LargeNumberInitException::LargeNumberInitException(const std::string &msg) : message(msg) {}
 
@@ -46,24 +35,33 @@ LargeInt<T>::LargeInt(const std::string &number) {
     std::string binary = getBinary(numberCopy);
 
     std::vector<T> coefficients;
-    getNumberCoefficients<T>(coefficients, binary, sign);
+    getCoefficientsFromBinary<T>(coefficients, binary, sign);
 
-    implementation = new Implementation(LargeIntMath<T>(coefficients, sign));
+    math = new LargeIntMath<T>(coefficients, sign);
 }
 
 template<class T>
 LargeInt<T>::~LargeInt() {
-    delete implementation;
+    delete math;
 }
 
 template<class T>
 LargeInt<T> LargeInt<T>::operator+(const LargeInt<T> &other) {
     LargeInt<T> copy = *this;
-
-
+    copy.math->add(*other.math);
     return copy;
 }
 
+template<class T>
+LargeInt<T> LargeInt<T>::operator+=(const LargeInt<T> &other) {
+    this->math->add(*other.math);
+    return *this;
+}
+
+template<class T>
+std::string LargeInt<T>::toString() const {
+    return math->toString();
+}
 
 template
 class LargeInt<uint8_t>;

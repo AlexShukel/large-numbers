@@ -25,16 +25,18 @@ public:
 template<class T>
 class LargeInt {
 private:
-    class Implementation;
-
-    Implementation *implementation;
+    LargeIntMath<T> *math;
 
 public:
     explicit LargeInt(const std::string &number);
 
     ~LargeInt();
 
+    std::string toString() const;
+
     LargeInt operator+(const LargeInt<T> &other);
+
+    LargeInt operator+=(const LargeInt<T> &other);
 };
 
 #endif //ND1_LARGEINT_H
