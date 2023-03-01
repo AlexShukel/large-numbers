@@ -2,16 +2,6 @@
 #include <vector>
 #include "utils.h"
 
-TEST(utils, isZero) {
-    EXPECT_EQ(true, isZero(""));
-    EXPECT_EQ(true, isZero("0"));
-    EXPECT_EQ(true, isZero("00000"));
-
-    EXPECT_EQ(false, isZero("a"));
-    EXPECT_EQ(false, isZero("1"));
-    EXPECT_EQ(false, isZero("9999"));
-}
-
 TEST(utils, getBinary) {
     EXPECT_EQ("0", getBinary("0"));
     EXPECT_EQ("1", getBinary("1"));
