@@ -75,6 +75,10 @@ void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
 
     std::bitset<COEFFICIENT_SIZE> additional(getSupplementDigit() + addend.getSupplementDigit() + carry);
     sign = additional[COEFFICIENT_SIZE - 1];
+
+    if (additional != getSupplementDigit()) {
+        coefficients.push_back(additional.to_ulong());
+    }
 }
 
 template<class T>

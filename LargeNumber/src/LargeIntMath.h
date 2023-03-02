@@ -33,21 +33,6 @@ public:
     void add(const LargeIntMath<T> &addend);
 
 #ifdef TEST_MODE
-    int getValue() const {
-        int v = 0, i = 0;
-
-        for (auto x: coefficients) {
-            v += x * pow(COEFFICIENT_BYTE_SIZE, i);
-            ++i;
-        }
-
-        if (sign) {
-            v -= pow(COEFFICIENT_BYTE_SIZE, coefficients.size());
-        }
-
-        return v;
-    }
-
     std::vector<T> getCoefficients() const {
         return coefficients;
     }
