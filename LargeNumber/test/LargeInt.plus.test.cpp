@@ -21,3 +21,15 @@ TEST(LargeInt, plus) {
     sum = LargeInt<byte>("-4") + LargeInt<byte>("3");
     EXPECT_EQ(sum.toString(), "-1");
 }
+
+TEST(LargeInt, plusAssignment) {
+    LargeInt<byte> a("1");
+    a += LargeInt<byte>("1");
+    EXPECT_EQ(a.toString(), "2");
+
+    a += LargeInt<byte>("-2");
+    EXPECT_EQ(a.toString(), "0");
+
+    a += LargeInt<byte>("-13");
+    EXPECT_EQ(a.toString(), "-13");
+}

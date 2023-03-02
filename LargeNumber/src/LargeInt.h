@@ -21,7 +21,7 @@ public:
 
     LargeInt operator+(const LargeInt<T> &other);
 
-    LargeInt operator+=(const LargeInt<T> &other);
+    LargeInt &operator+=(const LargeInt<T> &other);
 };
 
 #endif //ND1_LARGEINT_H

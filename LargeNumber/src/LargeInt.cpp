@@ -17,7 +17,7 @@ LargeInt<T> LargeInt<T>::operator+(const LargeInt<T> &other) {
 }
 
 template<class T>
-LargeInt<T> LargeInt<T>::operator+=(const LargeInt<T> &other) {
+LargeInt<T> &LargeInt<T>::operator+=(const LargeInt<T> &other) {
     this->math.add(other.math);
     return *this;
 }
