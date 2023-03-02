@@ -27,12 +27,12 @@ bool isZero(const string &number) {
 
 template<class T>
 void toTwosComplement(vector<T> &coefficients) {
-    uint8_t carry = 1;
+    T carry = 1;
 
     for (auto &c: coefficients) {
         c = ~c;
 
-        uint8_t prevC = c;
+        T prevC = c;
         c += carry;
 
         if (c > prevC) {
@@ -46,7 +46,7 @@ template void toTwosComplement(vector<uint8_t> &coefficients);
 template void toTwosComplement(vector<uint32_t> &coefficients);
 
 template<class T>
-void getCoefficients(vector<T> &coefficients, string &decimal, bool sign) {
+void getCoefficients(vector<T> &coefficients, string decimal, bool sign) {
     constexpr int byteSize = sizeof(T) * 8;
     bitset<byteSize> coefficient = 0;
     int coefficientSize = 0;
@@ -87,9 +87,9 @@ void getCoefficients(vector<T> &coefficients, string &decimal, bool sign) {
     }
 }
 
-template void getCoefficients(vector<uint8_t> &coefficients, string &decimal, bool sign);
+template void getCoefficients(vector<uint8_t> &coefficients, string decimal, bool sign);
 
-template void getCoefficients(vector<uint32_t> &coefficients, string &decimal, bool sign);
+template void getCoefficients(vector<uint32_t> &coefficients, string decimal, bool sign);
 
 uint8_t euclideanDivision(string &binary) {
     uint8_t remainder = 0;

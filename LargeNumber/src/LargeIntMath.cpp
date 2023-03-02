@@ -105,6 +105,14 @@ void LargeIntMath<T>::negate() {
 }
 
 template<class T>
+void LargeIntMath<T>::positivate() {
+    if (sign) {
+        sign = false;
+        toTwosComplement(coefficients);
+    }
+}
+
+template<class T>
 T LargeIntMath<T>::getSupplementDigit() const {
     return sign ? std::numeric_limits<T>::max() : 0;
 }

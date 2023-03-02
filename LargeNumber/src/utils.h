@@ -10,7 +10,7 @@
 #include <algorithm>
 
 template<class T>
-void getCoefficients(std::vector<T> &coefficients, std::string &decimal, bool sign);
+void getCoefficients(std::vector<T> &coefficients, std::string decimal, bool sign);
 
 template<class T>
 void getDecimal(std::string &decimal, std::vector<T> coefficients, bool sign);

@@ -23,19 +23,23 @@ public:
 
     LargeInt operator+(const LargeInt &other);
 
+    LargeInt operator+();
+
     LargeInt &operator+=(const LargeInt &other);
 
     LargeInt &operator++();
 
-    LargeInt operator++(int);
+    const LargeInt operator++(int);
 
     LargeInt operator-(const LargeInt &other) const;
+
+    LargeInt operator-() const;
 
     LargeInt &operator-=(const LargeInt &other);
 
     LargeInt &operator--();
 
-    LargeInt operator--(int);
+    const LargeInt operator--(int);
 };
 
 #endif //ND1_LARGEINT_H

@@ -51,3 +51,11 @@ TEST(LargeInt, postDecrement) {
     EXPECT_EQ((b--).toString(), "-1");
     EXPECT_EQ(b.toString(), "-2");
 }
+
+TEST(LargeInt, unaryMinus) {
+    LargeInt<byte> a("5");
+    EXPECT_EQ((-a).toString(), "-5");
+
+    LargeInt<byte> b("-5");
+    EXPECT_EQ((-b).toString(), "5");
+}

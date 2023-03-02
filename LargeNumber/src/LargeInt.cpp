@@ -27,6 +27,13 @@ LargeInt<T> LargeInt<T>::operator+(const LargeInt<T> &other) {
 }
 
 template<class T>
+LargeInt<T> LargeInt<T>::operator+() {
+    LargeInt<T> copy = *this;
+    copy.math.positivate();
+    return copy;
+}
+
+template<class T>
 LargeInt<T> &LargeInt<T>::operator+=(const LargeInt<T> &other) {
     this->math.add(other.math);
     return *this;
@@ -39,7 +46,7 @@ LargeInt<T> &LargeInt<T>::operator++() {
 }
 
 template<class T>
-LargeInt<T> LargeInt<T>::operator++(int) {
+const LargeInt<T> LargeInt<T>::operator++(int) {
     LargeInt<T> temp = *this;
     ++(*this);
     return temp;
@@ -49,6 +56,13 @@ template<class T>
 LargeInt<T> LargeInt<T>::operator-(const LargeInt<T> &other) const {
     LargeInt<T> copy = *this;
     copy -= other;
+    return copy;
+}
+
+template<class T>
+LargeInt<T> LargeInt<T>::operator-() const {
+    LargeInt<T> copy = *this;
+    copy.math.negate();
     return copy;
 }
 
@@ -65,7 +79,7 @@ LargeInt<T> &LargeInt<T>::operator--() {
 }
 
 template<class T>
-LargeInt<T> LargeInt<T>::operator--(int) {
+const LargeInt<T> LargeInt<T>::operator--(int) {
     LargeInt<T> temp = *this;
     --(*this);
     return temp;

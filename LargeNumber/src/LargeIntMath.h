@@ -34,6 +34,8 @@ public:
 
     void negate();
 
+    void positivate();
+
     void add(const LargeIntMath<T> &addend);
 
     void subtract(LargeIntMath<T> subtrahend);
