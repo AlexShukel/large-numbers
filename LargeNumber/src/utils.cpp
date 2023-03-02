@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <bitset>
+#include <cstring>
 
 using std::string;
 using std::vector;
@@ -91,94 +92,66 @@ template void getCoefficients(vector<uint8_t> &coefficients, string &decimal, bo
 template void getCoefficients(vector<uint32_t> &coefficients, string &decimal, bool sign);
 
 uint8_t euclideanDivision(string &binary) {
-    uint8_t R = 0;
+    uint8_t remainder = 0;
 
     for (char &character: binary) {
-        uint8_t digit = character - 48;
-        R = 2 * R + digit;
-        if (R >= 10) {
+        uint8_t digit = charToDigit(character);
+        remainder = 2 * remainder + digit;
+        if (remainder >= 10) {
             character = '1';
-            R -= 10;
+            remainder -= 10;
         } else {
             character = '0';
         }
     }
 
-    return R;
+    return remainder;
 }
 
-string getDecimal(string binary, bool sign) {
-    string result;
+template<class T>
+void coefficientsToBinary(string &binary, const vector<T> &coefficients) {
+    constexpr int byteSize = sizeof(T) * 8;
+    binary.resize(coefficients.size() * byteSize);
+    int index = binary.size() - byteSize;
+
+    for (T c: coefficients) {
+        bitset<byteSize> coefficient = c;
+
+        coefficient.to_string().copy(&binary[index], byteSize);
+
+        index -= byteSize;
+    }
+}
+
+template void coefficientsToBinary(string &binary, const vector<uint8_t> &coefficients);
+
+template void coefficientsToBinary(string &binary, const vector<uint32_t> &coefficients);
+
+template<class T>
+void getDecimal(string &decimal, vector<T> coefficients, bool sign) {
+    if (sign) {
+        toTwosComplement(coefficients);
+    }
+
+    string binary;
+    coefficientsToBinary(binary, coefficients);
 
     while (!isZero(binary)) {
-        uint8_t R = euclideanDivision(binary);
-        result.push_back((char) (R + 48));
+        uint8_t remainder = euclideanDivision(binary);
+        decimal.push_back(digitToChar(remainder));
     }
 
-    if (result.empty()) {
-        result.push_back('0');
+    if (decimal.empty()) {
+        decimal.push_back('0');
     }
 
     if (sign) {
-        result.push_back('-');
+        decimal.push_back('-');
     }
 
-    std::reverse(result.begin(), result.end());
-
-    return result;
+    std::reverse(decimal.begin(), decimal.end());
 }
 
-template<class T>
-std::string numberToBinary(T number) {
-    std::string result;
+template void getDecimal(string &decimal, const vector<uint8_t> coefficients, bool sign);
 
-    while (number != 0) {
-        result.push_back(number % 2 + 48);
-
-        number /= 2;
-    }
-
-    while (result.size() < sizeof(T) * 8) {
-        result.push_back('0');
-    }
-
-    return result;
-}
-
-template std::string numberToBinary(uint8_t number);
-
-template std::string numberToBinary(uint32_t number);
-
-template<class T>
-void getBinaryFromCoefficients(std::string &binary, const std::vector<T> &coefficients, bool sign) {
-    if (coefficients.empty()) {
-        binary.push_back('0');
-        return;
-    }
-
-    auto coefficientsCopy = (std::vector<T>) coefficients;
-    if (sign) {
-        --coefficientsCopy[0];
-
-        for (int i = 0; i < coefficientsCopy.size(); ++i) {
-            coefficientsCopy[i] = ~coefficientsCopy[i];
-        }
-    }
-
-    for (auto c: coefficientsCopy) {
-        std::string binaryPart = numberToBinary(c);
-        binary.append(binaryPart);
-    }
-
-    size_t i = binary.size() - 1;
-    while (binary[i] == '0' && !binary.empty()) {
-        binary.pop_back();
-        --i;
-    }
-
-    std::reverse(binary.begin(), binary.end());
-}
-
-template void getBinaryFromCoefficients(std::string &binary, const std::vector<uint8_t> &coefficients, bool sign);
-
-template void getBinaryFromCoefficients(std::string &binary, const std::vector<uint32_t> &coefficients, bool sign);
+template void getDecimal(string &decimal, const vector<uint32_t> coefficients, bool sign);

@@ -14,6 +14,7 @@ LargeIntMath<T>::LargeIntMath() {
     coefficients.push_back(0);
 }
 
+// Conversion from readable string to coefficients
 template<class T>
 LargeIntMath<T>::LargeIntMath(const std::string &number) {
     if (number.empty()) {
@@ -33,6 +34,14 @@ LargeIntMath<T>::LargeIntMath(const std::string &number) {
     std::string normalizedNumber = number.substr(from);
 
     getCoefficients(coefficients, normalizedNumber, sign);
+}
+
+// Conversion from coefficients to readable string
+template<class T>
+std::string LargeIntMath<T>::toString() const {
+    std::string decimal;
+    getDecimal(decimal, coefficients, sign);
+    return decimal;
 }
 
 template<class T>
@@ -71,14 +80,6 @@ void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
 template<class T>
 T LargeIntMath<T>::getSupplementDigit() const {
     return sign ? std::numeric_limits<T>::max() : 0;
-}
-
-template<class T>
-std::string LargeIntMath<T>::toString() const {
-    std::string binary;
-    getBinaryFromCoefficients(binary, coefficients, sign);
-    std::string decimal = getDecimal(binary, sign);
-    return decimal;
 }
 
 template
