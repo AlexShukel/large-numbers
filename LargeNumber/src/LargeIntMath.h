@@ -32,7 +32,11 @@ public:
 
     T getSupplementDigit() const;
 
+    void negate();
+
     void add(const LargeIntMath<T> &addend);
+
+    void subtract(LargeIntMath<T> subtrahend);
 
 #ifdef TEST_MODE
     std::vector<T> getCoefficients() const {

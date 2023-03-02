@@ -16,7 +16,7 @@ TEST(LargeIntMath, positiveToString) {
 
 TEST(LargeIntMath, negativeToString) {
     LargeIntMath<byte> n0("-0");
-    EXPECT_EQ(n0.toString(), "-0");
+    EXPECT_EQ(n0.toString(), "0");
 
     LargeIntMath<byte> n1("-255");
     EXPECT_EQ(n1.toString(), "-255");

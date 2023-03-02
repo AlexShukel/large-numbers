@@ -28,7 +28,7 @@ TEST(utils, getDecimalFromNegative) {
     std::string d1;
     std::vector<uint8_t> c1 = {0};
     getDecimal(d1, c1, true);
-    EXPECT_EQ(d1, "-0");
+    EXPECT_EQ(d1, "0");
 
     std::string d2;
     std::vector<uint8_t> c2 = {1};

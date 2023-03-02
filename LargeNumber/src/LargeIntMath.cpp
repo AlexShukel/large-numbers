@@ -93,6 +93,18 @@ void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
 }
 
 template<class T>
+void LargeIntMath<T>::subtract(LargeIntMath<T> subtrahend) {
+    subtrahend.negate();
+    add(subtrahend);
+}
+
+template<class T>
+void LargeIntMath<T>::negate() {
+    toTwosComplement(coefficients);
+    sign = !sign;
+}
+
+template<class T>
 T LargeIntMath<T>::getSupplementDigit() const {
     return sign ? std::numeric_limits<T>::max() : 0;
 }

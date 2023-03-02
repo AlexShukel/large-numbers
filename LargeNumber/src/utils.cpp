@@ -143,9 +143,7 @@ void getDecimal(string &decimal, vector<T> coefficients, bool sign) {
 
     if (decimal.empty()) {
         decimal.push_back('0');
-    }
-
-    if (sign) {
+    } else if (sign) {
         decimal.push_back('-');
     }
 

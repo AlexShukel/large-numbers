@@ -33,3 +33,21 @@ TEST(LargeInt, plusAssignment) {
     a += LargeInt<byte>("-13");
     EXPECT_EQ(a.toString(), "-13");
 }
+
+TEST(LargeInt, preIncrement) {
+    LargeInt<byte> a("0");
+    EXPECT_EQ((++a).toString(), "1");
+
+    LargeInt<byte> b("-1");
+    EXPECT_EQ((++b).toString(), "0");
+}
+
+TEST(LargeInt, postIncrement) {
+    LargeInt<byte> a("0");
+    EXPECT_EQ((a++).toString(), "0");
+    EXPECT_EQ(a.toString(), "1");
+
+    LargeInt<byte> b("-1");
+    EXPECT_EQ((b++).toString(), "-1");
+    EXPECT_EQ(b.toString(), "0");
+}
