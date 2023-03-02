@@ -18,4 +18,7 @@ void getDecimal(std::string &decimal, std::vector<T> coefficients, bool sign);
 template<class T>
 void toTwosComplement(std::vector<T> &coefficients);
 
+template<class T>
+void integerToCoefficients(std::vector<T> &coefficients, int number);
+
 #endif //ND1_UTILS_H

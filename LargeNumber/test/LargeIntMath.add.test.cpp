@@ -1,7 +1,4 @@
 #include <gtest/gtest.h>
-
-#define TEST_MODE
-
 #include "LargeIntMath.h"
 #include "utils.h"
 

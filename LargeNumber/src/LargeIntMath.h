@@ -26,6 +26,8 @@ public:
 
     explicit LargeIntMath(const std::string &number);
 
+    explicit LargeIntMath(int number);
+
     std::string toString() const;
 
     T getSupplementDigit() const;

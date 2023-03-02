@@ -36,6 +36,17 @@ LargeIntMath<T>::LargeIntMath(const std::string &number) {
     getCoefficients(coefficients, normalizedNumber, sign);
 }
 
+template<class T>
+LargeIntMath<T>::LargeIntMath(int number) {
+    if (number < 0) {
+        sign = true;
+    } else {
+        sign = false;
+    }
+
+    integerToCoefficients(coefficients, number);
+}
+
 // Conversion from coefficients to readable string
 template<class T>
 std::string LargeIntMath<T>::toString() const {

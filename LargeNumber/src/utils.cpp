@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <bitset>
-#include <cstring>
+#include <cmath>
 
 using std::string;
 using std::vector;
@@ -155,3 +155,22 @@ void getDecimal(string &decimal, vector<T> coefficients, bool sign) {
 template void getDecimal(string &decimal, const vector<uint8_t> coefficients, bool sign);
 
 template void getDecimal(string &decimal, const vector<uint32_t> coefficients, bool sign);
+
+template<class T>
+void integerToCoefficients(std::vector<T> &coefficients, int number) {
+    int size = static_cast<int>(pow(2, sizeof(T) * 8));
+
+    while (number > 0) {
+        coefficients.push_back(number % size);
+
+        number /= size;
+    }
+
+    if (coefficients.empty()) {
+        coefficients.push_back(0);
+    }
+}
+
+template void integerToCoefficients(std::vector<uint8_t> &coefficients, int number);
+
+template void integerToCoefficients(std::vector<uint32_t> &coefficients, int number);
