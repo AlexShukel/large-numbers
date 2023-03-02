@@ -1,6 +1,6 @@
 //
 // Created by alexs on 2023-02-26.
-// This class is used to leverage math logic
+// This class is used to leverage math logic for large integers
 //
 
 #ifndef ND1_LARGEINTMATH_H
@@ -24,11 +24,11 @@ private:
 public:
     explicit LargeIntMath();
 
-    LargeIntMath(std::vector<T> coefficients, bool sign);
+    explicit LargeIntMath(const std::string &number);
 
     std::string toString() const;
 
-    inline T getSupplementDigit() const;
+    T getSupplementDigit() const;
 
     void add(const LargeIntMath<T> &addend);
 
@@ -46,6 +46,14 @@ public:
         }
 
         return v;
+    }
+
+    std::vector<T> getCoefficients() const {
+        return coefficients;
+    }
+
+    bool getSign() const {
+        return sign;
     }
 
     void printCoefficients() const {

@@ -2,10 +2,11 @@
 // Created by alexs on 2023-02-26.
 //
 
-#include "LargeIntMath.h"
-#include "utils.h"
+#include <stdexcept>
 #include <limits>
 #include <bitset>
+#include "LargeIntMath.h"
+#include "utils.h"
 
 template<class T>
 LargeIntMath<T>::LargeIntMath() {
@@ -14,8 +15,25 @@ LargeIntMath<T>::LargeIntMath() {
 }
 
 template<class T>
-LargeIntMath<T>::LargeIntMath(std::vector<T> coefficients, bool sign): coefficients(std::move(coefficients)),
-                                                                       sign(sign) {}
+LargeIntMath<T>::LargeIntMath(const std::string &number) {
+    if (number.empty()) {
+        throw std::logic_error("Cannot initialize a LargeInt with empty string.");
+    }
+
+    sign = false;
+    int from = 0;
+    if (number[0] == '-') {
+        sign = true;
+    }
+
+    if (number[0] == '-' || number[0] == '+') {
+        ++from;
+    }
+
+    std::string normalizedNumber = number.substr(from);
+
+    getCoefficients(coefficients, normalizedNumber, sign);
+}
 
 template<class T>
 void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
@@ -51,7 +69,7 @@ void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
 }
 
 template<class T>
-inline T LargeIntMath<T>::getSupplementDigit() const {
+T LargeIntMath<T>::getSupplementDigit() const {
     return sign ? std::numeric_limits<T>::max() : 0;
 }
 

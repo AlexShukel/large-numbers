@@ -9,14 +9,17 @@
 #include <vector>
 #include <algorithm>
 
-std::string getBinary(std::string decimal);
-
 std::string getDecimal(std::string binary, bool sign);
 
 template<class T>
 void getBinaryFromCoefficients(std::string &binary, const std::vector<T> &coefficients, bool sign);
 
-template<typename T>
-void getCoefficientsFromBinary(std::vector<T> &coefficients, const std::string &binary, bool sign);
+// New API:
+
+template<class T>
+void getCoefficients(std::vector<T> &coefficients, std::string &decimal, bool sign);
+
+template<class T>
+void toTwosComplement(std::vector<T> &coefficients);
 
 #endif //ND1_UTILS_H

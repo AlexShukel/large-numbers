@@ -8,21 +8,16 @@
 typedef uint8_t byte;
 
 TEST(LargeIntMath, AddPositiveNumbers) {
-    std::vector<byte> c1 = {0};
-    LargeIntMath<byte> n1(c1, false);
+    LargeIntMath<byte> n1("0");
 
-    std::vector<byte> c2 = {0};
-    LargeIntMath<byte> n2(c2, false);
+    LargeIntMath<byte> n2("0");
 
-    std::vector<byte> c3 = {1};
-    LargeIntMath<byte> n3(c3, false);
+    LargeIntMath<byte> n3("1");
 
-    std::vector<byte> c4 = {10};
-    LargeIntMath<byte> n4(c4, false);
+    LargeIntMath<byte> n4("10");
 
-    std::vector<byte> c5 = {123, 147, 6};
-    LargeIntMath<byte> n5(c5, false);
-
+    LargeIntMath<byte> n5("430971");
+    
     n1.add(n2);
     EXPECT_EQ(n1.getValue(), 0);
 
@@ -37,20 +32,13 @@ TEST(LargeIntMath, AddPositiveNumbers) {
 }
 
 TEST(LargeIntMath, AddNegativeNumbers) {
-    std::vector<byte> c1 = {5};
-    LargeIntMath<byte> n1(c1, false);
+    LargeIntMath<byte> n1("5");
 
-    std::vector<byte> c2;
-    getCoefficientsFromBinary(c2, "11", true);
-    LargeIntMath<byte> n2(c2, true);
+    LargeIntMath<byte> n2("-3");
 
-    std::vector<byte> c3;
-    getCoefficientsFromBinary(c3, "110", true);
-    LargeIntMath<byte> n3(c3, true);
+    LargeIntMath<byte> n3("-6");
 
-    std::vector<byte> c4;
-    getCoefficientsFromBinary(c4, "1101110110000110", true);
-    LargeIntMath<byte> n4(c4, true);
+    LargeIntMath<byte> n4("-56710");
 
     n1.add(n2);
     EXPECT_EQ(n1.getValue(), 2);
@@ -63,22 +51,16 @@ TEST(LargeIntMath, AddNegativeNumbers) {
 }
 
 TEST(LargeIntMath, AddReverseNumbers) {
-    std::vector<byte> c1 = {5};
-    LargeIntMath<byte> n1(c1, false);
+    LargeIntMath<byte> n1("5");
 
-    std::vector<byte> c2 = {251};
-    LargeIntMath<byte> n2(c2, false);
+    LargeIntMath<byte> n2("251");
 
     n1.add(n2);
     EXPECT_EQ(n1.getValue(), 0);
 
-    std::vector<byte> c3;
-    getCoefficientsFromBinary(c3, "11000100101010101010101010", false);
-    LargeIntMath<byte> n3(c3, false);
+    LargeIntMath<byte> n3("51554986");
 
-    std::vector<byte> c4;
-    getCoefficientsFromBinary(c4, "11000100101010101010101010", true);
-    LargeIntMath<byte> n4(c4, true);
+    LargeIntMath<byte> n4("-51554986");
 
     n3.add(n4);
     EXPECT_EQ(n3.getValue(), 0);
