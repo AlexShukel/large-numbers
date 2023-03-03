@@ -99,6 +99,36 @@ LargeInt<T> &LargeInt<T>::operator*=(const LargeInt<T> &other) {
 }
 
 template<class T>
+bool LargeInt<T>::operator==(const LargeInt<T> &other) const {
+    return this->math.compare(other.math) == 0;
+}
+
+template<class T>
+bool LargeInt<T>::operator!=(const LargeInt<T> &other) const {
+    return this->math.compare(other.math) != 0;
+}
+
+template<class T>
+bool LargeInt<T>::operator<(const LargeInt<T> &other) const {
+    return this->math.compare(other.math) < 0;
+}
+
+template<class T>
+bool LargeInt<T>::operator>(const LargeInt<T> &other) const {
+    return this->math.compare(other.math) > 0;
+}
+
+template<class T>
+bool LargeInt<T>::operator<=(const LargeInt<T> &other) const {
+    return this->math.compare(other.math) <= 0;
+}
+
+template<class T>
+bool LargeInt<T>::operator>=(const LargeInt<T> &other) const {
+    return this->math.compare(other.math) >= 0;
+}
+
+template<class T>
 std::string LargeInt<T>::toString() const {
     return math.toString();
 }

@@ -131,6 +131,39 @@ void LargeIntMath<T>::multiply(LargeIntMath<T> multiplier) {
 }
 
 template<class T>
+int LargeIntMath<T>::compare(const LargeIntMath<T> &other) const {
+    if (sign && !other.sign) {
+        return -1;
+    }
+
+    if (!sign && other.sign) {
+        return 1;
+    }
+
+    if (other.coefficients.size() > coefficients.size()) {
+        return -1;
+    }
+
+    if (coefficients.size() > other.coefficients.size()) {
+        return 1;
+    }
+
+    // Signs and sized of coefficients are equal now
+
+    for (int i = coefficients.size() - 1; i >= 0; --i) {
+        if (coefficients[i] > other.coefficients[i]) {
+            return 1;
+        }
+
+        if (coefficients[i] < other.coefficients[i]) {
+            return -1;
+        }
+    }
+
+    return 0;
+}
+
+template<class T>
 void LargeIntMath<T>::negate() {
     toTwosComplement(coefficients);
     sign = !sign;

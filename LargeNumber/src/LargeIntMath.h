@@ -32,7 +32,7 @@ public:
     std::string toString() const;
 
     T getSupplementDigit() const;
-    
+
     void negate();
 
     void positivate();
@@ -52,6 +52,8 @@ public:
     void subtract(LargeIntMath subtrahend);
 
     void multiply(LargeIntMath multiplier);
+
+    int compare(const LargeIntMath &other) const;
 
 #ifdef TEST_MODE
     std::vector<T> getCoefficients() const {
