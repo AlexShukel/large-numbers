@@ -40,6 +40,10 @@ public:
     LargeInt &operator--();
 
     const LargeInt operator--(int);
+
+    LargeInt operator*(const LargeInt &other);
+
+    LargeInt &operator*=(const LargeInt &other);
 };
 
 #endif //ND1_LARGEINT_H

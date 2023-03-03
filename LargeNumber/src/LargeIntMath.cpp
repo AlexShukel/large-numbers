@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <limits>
 #include <bitset>
+#include <algorithm>
 #include "LargeIntMath.h"
 #include "utils.h"
 
@@ -46,6 +47,9 @@ LargeIntMath<T>::LargeIntMath(int number) {
 
     integerToCoefficients(coefficients, number);
 }
+
+template<class T>
+LargeIntMath<T>::LargeIntMath(std::vector<T> coefficients, bool sign): coefficients(coefficients), sign(sign) {}
 
 // Conversion from coefficients to readable string
 template<class T>
@@ -99,6 +103,34 @@ void LargeIntMath<T>::subtract(LargeIntMath<T> subtrahend) {
 }
 
 template<class T>
+void LargeIntMath<T>::multiply(LargeIntMath<T> multiplier) {
+    bool productSign = sign ^ multiplier.sign;
+
+    if (this->sign) {
+        this->negate();
+    }
+
+    if (multiplier.sign) {
+        multiplier.negate();
+    }
+
+    LargeIntMath<T> product;
+
+    for (int i = 0; i < multiplier.coefficients.size(); ++i) {
+        auto temp = *this;
+        temp.multiplyByCoefficient(multiplier.coefficients[i]);
+        temp.shiftLeft(i);
+        product.add(temp);
+    }
+
+    if (productSign) {
+        product.negate();
+    }
+
+    *this = product;
+}
+
+template<class T>
 void LargeIntMath<T>::negate() {
     toTwosComplement(coefficients);
     sign = !sign;
@@ -109,6 +141,22 @@ void LargeIntMath<T>::positivate() {
     if (sign) {
         sign = false;
         toTwosComplement(coefficients);
+    }
+}
+
+template<class T>
+void LargeIntMath<T>::multiplyByCoefficient(T coefficient) {
+    T carry = 0;
+    auto base = static_cast<uint32_t>(pow(2, sizeof(T) * 8));
+
+    for (auto &current: coefficients) {
+        uint64_t temp = carry + current * coefficient;
+        current = temp % base;
+        carry = temp / base;
+    }
+
+    if (carry > 0) {
+        coefficients.push_back(carry);
     }
 }
 

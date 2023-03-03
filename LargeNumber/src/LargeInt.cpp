@@ -86,6 +86,19 @@ const LargeInt<T> LargeInt<T>::operator--(int) {
 }
 
 template<class T>
+LargeInt<T> LargeInt<T>::operator*(const LargeInt<T> &other) {
+    LargeInt<T> copy = *this;
+    copy.math.multiply(other.math);
+    return copy;
+}
+
+template<class T>
+LargeInt<T> &LargeInt<T>::operator*=(const LargeInt<T> &other) {
+    this->math.multiply(other.math);
+    return *this;
+}
+
+template<class T>
 std::string LargeInt<T>::toString() const {
     return math.toString();
 }

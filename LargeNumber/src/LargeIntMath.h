@@ -20,7 +20,6 @@ private:
     bool sign;
     // Coefficients are stored in reverse order: a0 * 256^0 + a1 * 256^1 + ... + ak * 256^k
     std::vector<T> coefficients;
-
 public:
     explicit LargeIntMath();
 
@@ -28,17 +27,31 @@ public:
 
     explicit LargeIntMath(int number);
 
+    LargeIntMath(std::vector<T> coefficients, bool sign);
+
     std::string toString() const;
 
     T getSupplementDigit() const;
-
+    
     void negate();
 
     void positivate();
 
-    void add(const LargeIntMath<T> &addend);
+    void shiftLeft(int shift) {
+        coefficients.resize(coefficients.size() + shift);
+        for (int i = 0; i < shift; ++i) {
+            coefficients.insert(coefficients.begin(), 0);
+        }
+    }
 
-    void subtract(LargeIntMath<T> subtrahend);
+    // Multiply positive number by given coefficient.
+    void multiplyByCoefficient(T coefficient);
+
+    void add(const LargeIntMath &addend);
+
+    void subtract(LargeIntMath subtrahend);
+
+    void multiply(LargeIntMath multiplier);
 
 #ifdef TEST_MODE
     std::vector<T> getCoefficients() const {
@@ -47,13 +60,6 @@ public:
 
     bool getSign() const {
         return sign;
-    }
-
-    void printCoefficients() const {
-        for (auto x : coefficients) {
-            std::cout << static_cast<int> (x) << " ";
-        }
-        std::cout << '\n';
     }
 #endif
 };
