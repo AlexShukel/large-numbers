@@ -1,12 +1,13 @@
 #include <iostream>
-#include "LargeNumber.h"
+#include "LargeInt.h"
+
+using namespace std;
 
 int main() {
-    LargeNumber a("456141,154564111");
-    LargeNumber b("486456416,451321231121");
+    LargeInt<uint8_t> a("486456456");
+    LargeInt<uint8_t> b("-487489453132");
+    LargeInt<uint8_t> sum = a + b;
 
-    LargeNumber sum = a + b;
-
-    std::cout << sum.toString() << '\n';
+    cout << sum.toString();
     return 0;
 }
