@@ -6,7 +6,7 @@
 #include <limits>
 #include <bitset>
 #include "LargeIntMath.h"
-#include "utils.h"
+#include "../utils.h"
 
 template<class T>
 LargeIntMath<T>::LargeIntMath() {

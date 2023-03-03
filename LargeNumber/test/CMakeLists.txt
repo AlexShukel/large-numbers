@@ -1,4 +1,4 @@
-FILE(GLOB TEST_FILES *.test.cpp)
+FILE(GLOB TEST_FILES LargeInt/*.test.cpp LargeDouble/*.test.cpp *.test.cpp)
 
 add_executable(largeNumbersTest ${TEST_FILES})
 

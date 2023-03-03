@@ -1,4 +1,4 @@
-FILE(GLOB SRC_FILES *.cpp)
+FILE(GLOB SRC_FILES LargeInt/*.cpp LargeDouble/*.cpp *.cpp)
 
 add_library(largeNumbers STATIC ${SRC_FILES})
 
