@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <limits>
 #include <bitset>
-#include <algorithm>
 #include "LargeIntMath.h"
 #include "utils.h"
 
@@ -34,7 +33,7 @@ LargeIntMath<T>::LargeIntMath(const std::string &number) {
 
     std::string normalizedNumber = number.substr(from);
 
-    getCoefficients(coefficients, normalizedNumber, sign);
+    LargeIntUtils<T>::getCoefficients(coefficients, normalizedNumber, sign);
 }
 
 template<class T>
@@ -45,7 +44,7 @@ LargeIntMath<T>::LargeIntMath(int number) {
         sign = false;
     }
 
-    integerToCoefficients(coefficients, number);
+    LargeIntUtils<T>::integerToCoefficients(coefficients, number);
 }
 
 template<class T>
@@ -55,7 +54,7 @@ LargeIntMath<T>::LargeIntMath(std::vector<T> coefficients, bool sign): coefficie
 template<class T>
 std::string LargeIntMath<T>::toString() const {
     std::string decimal;
-    getDecimal(decimal, coefficients, sign);
+    LargeIntUtils<T>::getDecimal(decimal, coefficients, sign);
     return decimal;
 }
 
@@ -165,7 +164,7 @@ int LargeIntMath<T>::compare(const LargeIntMath<T> &other) const {
 
 template<class T>
 void LargeIntMath<T>::negate() {
-    toTwosComplement(coefficients);
+    LargeIntUtils<T>::toTwosComplement(coefficients);
     sign = !sign;
 }
 
@@ -173,7 +172,7 @@ template<class T>
 void LargeIntMath<T>::positivate() {
     if (sign) {
         sign = false;
-        toTwosComplement(coefficients);
+        LargeIntUtils<T>::toTwosComplement(coefficients);
     }
 }
 

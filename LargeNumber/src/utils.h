@@ -10,15 +10,18 @@
 #include <algorithm>
 
 template<class T>
-void getCoefficients(std::vector<T> &coefficients, std::string decimal, bool sign);
+class LargeIntUtils {
+private:
+    static void coefficientsToBinary(std::string &binary, const std::vector<T> &coefficients);
 
-template<class T>
-void getDecimal(std::string &decimal, std::vector<T> coefficients, bool sign);
+public:
+    static void toTwosComplement(std::vector<T> &coefficients);
 
-template<class T>
-void toTwosComplement(std::vector<T> &coefficients);
+    static void integerToCoefficients(std::vector<T> &coefficients, int number);
 
-template<class T>
-void integerToCoefficients(std::vector<T> &coefficients, int number);
+    static void getDecimal(std::string &decimal, std::vector<T> coefficients, bool sign);
+
+    static void getCoefficients(std::vector<T> &coefficients, std::string decimal, bool sign);
+};
 
 #endif //ND1_UTILS_H

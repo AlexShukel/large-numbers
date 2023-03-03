@@ -12,21 +12,53 @@ using std::string;
 using std::vector;
 using std::bitset;
 
-uint8_t charToDigit(char character) {
+inline uint8_t charToDigit(char character) {
     return character - 48;
 }
 
-char digitToChar(uint8_t digit) {
+inline char digitToChar(uint8_t digit) {
     return digit + 48;
 }
 
-bool isZero(const string &number) {
+inline bool isZero(const string &number) {
     uint8_t padding = !number.empty() && number[0] == '-' ? 1 : 0;
     return std::all_of(number.begin() + padding, number.end(), [](char c) { return c == '0'; });
 }
 
+uint8_t euclideanDivision(string &binary) {
+    uint8_t remainder = 0;
+
+    for (char &character: binary) {
+        uint8_t digit = charToDigit(character);
+        remainder = 2 * remainder + digit;
+        if (remainder >= 10) {
+            character = '1';
+            remainder -= 10;
+        } else {
+            character = '0';
+        }
+    }
+
+    return remainder;
+}
+
 template<class T>
-void toTwosComplement(vector<T> &coefficients) {
+void LargeIntUtils<T>::coefficientsToBinary(std::string &binary, const std::vector<T> &coefficients) {
+    constexpr int byteSize = sizeof(T) * 8;
+    binary.resize(coefficients.size() * byteSize);
+    int index = binary.size() - byteSize;
+
+    for (T c: coefficients) {
+        bitset<byteSize> coefficient = c;
+
+        coefficient.to_string().copy(&binary[index], byteSize);
+
+        index -= byteSize;
+    }
+}
+
+template<class T>
+void LargeIntUtils<T>::toTwosComplement(std::vector<T> &coefficients) {
     T carry = 1;
 
     for (auto &c: coefficients) {
@@ -41,12 +73,46 @@ void toTwosComplement(vector<T> &coefficients) {
     }
 }
 
-template void toTwosComplement(vector<uint8_t> &coefficients);
+template<class T>
+void LargeIntUtils<T>::integerToCoefficients(std::vector<T> &coefficients, int number) {
+    int size = static_cast<int>(pow(2, sizeof(T) * 8));
 
-template void toTwosComplement(vector<uint32_t> &coefficients);
+    while (number > 0) {
+        coefficients.push_back(number % size);
+
+        number /= size;
+    }
+
+    if (coefficients.empty()) {
+        coefficients.push_back(0);
+    }
+}
 
 template<class T>
-void getCoefficients(vector<T> &coefficients, string decimal, bool sign) {
+void LargeIntUtils<T>::getDecimal(std::string &decimal, std::vector<T> coefficients, bool sign) {
+    if (sign) {
+        toTwosComplement(coefficients);
+    }
+
+    string binary;
+    coefficientsToBinary(binary, coefficients);
+
+    while (!isZero(binary)) {
+        uint8_t remainder = euclideanDivision(binary);
+        decimal.push_back(digitToChar(remainder));
+    }
+
+    if (decimal.empty()) {
+        decimal.push_back('0');
+    } else if (sign) {
+        decimal.push_back('-');
+    }
+
+    std::reverse(decimal.begin(), decimal.end());
+}
+
+template<class T>
+void LargeIntUtils<T>::getCoefficients(std::vector<T> &coefficients, std::string decimal, bool sign) {
     constexpr int byteSize = sizeof(T) * 8;
     bitset<byteSize> coefficient = 0;
     int coefficientSize = 0;
@@ -87,88 +153,8 @@ void getCoefficients(vector<T> &coefficients, string decimal, bool sign) {
     }
 }
 
-template void getCoefficients(vector<uint8_t> &coefficients, string decimal, bool sign);
+template
+class LargeIntUtils<uint8_t>;
 
-template void getCoefficients(vector<uint32_t> &coefficients, string decimal, bool sign);
-
-uint8_t euclideanDivision(string &binary) {
-    uint8_t remainder = 0;
-
-    for (char &character: binary) {
-        uint8_t digit = charToDigit(character);
-        remainder = 2 * remainder + digit;
-        if (remainder >= 10) {
-            character = '1';
-            remainder -= 10;
-        } else {
-            character = '0';
-        }
-    }
-
-    return remainder;
-}
-
-template<class T>
-void coefficientsToBinary(string &binary, const vector<T> &coefficients) {
-    constexpr int byteSize = sizeof(T) * 8;
-    binary.resize(coefficients.size() * byteSize);
-    int index = binary.size() - byteSize;
-
-    for (T c: coefficients) {
-        bitset<byteSize> coefficient = c;
-
-        coefficient.to_string().copy(&binary[index], byteSize);
-
-        index -= byteSize;
-    }
-}
-
-template void coefficientsToBinary(string &binary, const vector<uint8_t> &coefficients);
-
-template void coefficientsToBinary(string &binary, const vector<uint32_t> &coefficients);
-
-template<class T>
-void getDecimal(string &decimal, vector<T> coefficients, bool sign) {
-    if (sign) {
-        toTwosComplement(coefficients);
-    }
-
-    string binary;
-    coefficientsToBinary(binary, coefficients);
-
-    while (!isZero(binary)) {
-        uint8_t remainder = euclideanDivision(binary);
-        decimal.push_back(digitToChar(remainder));
-    }
-
-    if (decimal.empty()) {
-        decimal.push_back('0');
-    } else if (sign) {
-        decimal.push_back('-');
-    }
-
-    std::reverse(decimal.begin(), decimal.end());
-}
-
-template void getDecimal(string &decimal, const vector<uint8_t> coefficients, bool sign);
-
-template void getDecimal(string &decimal, const vector<uint32_t> coefficients, bool sign);
-
-template<class T>
-void integerToCoefficients(std::vector<T> &coefficients, int number) {
-    int size = static_cast<int>(pow(2, sizeof(T) * 8));
-
-    while (number > 0) {
-        coefficients.push_back(number % size);
-
-        number /= size;
-    }
-
-    if (coefficients.empty()) {
-        coefficients.push_back(0);
-    }
-}
-
-template void integerToCoefficients(std::vector<uint8_t> &coefficients, int number);
-
-template void integerToCoefficients(std::vector<uint32_t> &coefficients, int number);
+template
+class LargeIntUtils<uint32_t>;
