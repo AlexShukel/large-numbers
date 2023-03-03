@@ -4,7 +4,7 @@
 
 #include "LargeInt.h"
 #include "LargeIntMath.h"
-#include "utils.h"
+#include "../utils.h"
 
 template<class T>
 LargeInt<T>::LargeInt(const std::string &number): math(LargeIntMath<T>(number)) {}
