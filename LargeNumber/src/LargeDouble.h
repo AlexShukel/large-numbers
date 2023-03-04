@@ -6,7 +6,7 @@
 #define ND1_LARGEDOUBLE_H
 
 #include "LargeDoubleMath.h"
-#include "../config.h"
+#include "config.h"
 #include <string>
 #include <cmath>
 

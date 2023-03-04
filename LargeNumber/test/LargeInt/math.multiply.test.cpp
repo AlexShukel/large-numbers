@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "LargeInt/LargeIntMath.h"
+#include "LargeIntMath.h"
 
 typedef uint8_t byte;
 

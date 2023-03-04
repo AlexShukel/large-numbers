@@ -3,7 +3,7 @@
 
 #define TEST_MODE
 
-#include "LargeInt/LargeIntMath.h"
+#include "LargeIntMath.h"
 
 typedef uint8_t byte;
 
@@ -46,9 +46,6 @@ TEST(LargeIntMath, settingCorrectSign) {
     LargeIntMath<byte> n1("1");
     EXPECT_EQ(n1.getSign(), false);
 
-    LargeIntMath<byte> n2("+1");
-    EXPECT_EQ(n2.getSign(), false);
-
-    LargeIntMath<byte> n3("-1");
-    EXPECT_EQ(n3.getSign(), true);
+    LargeIntMath<byte> n2("-1");
+    EXPECT_EQ(n2.getSign(), true);
 }

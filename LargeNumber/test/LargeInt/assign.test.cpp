@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "LargeInt/LargeInt.h"
+#include "LargeInt.h"
 
 TEST(LargeInt, assignment) {
     LargeInt<uint8_t> a("123");

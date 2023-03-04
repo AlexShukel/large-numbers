@@ -6,7 +6,7 @@
 #include <limits>
 #include <bitset>
 #include "LargeIntMath.h"
-#include "../utils.h"
+#include "LargeIntParser.h"
 
 template<class T>
 LargeIntMath<T>::LargeIntMath() {
@@ -17,23 +17,7 @@ LargeIntMath<T>::LargeIntMath() {
 // Conversion from readable string to coefficients
 template<class T>
 LargeIntMath<T>::LargeIntMath(const std::string &number) {
-    if (number.empty()) {
-        throw std::logic_error("Cannot initialize a LargeInt with empty string.");
-    }
-
-    sign = false;
-    int from = 0;
-    if (number[0] == '-') {
-        sign = true;
-    }
-
-    if (number[0] == '-' || number[0] == '+') {
-        ++from;
-    }
-
-    std::string normalizedNumber = number.substr(from);
-
-    LargeIntUtils<T>::getCoefficients(coefficients, normalizedNumber, sign);
+    LargeIntParser<T>::fromString(coefficients, sign, number);
 }
 
 template<class T>
@@ -44,7 +28,7 @@ LargeIntMath<T>::LargeIntMath(int number) {
         sign = false;
     }
 
-    LargeIntUtils<T>::integerToCoefficients(coefficients, number);
+    LargeIntParser<T>::fromInteger(coefficients, sign, number);
 }
 
 template<class T>
@@ -53,9 +37,7 @@ LargeIntMath<T>::LargeIntMath(std::vector<T> coefficients, bool sign): coefficie
 // Conversion from coefficients to readable string
 template<class T>
 std::string LargeIntMath<T>::toString() const {
-    std::string decimal;
-    LargeIntUtils<T>::getDecimal(decimal, coefficients, sign);
-    return decimal;
+    return LargeIntParser<T>::toString(coefficients, sign);
 }
 
 template<class T>
@@ -164,7 +146,7 @@ int LargeIntMath<T>::compare(const LargeIntMath<T> &other) const {
 
 template<class T>
 void LargeIntMath<T>::negate() {
-    LargeIntUtils<T>::toTwosComplement(coefficients);
+    LargeIntParser<T>::toTwosComplement(coefficients);
     sign = !sign;
 }
 
@@ -172,7 +154,7 @@ template<class T>
 void LargeIntMath<T>::positivate() {
     if (sign) {
         sign = false;
-        LargeIntUtils<T>::toTwosComplement(coefficients);
+        LargeIntParser<T>::toTwosComplement(coefficients);
     }
 }
 

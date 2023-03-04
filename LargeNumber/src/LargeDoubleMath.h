@@ -5,8 +5,8 @@
 #ifndef ND1_LARGEDOUBLEMATH_H
 #define ND1_LARGEDOUBLEMATH_H
 
-#include "../LargeInt/LargeIntMath.h"
-#include "../config.h"
+#include "LargeIntMath.h"
+#include "config.h"
 
 template<class T>
 class LargeDoubleMath {

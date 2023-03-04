@@ -3,7 +3,6 @@
 //
 
 #include "LargeDoubleMath.h"
-#include "../utils.h"
 #include <regex>
 #include <tuple>
 
@@ -21,11 +20,12 @@ LargeDoubleMath<T>::LargeDoubleMath(const std::string &number) {
         throw std::invalid_argument("LargeDouble validation error: number does not match format (<digits>.<digits>).");
     }
 
-    auto parsedNumber = LargeDoubleUtils<T>::parseLargeDouble(number);
+    // TODO
+//    auto parsedNumber = LargeDoubleUtils<T>::parseLargeDouble(number);
 
-    mantissa = std::get<0>(parsedNumber);
-    exponent = std::get<1>(parsedNumber);
-    sign = std::get<2>(parsedNumber);
+//    mantissa = std::get<0>(parsedNumber);
+//    exponent = std::get<1>(parsedNumber);
+//    sign = std::get<2>(parsedNumber);
 }
 
 template
