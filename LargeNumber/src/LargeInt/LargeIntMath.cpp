@@ -87,8 +87,8 @@ void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
         }
     }
 
-    std::bitset<COEFFICIENT_SIZE> additional(getSupplementDigit() + addend.getSupplementDigit() + carry);
-    sign = additional[COEFFICIENT_SIZE - 1];
+    std::bitset<COEFFICIENT_BIT_SIZE> additional(getSupplementDigit() + addend.getSupplementDigit() + carry);
+    sign = additional[COEFFICIENT_BIT_SIZE - 1];
 
     if (additional != getSupplementDigit()) {
         coefficients.push_back(additional.to_ulong());
@@ -179,8 +179,8 @@ void LargeIntMath<T>::positivate() {
 template<class T>
 void LargeIntMath<T>::multiplyByCoefficient(T coefficient) {
     T carry = 0;
-    auto base = static_cast<uint32_t>(pow(2, sizeof(T) * 8));
 
+    int base = std::numeric_limits<T>::max() + 1;
     for (auto &current: coefficients) {
         uint64_t temp = carry + current * coefficient;
         current = temp % base;
@@ -189,6 +189,14 @@ void LargeIntMath<T>::multiplyByCoefficient(T coefficient) {
 
     if (carry > 0) {
         coefficients.push_back(carry);
+    }
+}
+
+template<class T>
+void LargeIntMath<T>::shiftLeft(int shift) {
+    coefficients.resize(coefficients.size() + shift);
+    for (int i = 0; i < shift; ++i) {
+        coefficients.insert(coefficients.begin(), 0);
     }
 }
 

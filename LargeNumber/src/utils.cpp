@@ -6,7 +6,8 @@
 #include <algorithm>
 #include <vector>
 #include <bitset>
-#include <cmath>
+#include <limits>
+#include <tuple>
 
 using std::string;
 using std::vector;
@@ -44,16 +45,15 @@ uint8_t euclideanDivision(string &binary) {
 
 template<class T>
 void LargeIntUtils<T>::coefficientsToBinary(std::string &binary, const std::vector<T> &coefficients) {
-    constexpr int byteSize = sizeof(T) * 8;
-    binary.resize(coefficients.size() * byteSize);
-    int index = binary.size() - byteSize;
+    binary.resize(coefficients.size() * COEFFICIENT_BIT_SIZE);
+    int index = binary.size() - COEFFICIENT_BIT_SIZE;
 
     for (T c: coefficients) {
-        bitset<byteSize> coefficient = c;
+        bitset<COEFFICIENT_BIT_SIZE> coefficient = c;
 
-        coefficient.to_string().copy(&binary[index], byteSize);
+        coefficient.to_string().copy(&binary[index], COEFFICIENT_BIT_SIZE);
 
-        index -= byteSize;
+        index -= COEFFICIENT_BIT_SIZE;
     }
 }
 
@@ -75,12 +75,12 @@ void LargeIntUtils<T>::toTwosComplement(std::vector<T> &coefficients) {
 
 template<class T>
 void LargeIntUtils<T>::integerToCoefficients(std::vector<T> &coefficients, int number) {
-    int size = static_cast<int>(pow(2, sizeof(T) * 8));
-
+    // FIXME: what if number is negative
+    int base = std::numeric_limits<T>::max() + 1;
     while (number > 0) {
-        coefficients.push_back(number % size);
+        coefficients.push_back(number % base);
 
-        number /= size;
+        number /= base;
     }
 
     if (coefficients.empty()) {
@@ -113,16 +113,15 @@ void LargeIntUtils<T>::getDecimal(std::string &decimal, std::vector<T> coefficie
 
 template<class T>
 void LargeIntUtils<T>::getCoefficients(std::vector<T> &coefficients, std::string decimal, bool sign) {
-    constexpr int byteSize = sizeof(T) * 8;
-    bitset<byteSize> coefficient = 0;
+    bitset<COEFFICIENT_BIT_SIZE> coefficient = 0;
     int coefficientSize = 0;
 
     while (!isZero(decimal)) {
         coefficient >>= 1;
-        coefficient[byteSize - 1] = charToDigit(decimal[decimal.size() - 1]) % 2;
+        coefficient[COEFFICIENT_BIT_SIZE - 1] = charToDigit(decimal[decimal.size() - 1]) % 2;
         ++coefficientSize;
 
-        if (coefficientSize == byteSize) {
+        if (coefficientSize == COEFFICIENT_BIT_SIZE) {
             coefficients.push_back(coefficient.to_ulong());
             coefficient.reset();
             coefficientSize = 0;
@@ -144,7 +143,7 @@ void LargeIntUtils<T>::getCoefficients(std::vector<T> &coefficients, std::string
     }
 
     if (coefficientSize > 0 || coefficients.empty()) {
-        coefficient >>= byteSize - coefficientSize;
+        coefficient >>= COEFFICIENT_BIT_SIZE - coefficientSize;
         coefficients.push_back(coefficient.to_ulong());
     }
 
@@ -158,3 +157,77 @@ class LargeIntUtils<uint8_t>;
 
 template
 class LargeIntUtils<uint32_t>;
+
+template<class T>
+void LargeDoubleUtils<T>::getFractionCoefficients(std::vector<T> &coefficients, std::string fraction) {
+    int currentPrecision = 0;
+
+    bitset<COEFFICIENT_BIT_SIZE> coefficient = 0;
+    int coefficientSize = 0;
+
+    while (currentPrecision < PRECISION && !isZero(fraction)) {
+        bool carry = false;
+        for (auto it = fraction.rbegin(); it != fraction.rend(); ++it) {
+            uint8_t digit = charToDigit(*it) * 2 + carry;
+            carry = digit >= 10;
+            *it = digitToChar(digit % 10);
+        }
+
+        coefficient <<= 1;
+        coefficient[0] = carry;
+        ++coefficientSize;
+
+        if (coefficientSize == COEFFICIENT_BIT_SIZE) {
+            coefficients.push_back(coefficient.to_ulong());
+
+            coefficientSize = 0;
+            coefficient.reset();
+            ++currentPrecision;
+        }
+    }
+
+    if (coefficientSize > 0 || coefficients.empty()) {
+        coefficient <<= COEFFICIENT_BIT_SIZE - coefficientSize;
+        coefficients.push_back(coefficient.to_ulong());
+    }
+}
+
+template<class T>
+std::tuple<LargeIntMath<T>, exponent_type, bool> LargeDoubleUtils<T>::parseLargeDouble(const std::string &number) {
+    bool sign = number[0] == '-';
+
+    int pointIndex = 0;
+
+    while (number[pointIndex] != '.') {
+        ++pointIndex;
+    }
+
+    string integralPart = number.substr(0, pointIndex);
+    string fractionalPart = number.substr(pointIndex + 1);
+
+    vector<T> integralPartCoefficients;
+    vector<T> fractionalPartCoefficients;
+
+    LargeIntUtils<T>::getCoefficients(integralPartCoefficients, integralPart, false);
+    getFractionCoefficients(fractionalPartCoefficients, fractionalPart);
+
+    vector<T> finalCoefficients;
+    finalCoefficients.resize(integralPartCoefficients.size() + fractionalPartCoefficients.size());
+
+    // Concatenate integral part with fractional
+    std::copy(integralPartCoefficients.rbegin(), integralPartCoefficients.rend(), finalCoefficients.begin());
+    std::copy(fractionalPartCoefficients.begin(), fractionalPartCoefficients.end(),
+              finalCoefficients.begin() + integralPartCoefficients.size());
+
+    if (sign) {
+        LargeIntUtils<T>::toTwosComplement(finalCoefficients);
+    }
+
+    return {LargeIntMath<T>(finalCoefficients, sign), -fractionalPartCoefficients.size(), sign};
+}
+
+template
+class LargeDoubleUtils<uint8_t>;
+
+template
+class LargeDoubleUtils<uint32_t>;

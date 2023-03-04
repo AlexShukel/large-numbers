@@ -13,8 +13,7 @@
 template<class T>
 class LargeIntMath {
 private:
-    static constexpr size_t COEFFICIENT_SIZE = sizeof(T) * 8;
-    size_t COEFFICIENT_BYTE_SIZE = pow(2, COEFFICIENT_SIZE);
+    static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
 
     // 1 means '-' and 0 means '+'
     bool sign;
@@ -37,12 +36,7 @@ public:
 
     void positivate();
 
-    void shiftLeft(int shift) {
-        coefficients.resize(coefficients.size() + shift);
-        for (int i = 0; i < shift; ++i) {
-            coefficients.insert(coefficients.begin(), 0);
-        }
-    }
+    void shiftLeft(int shift);
 
     // Multiply positive number by given coefficient.
     void multiplyByCoefficient(T coefficient);
