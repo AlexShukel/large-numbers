@@ -3,21 +3,10 @@
 //
 
 #include "LargeIntParser.h"
+#include "utils.h"
 #include <regex>
 #include <bitset>
 #include <limits>
-
-inline uint8_t charToDigit(char character) {
-    return character - 48;
-}
-
-inline char digitToChar(uint8_t digit) {
-    return digit + 48;
-}
-
-inline bool isZero(const std::string &number) {
-    return std::all_of(number.begin(), number.end(), [](char c) { return c == '0'; });
-}
 
 uint8_t euclideanDivision(std::string &binary) {
     uint8_t remainder = 0;
