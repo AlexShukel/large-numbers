@@ -9,11 +9,13 @@
 #include <vector>
 #include <cmath>
 #include <string>
+#include <limits>
 
 template<class T>
 class LargeIntMath {
 private:
     static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
+    static constexpr T maxValue = std::numeric_limits<T>::max();
 
     // 1 means '-' and 0 means '+'
     bool sign;
@@ -28,6 +30,14 @@ public:
 
     LargeIntMath(std::vector<T> coefficients, bool sign);
 
+    std::vector<T> &getCoefficients();
+
+    std::vector<T> getCoefficients() const;
+
+    bool &getSign();
+
+    bool getSign() const;
+
     std::string toString() const;
 
     T getSupplementDigit() const;
@@ -37,6 +47,10 @@ public:
     void positivate();
 
     void shiftLeft(int shift);
+
+    T getMaxValue() const {
+        return maxValue;
+    }
 
     // Multiply positive number by given coefficient.
     void multiplyByCoefficient(T coefficient);
@@ -48,16 +62,6 @@ public:
     void multiply(LargeIntMath multiplier);
 
     int compare(const LargeIntMath &other) const;
-
-#ifdef TEST_MODE
-    std::vector<T> getCoefficients() const {
-        return coefficients;
-    }
-
-    bool getSign() const {
-        return sign;
-    }
-#endif
 };
 
 

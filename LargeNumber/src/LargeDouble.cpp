@@ -8,8 +8,8 @@ template<class T>
 LargeDouble<T>::LargeDouble(): math(LargeDoubleMath<T>()) {}
 
 template<class T>
-LargeDouble<T>::LargeDouble(LargeIntMath<T> mantissa, exponent_type exponent, bool sign): math(
-        LargeDoubleMath<T>(mantissa, exponent, sign)) {}
+LargeDouble<T>::LargeDouble(LargeIntMath<T> mantissa, exponent_type exponent): math(
+        LargeDoubleMath<T>(mantissa, exponent)) {}
 
 template<class T>
 LargeDouble<T>::LargeDouble(const std::string &number): math(LargeDoubleMath<T>(number)) {}

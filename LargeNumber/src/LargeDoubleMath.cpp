@@ -3,16 +3,15 @@
 //
 
 #include "LargeDoubleMath.h"
+#include "utils.h"
 #include <regex>
-#include <tuple>
 
 template<class T>
-LargeDoubleMath<T>::LargeDoubleMath(): mantissa(LargeIntMath<T>()), exponent(0), sign(false) {}
+LargeDoubleMath<T>::LargeDoubleMath(): mantissa(LargeIntMath<T>()), exponent(0) {}
 
 template<class T>
-LargeDoubleMath<T>::LargeDoubleMath(LargeIntMath<T> mantissa, exponent_type exponent, bool sign): mantissa(mantissa),
-                                                                                                  exponent(exponent),
-                                                                                                  sign(sign) {}
+LargeDoubleMath<T>::LargeDoubleMath(LargeIntMath<T> mantissa, exponent_type exponent): mantissa(mantissa),
+                                                                                       exponent(exponent) {}
 
 template<class T>
 LargeDoubleMath<T>::LargeDoubleMath(const std::string &number) {
@@ -20,12 +19,43 @@ LargeDoubleMath<T>::LargeDoubleMath(const std::string &number) {
         throw std::invalid_argument("LargeDouble validation error: number does not match format (<digits>.<digits>).");
     }
 
-    // TODO
-//    auto parsedNumber = LargeDoubleUtils<T>::parseLargeDouble(number);
+    // TODO: initialize mantissa, exponent and sign
+}
 
-//    mantissa = std::get<0>(parsedNumber);
-//    exponent = std::get<1>(parsedNumber);
-//    sign = std::get<2>(parsedNumber);
+template<class T>
+bool &LargeDoubleMath<T>::getSign() {
+    return mantissa.getSign();
+}
+
+template<class T>
+bool LargeDoubleMath<T>::getSign() const {
+    return mantissa.getSign();
+}
+
+template<class T>
+exponent_type &LargeDoubleMath<T>::getExponent() {
+    return exponent;
+}
+
+template<class T>
+exponent_type LargeDoubleMath<T>::getExponent() const {
+    return exponent;
+}
+
+template<class T>
+LargeIntMath<T> &LargeDoubleMath<T>::getMantissa() {
+    return mantissa;
+}
+
+template<class T>
+LargeIntMath<T> LargeDoubleMath<T>::getMantissa() const {
+    return mantissa;
+}
+
+template<class T>
+void LargeDoubleMath<T>::normalize() {
+    trimFront(mantissa.getCoefficients(), (T) 0);
+    exponent -= trimBack(mantissa.getCoefficients(), mantissa.getSign() ? mantissa.getMaxValue() : (T) 0);
 }
 
 template

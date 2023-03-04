@@ -6,6 +6,7 @@
 #define ND1_LARGEDOUBLEPARSER_H
 
 #include <string>
+#include "LargeDoubleMath.h"
 #include "LargeIntMath.h"
 #include "config.h"
 
@@ -13,14 +14,14 @@ template<class T>
 class LargeDoubleParser {
 private:
     static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
-    static const int PRECISION = 332.1928094887362347870 / COEFFICIENT_BIT_SIZE;
-
-    static void getFractionCoefficients(std::vector<T> &coefficients, std::string fraction);
+    static constexpr size_t PRECISION = 332.1928094887362347870 / COEFFICIENT_BIT_SIZE;
 
 public:
-    static void fromString(LargeIntMath<T> &mantissa, exponent_type &exponent, bool &sign, std::string number);
+    static size_t getPrecision();
 
-    static std::string toString(const LargeIntMath<T> &mantissa, const exponent_type &exponent, const bool &sign);
+    static LargeDoubleMath<T> parse(std::string source);
+
+    static void getFractionCoefficients(std::vector<T> &coefficients, std::string fraction);
 };
 
 

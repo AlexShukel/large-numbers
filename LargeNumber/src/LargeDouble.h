@@ -17,7 +17,7 @@ private:
 public:
     explicit LargeDouble();
 
-    LargeDouble(LargeIntMath<T> mantissa, exponent_type exponent, bool sign);
+    LargeDouble(LargeIntMath<T> mantissa, exponent_type exponent);
 
     LargeDouble(const std::string &number);
 };

@@ -11,7 +11,6 @@
 template<class T>
 class LargeDoubleMath {
 private:
-    bool sign;
     LargeIntMath<T> mantissa;
     exponent_type exponent;
 
@@ -19,9 +18,23 @@ private:
 public:
     explicit LargeDoubleMath();
 
-    LargeDoubleMath(LargeIntMath<T> mantissa, exponent_type exponent, bool sign);
+    LargeDoubleMath(LargeIntMath<T> mantissa, exponent_type exponent);
 
     LargeDoubleMath(const std::string &number);
+
+    bool getSign() const;
+
+    bool &getSign();
+
+    LargeIntMath<T> getMantissa() const;
+
+    LargeIntMath<T> &getMantissa();
+
+    exponent_type getExponent() const;
+
+    exponent_type &getExponent();
+
+    void normalize();
 };
 
 

@@ -7,6 +7,7 @@
 #include "utils.h"
 #include <regex>
 #include <bitset>
+#include <algorithm>
 
 template<class T>
 void LargeDoubleParser<T>::getFractionCoefficients(std::vector<T> &coefficients, std::string fraction) {
@@ -43,51 +44,65 @@ void LargeDoubleParser<T>::getFractionCoefficients(std::vector<T> &coefficients,
 }
 
 template<class T>
-void
-LargeDoubleParser<T>::fromString(LargeIntMath<T> &mantissa, exponent_type &exponent, bool &sign, std::string number) {
-    if (!std::regex_match(number, std::regex("^-?\\d+\\.\\d+$"))) {
-        throw std::invalid_argument(
-                "LargeDouble validation error: number does not match regex format \"^-?\\d+\\.\\d+$\"");
+LargeDoubleMath<T> LargeDoubleParser<T>::parse(std::string source) {
+    std::regex largeDoubleRegex(R"(^-?\d+\.\d+$)");
+
+    if (!std::regex_match(source, largeDoubleRegex)) {
+        throw std::invalid_argument("LargeDouble does not math regex!");
     }
 
-    sign = number[0] == '-';
-
-    int pointIndex = 0;
-
-    while (number[pointIndex] != '.') {
-        ++pointIndex;
-    }
-
-    std::string integralPart = number.substr(0, pointIndex);
-    std::string fractionalPart = number.substr(pointIndex + 1);
-
-    std::vector<T> integralPartCoefficients;
-    std::vector<T> fractionalPartCoefficients;
-
-    bool ignoreSign;
-    LargeIntParser<T>::fromString(integralPartCoefficients, ignoreSign, integralPart);
-    getFractionCoefficients(fractionalPartCoefficients, fractionalPart);
-
-    std::vector<T> finalCoefficients;
-    finalCoefficients.resize(integralPartCoefficients.size() + fractionalPartCoefficients.size());
-
-    // Concatenate integral part with fractional
-    std::copy(integralPartCoefficients.rbegin(), integralPartCoefficients.rend(), finalCoefficients.begin());
-    std::copy(fractionalPartCoefficients.begin(), fractionalPartCoefficients.end(),
-              finalCoefficients.begin() + integralPartCoefficients.size());
+    LargeIntMath<T> mantissa;
+    exponent_type exponent;
+    bool sign = source[0] == '-';
 
     if (sign) {
-        LargeIntParser<T>::toTwosComplement(finalCoefficients);
+        source.erase(source.begin());
     }
 
-    exponent = -fractionalPartCoefficients.size();
-    mantissa = LargeIntMath<T>(finalCoefficients, sign);
+    size_t pointIndex = source.find('.');
+
+    std::string integralSource = source.substr(0, pointIndex);
+    std::string fractionSource = source.substr(pointIndex + 1);
+
+    bool ignoreSign;
+    std::vector<T> integralSourceCoefficients;
+    LargeIntParser<T>::fromString(integralSourceCoefficients, ignoreSign, integralSource);
+
+    exponent = integralSourceCoefficients.size();
+
+    std::vector<T> fractionSourceCoefficients;
+    getFractionCoefficients(fractionSourceCoefficients, fractionSource);
+
+    auto coefficients = mantissa.getCoefficients();
+    coefficients.pop_back();
+    coefficients.resize(integralSourceCoefficients.size() + fractionSourceCoefficients.size());
+
+    // Concatenate fractional and integral parts coefficients
+    int i = 0;
+    for (auto it = fractionSourceCoefficients.rbegin(); it != fractionSourceCoefficients.rend(); ++it) {
+        coefficients[i] = *it;
+        ++i;
+    }
+
+    for (auto it = integralSourceCoefficients.begin(); it != integralSourceCoefficients.end(); ++it) {
+        coefficients[i] = *it;
+        ++i;
+    }
+
+    if (sign) {
+        LargeIntParser<T>::toTwosComplement(coefficients);
+    }
+
+    auto result = LargeDoubleMath<T>(mantissa, exponent);
+
+    result.normalize();
+
+    return result;
 }
 
 template<class T>
-std::string
-LargeDoubleParser<T>::toString(const LargeIntMath<T> &mantissa, const exponent_type &exponent, const bool &sign) {
-
+size_t LargeDoubleParser<T>::getPrecision() {
+    return PRECISION;
 }
 
 template
