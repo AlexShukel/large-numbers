@@ -38,6 +38,8 @@ public:
 
     void normalize();
 
+    size_t getFractionalPartSize() const;
+
     void multiply(const LargeDoubleMath<T> &multiplier);
 };
 

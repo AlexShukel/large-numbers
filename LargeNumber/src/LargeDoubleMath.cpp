@@ -64,15 +64,23 @@ void LargeDoubleMath<T>::normalize() {
     std::vector<T> &coefficients = mantissa.getCoefficients();
     size_t trimmedFront = trimFront(coefficients, (T) 0);
     exponent -= trimBack(coefficients, mantissa.getSign() ? mantissa.getMaxValue() : (T) 0);
+
+    if (coefficients.empty()) {
+        exponent = 1;
+    }
+}
+
+template<class T>
+size_t LargeDoubleMath<T>::getFractionalPartSize() const {
+    return std::max(static_cast<size_t>(1), mantissa.getCoefficients().size());
 }
 
 template<class T>
 void LargeDoubleMath<T>::multiply(const LargeDoubleMath<T> &multiplier) {
+    exponent = exponent + multiplier.exponent - getFractionalPartSize() - multiplier.getFractionalPartSize();
     mantissa.multiply(multiplier.mantissa);
-
-
-//    exponent += multiplier.exponent;
-//    normalize();
+    exponent += getFractionalPartSize();
+    normalize();
 }
 
 template
