@@ -37,6 +37,13 @@ public:
 };
 
 template<class T>
+bool areCoefficientsEmpty(const std::vector<T> &coefficients) {
+    return std::all_of(coefficients.begin(), coefficients.end(), [](T value) {
+        return value == 0;
+    });
+}
+
+template<class T>
 size_t trimFront(std::vector<T> &container, T value) {
     auto it = std::find_if_not(container.begin(), container.end(), Equal<T>(value));
     size_t count = std::distance(container.begin(), it);

@@ -63,11 +63,20 @@ TEST(LargeDoubleParser, convertFromString) {
     }
 
     {
+        std::string number = "0.25";
+        LargeDoubleMath<byte> myNumber = Parser::parse(number);
+        EXPECT_EQ(myNumber.getMantissa().getCoefficients().size(), 1);
+        EXPECT_EQ(myNumber.getMantissa().getCoefficients()[0], 64);
+        EXPECT_EQ(myNumber.getExponent(), 0);
+        EXPECT_EQ(myNumber.getSign(), false);
+    }
+
+    {
         std::string number = "256.0";
         LargeDoubleMath<byte> myNumber = Parser::parse(number);
         EXPECT_EQ(myNumber.getMantissa().getCoefficients().size(), 1);
         EXPECT_EQ(myNumber.getMantissa().getCoefficients()[0], 1);
-        EXPECT_EQ(myNumber.getExponent(), 1);
+        EXPECT_EQ(myNumber.getExponent(), 2);
         EXPECT_EQ(myNumber.getSign(), false);
     }
 }

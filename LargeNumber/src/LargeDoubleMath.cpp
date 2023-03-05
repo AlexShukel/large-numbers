@@ -4,6 +4,7 @@
 
 #include "LargeDoubleMath.h"
 #include "utils.h"
+#include "LargeDoubleParser.h"
 #include <regex>
 
 template<class T>
@@ -25,7 +26,7 @@ LargeDoubleMath<T>::LargeDoubleMath(const std::string &number) {
         throw std::invalid_argument("LargeDouble validation error: number does not match format (<digits>.<digits>).");
     }
 
-    // TODO: initialize mantissa, exponent and sign
+    *this = LargeDoubleParser<T>::parse(number);
 }
 
 template<class T>
@@ -61,15 +62,7 @@ LargeIntMath<T> LargeDoubleMath<T>::getMantissa() const {
 template<class T>
 void LargeDoubleMath<T>::normalize() {
     std::vector<T> &coefficients = mantissa.getCoefficients();
-
-    int32_t fractionalSize = coefficients.size() - exponent;
-
     size_t trimmedFront = trimFront(coefficients, (T) 0);
-
-    if (trimmedFront > fractionalSize && fractionalSize > 0 && !coefficients.empty()) {
-        exponent -= (trimmedFront - fractionalSize);
-    }
-
     exponent -= trimBack(coefficients, mantissa.getSign() ? mantissa.getMaxValue() : (T) 0);
 }
 

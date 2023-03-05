@@ -10,5 +10,20 @@ TEST(LargeDoubleMath, constructorShouldThrow) {
 }
 
 TEST(LargeDoubleMath, constructor) {
-    LargeDoubleMath<byte> n1("0.5");
+    {
+        LargeDoubleMath<byte> number("0.5");
+        EXPECT_EQ(number.getSign(), false);
+        EXPECT_EQ(number.getMantissa().getCoefficients().size(), 1);
+        EXPECT_EQ(number.getMantissa().getCoefficients()[0], 128);
+        EXPECT_EQ(number.getExponent(), 0);
+    }
+
+    {
+        LargeDoubleMath<byte> number("256.0");
+        EXPECT_EQ(number.getSign(), false);
+        EXPECT_EQ(number.getMantissa().getCoefficients().size(), 1);
+        EXPECT_EQ(number.getMantissa().getCoefficients()[0], 1);
+        EXPECT_EQ(number.getExponent(), 2);
+    }
+
 }
