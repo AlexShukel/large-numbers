@@ -37,7 +37,7 @@ void LargeDoubleParser<T>::getFractionCoefficients(std::vector<T> &coefficients,
         }
     }
 
-    if (coefficientSize > 0 || coefficients.empty()) {
+    if (coefficientSize > 0) {
         coefficient <<= COEFFICIENT_BIT_SIZE - coefficientSize;
         coefficients.push_back(coefficient.to_ulong());
     }
@@ -68,13 +68,20 @@ LargeDoubleMath<T> LargeDoubleParser<T>::parse(std::string source) {
     std::vector<T> integralSourceCoefficients;
     LargeIntParser<T>::fromString(integralSourceCoefficients, ignoreSign, integralSource);
 
+    if (integralSourceCoefficients.empty()) {
+        integralSourceCoefficients.push_back(0);
+    }
+
     exponent = integralSourceCoefficients.size();
 
     std::vector<T> fractionSourceCoefficients;
     getFractionCoefficients(fractionSourceCoefficients, fractionSource);
 
+    if (fractionSourceCoefficients.empty()) {
+        fractionSourceCoefficients.push_back(0);
+    }
+
     std::vector<T> &coefficients = mantissa.getCoefficients();
-    coefficients.pop_back();
     coefficients.resize(integralSourceCoefficients.size() + fractionSourceCoefficients.size());
 
     // Concatenate fractional and integral parts coefficients

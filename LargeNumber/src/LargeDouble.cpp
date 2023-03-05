@@ -17,6 +17,19 @@ LargeDouble<T>::LargeDouble(const LargeIntMath<T> &mantissa): math(LargeDoubleMa
 template<class T>
 LargeDouble<T>::LargeDouble(const std::string &number): math(LargeDoubleMath<T>(number)) {}
 
+template<class T>
+LargeDouble<T> LargeDouble<T>::operator*(const LargeDouble<T> &other) {
+    LargeDouble<T> copy = *this;
+    copy *= other;
+    return copy;
+}
+
+template<class T>
+LargeDouble<T> &LargeDouble<T>::operator*=(const LargeDouble<T> &other) {
+    this->math.multiply(other.math);
+    return *this;
+}
+
 template
 class LargeDouble<uint8_t>;
 

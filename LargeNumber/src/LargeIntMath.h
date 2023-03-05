@@ -48,6 +48,8 @@ public:
 
     T getMaxValue() const;
 
+    void normalize();
+
     // Multiply positive number by given coefficient.
     void multiplyByCoefficient(T coefficient);
 

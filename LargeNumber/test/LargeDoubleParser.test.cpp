@@ -2,8 +2,8 @@
 #include <string>
 #include <bitset>
 #include "LargeDoubleParser.h"
-#include "LargeIntMath.h"
 #include "config.h"
+#include "testUtils.h"
 
 typedef uint8_t byte;
 typedef LargeDoubleParser<byte> Parser;
@@ -13,8 +13,7 @@ TEST(LargeDoubleParser, getFractionCoefficients) {
         std::vector<byte> coefficients;
         std::string fraction = "0";
         Parser::getFractionCoefficients(coefficients, fraction);
-        EXPECT_EQ(coefficients.size(), 1);
-        EXPECT_EQ(coefficients[0], 0);
+        expectVectorsEquality(coefficients, {});
     }
 
     {

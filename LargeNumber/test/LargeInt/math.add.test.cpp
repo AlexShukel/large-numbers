@@ -61,6 +61,9 @@ TEST(LargeIntMath, AddNegativeNumbers) {
 
     n1.add(n5);
     EXPECT_EQ(n1.toString(), "-5466431547676314564134154299163");
+
+    n1.add(LargeIntMath<byte>("5466431547676314564134154299163"));
+    EXPECT_EQ(n1.toString(), "0");
 }
 
 TEST(LargeIntMath, AddReverseNumbers) {

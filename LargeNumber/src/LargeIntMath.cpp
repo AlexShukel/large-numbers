@@ -7,11 +7,11 @@
 #include <bitset>
 #include "LargeIntMath.h"
 #include "LargeIntParser.h"
+#include "utils.h"
 
 template<class T>
 LargeIntMath<T>::LargeIntMath() {
     sign = false;
-    coefficients.push_back(0);
 }
 
 // Conversion from readable string to coefficients
@@ -84,6 +84,8 @@ void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
     if (additional != getSupplementDigit()) {
         coefficients.push_back(additional.to_ulong());
     }
+
+    this->normalize();
 }
 
 template<class T>
@@ -116,6 +118,8 @@ void LargeIntMath<T>::multiply(LargeIntMath<T> multiplier) {
     if (productSign) {
         product.negate();
     }
+
+    product.normalize();
 
     *this = product;
 }
@@ -194,6 +198,11 @@ void LargeIntMath<T>::shiftLeft(int shift) {
 template<class T>
 T LargeIntMath<T>::getMaxValue() const {
     return maxValue;
+}
+
+template<class T>
+void LargeIntMath<T>::normalize() {
+    trimBack(coefficients, (T) 0);
 }
 
 template<class T>

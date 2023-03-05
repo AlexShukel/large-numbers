@@ -10,8 +10,7 @@ typedef uint8_t byte;
 TEST(LargeIntMath, settingCorrectCoefficients) {
     LargeIntMath<byte> n1("0");
     std::vector<byte> c1 = n1.getCoefficients();
-    EXPECT_EQ(c1.size(), 1);
-    EXPECT_EQ(c1[0], 0);
+    EXPECT_EQ(c1.size(), 0);
 
     LargeIntMath<byte> n2("13");
     std::vector<byte> c2 = n2.getCoefficients();

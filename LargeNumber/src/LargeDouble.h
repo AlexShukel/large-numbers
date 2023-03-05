@@ -23,6 +23,10 @@ public:
     explicit LargeDouble(const std::string &number);
 
     explicit LargeDouble(const LargeIntMath<T> &mantissa);
+
+    LargeDouble operator*(const LargeDouble<T> &other);
+
+    LargeDouble &operator*=(const LargeDouble<T> &other);
 };
 
 

@@ -66,6 +66,13 @@ void LargeDoubleMath<T>::normalize() {
     exponent -= trimBack(coefficients, mantissa.getSign() ? mantissa.getMaxValue() : (T) 0);
 }
 
+template<class T>
+void LargeDoubleMath<T>::multiply(const LargeDoubleMath<T> &multiplier) {
+    exponent += multiplier.exponent;
+    mantissa.multiply(multiplier.mantissa);
+    normalize();
+}
+
 template
 class LargeDoubleMath<uint8_t>;
 

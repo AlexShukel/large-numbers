@@ -120,7 +120,7 @@ void LargeIntParser<T>::fromString(std::vector<T> &coefficients, bool &sign, con
         }
     }
 
-    if (coefficientSize > 0 || coefficients.empty()) {
+    if (coefficientSize > 0) {
         coefficient >>= COEFFICIENT_BIT_SIZE - coefficientSize;
         coefficients.push_back(coefficient.to_ulong());
     }

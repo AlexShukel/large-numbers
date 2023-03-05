@@ -37,6 +37,8 @@ public:
     exponent_type &getExponent();
 
     void normalize();
+
+    void multiply(const LargeDoubleMath<T> &multiplier);
 };
 
 

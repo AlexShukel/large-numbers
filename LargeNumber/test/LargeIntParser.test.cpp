@@ -25,8 +25,7 @@ TEST(LargeIntParser, convertFromString) {
         bool sign;
 
         Parser::fromString(coefficients, sign, number);
-        EXPECT_EQ(coefficients.size(), 1);
-        EXPECT_EQ(coefficients[0], 0);
+        EXPECT_EQ(coefficients.size(), 0);
         EXPECT_EQ(sign, false);
     }
 
