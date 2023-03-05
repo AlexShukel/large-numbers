@@ -30,6 +30,19 @@ LargeDouble<T> &LargeDouble<T>::operator*=(const LargeDouble<T> &other) {
     return *this;
 }
 
+template<class T>
+LargeDouble<T> LargeDouble<T>::operator+(const LargeDouble<T> &other) {
+    LargeDouble<T> copy = *this;
+    copy += other;
+    return copy;
+}
+
+template<class T>
+LargeDouble<T> &LargeDouble<T>::operator+=(const LargeDouble<T> &other) {
+    this->math.add(other.math);
+    return *this;
+}
+
 template
 class LargeDouble<uint8_t>;
 

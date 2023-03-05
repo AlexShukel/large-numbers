@@ -31,7 +31,7 @@ public:
     std::vector<T> &getCoefficients();
 
     std::vector<T> getCoefficients() const;
-
+    
     bool &getSign();
 
     bool getSign() const;
@@ -44,7 +44,9 @@ public:
 
     void positivate();
 
-    void shiftLeft(int shift);
+    void shiftLeft(size_t shift);
+
+    void shiftRight(size_t shift);
 
     T getMaxValue() const;
 

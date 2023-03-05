@@ -22,8 +22,6 @@ inline bool isZero(const std::string &number) {
     return std::all_of(number.begin(), number.end(), [](char c) { return c == '0'; });
 }
 
-void decimalStringToNumbers(std::vector<uint8_t> &output, const std::string &source);
-
 template<class T>
 class Equal {
     T value;
@@ -58,5 +56,25 @@ size_t trimBack(std::vector<T> &container, T value) {
     container.erase(it.base(), container.end());
     return count;
 }
+
+template<class T>
+void extendFront(std::vector<T> &container, T value, uint64_t count) {
+    if (count == 0) {
+        return;
+    }
+
+    container.insert(container.begin(), count, value);
+}
+
+template<class T>
+void extendBack(std::vector<T> &container, T value, uint64_t count) {
+    if (count == 0) {
+        return;
+    }
+
+    container.insert(container.end(), count, value);
+}
+
+size_t getAbsoluteDelta(int64_t a, int64_t b);
 
 #endif //ND1_UTILS_H

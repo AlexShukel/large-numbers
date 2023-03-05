@@ -97,7 +97,7 @@ LargeDoubleMath<T> LargeDoubleParser<T>::parse(std::string source) {
     }
 
     if (sign) {
-        LargeIntParser<T>::toTwosComplement(coefficients);
+        mantissa.negate();
     }
 
     auto result = LargeDoubleMath<T>(mantissa, exponent);

@@ -190,11 +190,13 @@ void LargeIntMath<T>::multiplyByCoefficient(T coefficient) {
 }
 
 template<class T>
-void LargeIntMath<T>::shiftLeft(int shift) {
-    coefficients.resize(coefficients.size() + shift);
-    for (int i = 0; i < shift; ++i) {
-        coefficients.insert(coefficients.begin(), 0);
-    }
+void LargeIntMath<T>::shiftLeft(size_t shift) {
+    coefficients.insert(coefficients.begin(), shift, 0);
+}
+
+template<class T>
+void LargeIntMath<T>::shiftRight(size_t shift) {
+    coefficients.insert(coefficients.end(), shift, 0);
 }
 
 template<class T>

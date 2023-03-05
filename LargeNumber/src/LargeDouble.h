@@ -24,9 +24,13 @@ public:
 
     explicit LargeDouble(const LargeIntMath<T> &mantissa);
 
-    LargeDouble operator*(const LargeDouble<T> &other);
+    LargeDouble operator*(const LargeDouble &other);
 
-    LargeDouble &operator*=(const LargeDouble<T> &other);
+    LargeDouble &operator*=(const LargeDouble &other);
+
+    LargeDouble operator+(const LargeDouble &other);
+
+    LargeDouble &operator+=(const LargeDouble &other);
 };
 
 

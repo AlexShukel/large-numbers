@@ -95,7 +95,7 @@ TEST(LargeDoubleMath, normalize) {
 
         math.normalize();
 
-        EXPECT_EQ(math.getExponent(), 0);
+        EXPECT_EQ(math.getExponent(), 1);
 
         auto newCoefficients = math.getMantissa().getCoefficients();
 
