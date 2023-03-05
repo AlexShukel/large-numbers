@@ -26,8 +26,6 @@ public:
 
     explicit LargeIntMath(const std::string &number);
 
-    explicit LargeIntMath(int number);
-
     LargeIntMath(std::vector<T> coefficients, bool sign);
 
     std::vector<T> &getCoefficients();
@@ -48,9 +46,7 @@ public:
 
     void shiftLeft(int shift);
 
-    T getMaxValue() const {
-        return maxValue;
-    }
+    T getMaxValue() const;
 
     // Multiply positive number by given coefficient.
     void multiplyByCoefficient(T coefficient);

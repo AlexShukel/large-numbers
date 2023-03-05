@@ -21,17 +21,6 @@ LargeIntMath<T>::LargeIntMath(const std::string &number) {
 }
 
 template<class T>
-LargeIntMath<T>::LargeIntMath(int number) {
-    if (number < 0) {
-        sign = true;
-    } else {
-        sign = false;
-    }
-
-    LargeIntParser<T>::fromInteger(coefficients, sign, number);
-}
-
-template<class T>
 LargeIntMath<T>::LargeIntMath(std::vector<T> coefficients, bool sign): coefficients(coefficients), sign(sign) {}
 
 template<class T>
@@ -200,6 +189,11 @@ void LargeIntMath<T>::shiftLeft(int shift) {
     for (int i = 0; i < shift; ++i) {
         coefficients.insert(coefficients.begin(), 0);
     }
+}
+
+template<class T>
+T LargeIntMath<T>::getMaxValue() const {
+    return maxValue;
 }
 
 template<class T>

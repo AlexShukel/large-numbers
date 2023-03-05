@@ -10,8 +10,14 @@ template<class T>
 LargeDoubleMath<T>::LargeDoubleMath(): mantissa(LargeIntMath<T>()), exponent(0) {}
 
 template<class T>
-LargeDoubleMath<T>::LargeDoubleMath(LargeIntMath<T> mantissa, exponent_type exponent): mantissa(mantissa),
+LargeDoubleMath<T>::LargeDoubleMath(LargeIntMath<T> mantissa, exponent_type exponent): mantissa(std::move(mantissa)),
                                                                                        exponent(exponent) {}
+
+template<class T>
+LargeDoubleMath<T>::LargeDoubleMath(
+        LargeIntMath<T> mantissa): mantissa(std::move(mantissa)), exponent(mantissa.getCoefficients().size()) {
+    this->normalize();
+}
 
 template<class T>
 LargeDoubleMath<T>::LargeDoubleMath(const std::string &number) {

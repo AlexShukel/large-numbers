@@ -20,7 +20,9 @@ public:
 
     LargeDoubleMath(LargeIntMath<T> mantissa, exponent_type exponent);
 
-    LargeDoubleMath(const std::string &number);
+    explicit LargeDoubleMath(const std::string &number);
+
+    explicit LargeDoubleMath(LargeIntMath<T> mantissa);
 
     bool getSign() const;
 

@@ -12,6 +12,9 @@ LargeDouble<T>::LargeDouble(LargeIntMath<T> mantissa, exponent_type exponent): m
         LargeDoubleMath<T>(mantissa, exponent)) {}
 
 template<class T>
+LargeDouble<T>::LargeDouble(const LargeIntMath<T> &mantissa): math(LargeDoubleMath<T>(mantissa)) {}
+
+template<class T>
 LargeDouble<T>::LargeDouble(const std::string &number): math(LargeDoubleMath<T>(number)) {}
 
 template

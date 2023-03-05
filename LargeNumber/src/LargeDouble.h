@@ -6,6 +6,7 @@
 #define ND1_LARGEDOUBLE_H
 
 #include "LargeDoubleMath.h"
+#include "LargeIntMath.h"
 #include "config.h"
 #include <string>
 #include <cmath>
@@ -19,7 +20,9 @@ public:
 
     LargeDouble(LargeIntMath<T> mantissa, exponent_type exponent);
 
-    LargeDouble(const std::string &number);
+    explicit LargeDouble(const std::string &number);
+
+    explicit LargeDouble(const LargeIntMath<T> &mantissa);
 };
 
 

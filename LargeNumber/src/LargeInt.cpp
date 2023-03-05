@@ -6,6 +6,9 @@
 #include "LargeIntMath.h"
 
 template<class T>
+LargeInt<T>::LargeInt(): math(LargeIntMath<T>()) {}
+
+template<class T>
 LargeInt<T>::LargeInt(const std::string &number): math(LargeIntMath<T>(number)) {}
 
 template<class T>
@@ -40,7 +43,7 @@ LargeInt<T> &LargeInt<T>::operator+=(const LargeInt<T> &other) {
 
 template<class T>
 LargeInt<T> &LargeInt<T>::operator++() {
-    math.add(LargeIntMath<T>(1));
+    math.add(LargeIntMath<T>("1"));
     return *this;
 }
 
@@ -73,7 +76,7 @@ LargeInt<T> &LargeInt<T>::operator-=(const LargeInt<T> &other) {
 
 template<class T>
 LargeInt<T> &LargeInt<T>::operator--() {
-    math.subtract(LargeIntMath<T>(1));
+    math.subtract(LargeIntMath<T>("1"));
     return *this;
 }
 
