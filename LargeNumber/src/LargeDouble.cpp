@@ -18,6 +18,11 @@ template<class T>
 LargeDouble<T>::LargeDouble(const std::string &number): math(LargeDoubleMath<T>(number)) {}
 
 template<class T>
+std::string LargeDouble<T>::toString() const {
+    return math.toString();
+}
+
+template<class T>
 LargeDouble<T> LargeDouble<T>::operator*(const LargeDouble<T> &other) {
     LargeDouble<T> copy = *this;
     copy *= other;
@@ -40,6 +45,19 @@ LargeDouble<T> LargeDouble<T>::operator+(const LargeDouble<T> &other) {
 template<class T>
 LargeDouble<T> &LargeDouble<T>::operator+=(const LargeDouble<T> &other) {
     this->math.add(other.math);
+    return *this;
+}
+
+template<class T>
+LargeDouble<T> LargeDouble<T>::operator/(const LargeDouble<T> &other) {
+    LargeDouble<T> copy = *this;
+    copy /= other;
+    return copy;
+}
+
+template<class T>
+LargeDouble<T> &LargeDouble<T>::operator/=(const LargeDouble<T> &other) {
+    math.divide(other.math);
     return *this;
 }
 

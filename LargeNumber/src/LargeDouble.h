@@ -24,6 +24,8 @@ public:
 
     explicit LargeDouble(const LargeIntMath<T> &mantissa);
 
+    std::string toString() const;
+
     LargeDouble operator*(const LargeDouble &other);
 
     LargeDouble &operator*=(const LargeDouble &other);
@@ -31,6 +33,10 @@ public:
     LargeDouble operator+(const LargeDouble &other);
 
     LargeDouble &operator+=(const LargeDouble &other);
+
+    LargeDouble operator/(const LargeDouble &other);
+
+    LargeDouble &operator/=(const LargeDouble &other);
 };
 
 

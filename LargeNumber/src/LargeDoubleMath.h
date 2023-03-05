@@ -16,6 +16,7 @@ private:
     exponent_type exponent;
 
     static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
+    static constexpr size_t PRECISION = 332.1928094887362347870 / COEFFICIENT_BIT_SIZE;
 public:
     explicit LargeDoubleMath();
 
@@ -24,6 +25,8 @@ public:
     explicit LargeDoubleMath(const std::string &number);
 
     explicit LargeDoubleMath(LargeIntMath<T> mantissa);
+
+    std::string toString() const;
 
     bool getSign() const;
 
@@ -45,11 +48,17 @@ public:
 
     size_t getFractionalPartSize() const;
 
+    std::vector<T> getIntegralCoefficients() const;
+
+    std::vector<T> getFractionalCoefficients() const;
+
     static constexpr size_t getCurrentBase();
 
     void multiply(const LargeDoubleMath<T> &multiplier);
 
     void add(LargeDoubleMath<T> addend);
+
+    void divide(const LargeDoubleMath<T> &divider);
 };
 
 

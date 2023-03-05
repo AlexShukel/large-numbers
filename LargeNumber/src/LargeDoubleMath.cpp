@@ -26,7 +26,12 @@ LargeDoubleMath<T>::LargeDoubleMath(const std::string &number) {
         throw std::invalid_argument("LargeDouble validation error: number does not match format (<digits>.<digits>).");
     }
 
-    *this = LargeDoubleParser<T>::parse(number);
+    *this = LargeDoubleParser<T>::fromString(number);
+}
+
+template<class T>
+std::string LargeDoubleMath<T>::toString() const {
+    return LargeDoubleParser<T>::toString(*this);
 }
 
 template<class T>
@@ -76,6 +81,51 @@ size_t LargeDoubleMath<T>::getFractionalPartSize() const {
 }
 
 template<class T>
+std::vector<T> LargeDoubleMath<T>::getIntegralCoefficients() const {
+    std::vector<T> integralCoefficients;
+
+    auto coefficients = mantissa.getCoefficients();
+
+    if (exponent <= 0 || coefficients.empty()) {
+        return integralCoefficients;
+    }
+
+    integralCoefficients.resize(exponent);
+
+    if (exponent < coefficients.size()) {
+        std::copy(coefficients.end() - exponent, coefficients.end(), integralCoefficients.begin());
+    } else {
+        std::copy(coefficients.begin(), coefficients.end(),
+                  integralCoefficients.begin() + exponent - coefficients.size());
+        std::fill(integralCoefficients.begin(), integralCoefficients.begin() + exponent - coefficients.size(), 0);
+    }
+
+    return integralCoefficients;
+}
+
+template<class T>
+std::vector<T> LargeDoubleMath<T>::getFractionalCoefficients() const {
+    std::vector<T> fractionCoefficients;
+
+    auto coefficients = mantissa.getCoefficients();
+
+    if (exponent >= static_cast<exponent_type>(coefficients.size())) {
+        return fractionCoefficients;
+    }
+
+    fractionCoefficients.resize(coefficients.size() - exponent);
+    if (exponent >= 0) {
+        std::copy(coefficients.begin(), coefficients.end() - exponent, fractionCoefficients.begin());
+        return fractionCoefficients;
+    }
+
+    std::copy(coefficients.begin(), coefficients.end(), fractionCoefficients.begin());
+    std::fill(fractionCoefficients.begin() + coefficients.size(), fractionCoefficients.end(), 0);
+
+    return fractionCoefficients;
+}
+
+template<class T>
 constexpr size_t LargeDoubleMath<T>::getCurrentBase() {
     return std::bitset<COEFFICIENT_BIT_SIZE>(0).flip().to_ulong() + 1;
 }
@@ -120,50 +170,15 @@ void LargeDoubleMath<T>::add(LargeDoubleMath<T> addend) {
         addend.normalize();
         *this = addend;
     }
+}
 
-//    exponent_type finalExponent = std::max(exponent, addend.exponent);
-//
-//    bool isThisNegative = mantissa.getSign();
-//    bool isAddendNegative = addend.mantissa.getSign();
-//
-//    if (isThisNegative) {
-//        mantissa.negate();
-//    }
-//
-//    if (isAddendNegative) {
-//        addend.mantissa.negate();
-//    }
-//
-//    extendFront(mantissa.getCoefficients(), (T) 0, getAbsoluteDelta(exponent, finalExponent));
-//    extendFront(mantissa.getCoefficients(), (T) 0, getAbsoluteDelta(addend.exponent, finalExponent));
-//
-//    size_t width = std::max(mantissa.getCoefficients().size(), addend.mantissa.getCoefficients().size());
-//
-//    extendBack(mantissa.getCoefficients(), (T) 0, getAbsoluteDelta(width, mantissa.getCoefficients().size()));
-//    extendBack(addend.mantissa.getCoefficients(), (T) 0,
-//               getAbsoluteDelta(width, addend.mantissa.getCoefficients().size()));
-//
-//    if (isThisNegative) {
-//        mantissa.negate();
-//    }
-//
-//    if (isAddendNegative) {
-//        addend.mantissa.negate();
-//    }
-//
-//    mantissa.add(addend.mantissa);
-//    finalExponent += mantissa.getCoefficients().size() - width;
-//
-//    width = mantissa.getCoefficients().size();
-//    normalize();
-//    finalExponent -= width - mantissa.getCoefficients().size();
-//    trimBack(mantissa.getCoefficients(), mantissa.getSupplementDigit());
-//
-//    if (mantissa.getCoefficients().empty()) {
-//        exponent = 1;
-//    } else {
-//        exponent = finalExponent;
-//    }
+template<class T>
+void LargeDoubleMath<T>::divide(const LargeDoubleMath<T> &divider) {
+    if (areCoefficientsEmpty(divider.mantissa.getCoefficients())) {
+        throw std::logic_error("Cannot divide by zero!");
+    }
+
+    // TODO: implement division
 }
 
 template

@@ -44,7 +44,7 @@ void LargeDoubleParser<T>::getFractionCoefficients(std::vector<T> &coefficients,
 }
 
 template<class T>
-LargeDoubleMath<T> LargeDoubleParser<T>::parse(std::string source) {
+LargeDoubleMath<T> LargeDoubleParser<T>::fromString(std::string source) {
     std::regex largeDoubleRegex(R"(^-?\d+\.\d+$)");
 
     if (!std::regex_match(source, largeDoubleRegex)) {
@@ -103,6 +103,65 @@ LargeDoubleMath<T> LargeDoubleParser<T>::parse(std::string source) {
     auto result = LargeDoubleMath<T>(mantissa, exponent);
 
     result.normalize();
+
+    return result;
+}
+
+template<class T>
+std::string LargeDoubleParser<T>::toString(LargeDoubleMath<T> number) {
+    std::string result;
+
+    bool sign = number.getSign();
+    if (number.getSign()) {
+        number.getMantissa().negate();
+    }
+
+    std::vector<T> fractionalCoefficients = number.getFractionalCoefficients();
+    std::vector<T> integralCoefficients = number.getIntegralCoefficients();
+
+    LargeIntMath<T> fraction(fractionalCoefficients, false);
+    LargeIntMath<T> integral(integralCoefficients, false);
+    LargeIntMath<T> ten({10}, false);
+
+    if (sign) {
+        result += '-';
+    }
+    result += integral.toString();
+    result += ".";
+
+    size_t fractionWidth = fractionalCoefficients.size();
+    while (!areCoefficientsEmpty(fraction.getCoefficients()) && result.length() <= DECIMAL_PRECISION + 2) {
+        fraction.multiply(ten);
+
+        if (fraction.getCoefficients().size() > fractionWidth) {
+            T value = fraction.getCoefficients().back();
+            fraction.getCoefficients().pop_back();
+            result += '0' + value;
+        } else {
+            result += '0';
+        }
+    }
+
+    if (result.length() > DECIMAL_PRECISION + 1) {
+        char last = result.back();
+        result.pop_back();
+
+        if (last >= '5') {
+            for (auto it = result.rbegin(); it != result.rend(); ++it) {
+                *it += 1;
+                if (*it > '9') {
+                    *it = '0';
+                } else {
+                    break;
+                }
+            }
+            trimBack(result, '0');
+        }
+    }
+
+    if (result.back() == '.') {
+        result += '0';
+    }
 
     return result;
 }

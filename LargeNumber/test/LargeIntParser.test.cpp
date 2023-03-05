@@ -18,7 +18,7 @@ TEST(LargeIntParser, convertFromString) {
         EXPECT_ANY_THROW(Parser::fromString(coefficients, sign, n2));
     }
 
-    // Should parse zero
+    // Should fromString zero
     {
         std::string number = "0";
         std::vector<byte> coefficients;
@@ -29,7 +29,7 @@ TEST(LargeIntParser, convertFromString) {
         EXPECT_EQ(sign, false);
     }
 
-    // Should parse number
+    // Should fromString number
     {
         std::string number = "123";
         std::vector<byte> coefficients;
@@ -41,7 +41,7 @@ TEST(LargeIntParser, convertFromString) {
         EXPECT_EQ(sign, false);
     }
 
-    // Should parse negative number
+    // Should fromString negative number
     {
         std::string number = "-1";
         std::vector<byte> coefficients;
@@ -53,7 +53,7 @@ TEST(LargeIntParser, convertFromString) {
         EXPECT_EQ(sign, true);
     }
 
-    // Should parse large number
+    // Should fromString large number
     {
         std::string number = "109823";
         std::vector<byte> coefficients;

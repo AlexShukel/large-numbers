@@ -49,9 +49,9 @@ size_t trimFront(std::vector<T> &container, T value) {
     return count;
 }
 
-template<class T>
-size_t trimBack(std::vector<T> &container, T value) {
-    auto it = std::find_if_not(container.rbegin(), container.rend(), Equal<T>(value));
+template<class T, class V>
+size_t trimBack(T &container, V value) {
+    auto it = std::find_if_not(container.rbegin(), container.rend(), Equal<V>(value));
     size_t count = std::distance(container.rbegin(), it);
     container.erase(it.base(), container.end());
     return count;

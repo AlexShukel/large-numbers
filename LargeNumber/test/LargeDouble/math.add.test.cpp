@@ -5,8 +5,6 @@
 typedef uint8_t byte;
 typedef LargeDoubleMath<byte> Math;
 
-#include <iostream>
-
 TEST(LargeDoubleMath, addition) {
     {
         Math number("0.0");

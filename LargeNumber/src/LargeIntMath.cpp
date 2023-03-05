@@ -176,8 +176,7 @@ void LargeIntMath<T>::positivate() {
 template<class T>
 void LargeIntMath<T>::multiplyByCoefficient(T coefficient) {
     T carry = 0;
-
-    int base = std::numeric_limits<T>::max() + 1;
+    T base = static_cast<T>(std::bitset<sizeof(T) * 8>(0).flip().to_ulong());
     for (auto &current: coefficients) {
         uint64_t temp = carry + current * coefficient;
         current = temp % base;

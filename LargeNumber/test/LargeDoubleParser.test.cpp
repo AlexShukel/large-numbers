@@ -55,7 +55,7 @@ TEST(LargeDoubleParser, getFractionCoefficients) {
 TEST(LargeDoubleParser, convertFromString) {
     {
         std::string number = "0.0";
-        LargeDoubleMath<byte> myNumber = Parser::parse(number);
+        LargeDoubleMath<byte> myNumber = Parser::fromString(number);
         EXPECT_EQ(myNumber.getMantissa().getCoefficients().size(), 0);
         EXPECT_EQ(myNumber.getExponent(), 1);
         EXPECT_EQ(myNumber.getSign(), false);
@@ -63,7 +63,7 @@ TEST(LargeDoubleParser, convertFromString) {
 
     {
         std::string number = "0.25";
-        LargeDoubleMath<byte> myNumber = Parser::parse(number);
+        LargeDoubleMath<byte> myNumber = Parser::fromString(number);
         EXPECT_EQ(myNumber.getMantissa().getCoefficients().size(), 1);
         EXPECT_EQ(myNumber.getMantissa().getCoefficients()[0], 64);
         EXPECT_EQ(myNumber.getExponent(), 0);
@@ -72,10 +72,36 @@ TEST(LargeDoubleParser, convertFromString) {
 
     {
         std::string number = "256.0";
-        LargeDoubleMath<byte> myNumber = Parser::parse(number);
+        LargeDoubleMath<byte> myNumber = Parser::fromString(number);
         EXPECT_EQ(myNumber.getMantissa().getCoefficients().size(), 1);
         EXPECT_EQ(myNumber.getMantissa().getCoefficients()[0], 1);
         EXPECT_EQ(myNumber.getExponent(), 2);
         EXPECT_EQ(myNumber.getSign(), false);
+    }
+}
+
+TEST(LargeDoubleParser, convertToString) {
+    {
+        EXPECT_EQ(Parser::toString(LargeDoubleMath<byte>("12341.1")), "12341.1");
+    }
+
+    {
+        EXPECT_EQ(Parser::toString(LargeDoubleMath<byte>("0.0")), "0.0");
+    }
+
+    {
+        EXPECT_EQ(Parser::toString(LargeDoubleMath<byte>("123.0")), "123.0");
+    }
+
+    {
+        EXPECT_EQ(Parser::toString(LargeDoubleMath<byte>("-5.5")), "-5.5");
+    }
+
+    {
+        EXPECT_EQ(Parser::toString(LargeDoubleMath<byte>("-000000000000.5")), "-0.5");
+    }
+
+    {
+        EXPECT_EQ(Parser::toString(LargeDoubleMath<byte>("-0.0005")), "-0.0005");
     }
 }
