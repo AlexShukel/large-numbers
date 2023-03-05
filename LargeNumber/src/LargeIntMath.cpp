@@ -159,8 +159,10 @@ int LargeIntMath<T>::compare(const LargeIntMath<T> &other) const {
 
 template<class T>
 void LargeIntMath<T>::negate() {
+    if (!coefficients.empty() || sign) {
+        sign = !sign;
+    }
     LargeIntParser<T>::toTwosComplement(coefficients);
-    sign = !sign;
 }
 
 template<class T>
@@ -202,7 +204,7 @@ T LargeIntMath<T>::getMaxValue() const {
 
 template<class T>
 void LargeIntMath<T>::normalize() {
-    trimBack(coefficients, (T) 0);
+    trimBack(coefficients, sign ? getMaxValue() : (T) 0);
 }
 
 template<class T>

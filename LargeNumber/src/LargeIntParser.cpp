@@ -59,6 +59,10 @@ template<class T>
 std::string LargeIntParser<T>::toString(std::vector<T> coefficients, bool sign) {
     std::string decimal;
 
+    if (coefficients.empty()) {
+        coefficients.push_back(sign ? std::numeric_limits<T>::max() : 0);
+    }
+
     if (sign) {
         toTwosComplement(coefficients);
     }
@@ -90,6 +94,10 @@ void LargeIntParser<T>::fromString(std::vector<T> &coefficients, bool &sign, con
 
     sign = number[0] == '-';
     std::string normalizedDecimal = number.substr(sign);
+
+    if (isZero(normalizedDecimal)) {
+        sign = false;
+    }
 
     std::bitset<COEFFICIENT_BIT_SIZE> coefficient = 0;
     int coefficientSize = 0;

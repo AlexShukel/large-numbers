@@ -68,9 +68,11 @@ void LargeDoubleMath<T>::normalize() {
 
 template<class T>
 void LargeDoubleMath<T>::multiply(const LargeDoubleMath<T> &multiplier) {
-    exponent += multiplier.exponent;
     mantissa.multiply(multiplier.mantissa);
-    normalize();
+
+
+//    exponent += multiplier.exponent;
+//    normalize();
 }
 
 template
