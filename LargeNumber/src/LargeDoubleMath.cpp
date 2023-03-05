@@ -60,8 +60,17 @@ LargeIntMath<T> LargeDoubleMath<T>::getMantissa() const {
 
 template<class T>
 void LargeDoubleMath<T>::normalize() {
-    trimFront(mantissa.getCoefficients(), (T) 0);
-    exponent -= trimBack(mantissa.getCoefficients(), mantissa.getSign() ? mantissa.getMaxValue() : (T) 0);
+    std::vector<T> &coefficients = mantissa.getCoefficients();
+
+    int32_t fractionalSize = coefficients.size() - exponent;
+
+    size_t trimmedFront = trimFront(coefficients, (T) 0);
+
+    if (trimmedFront > fractionalSize && fractionalSize > 0 && !coefficients.empty()) {
+        exponent -= (trimmedFront - fractionalSize);
+    }
+
+    exponent -= trimBack(coefficients, mantissa.getSign() ? mantissa.getMaxValue() : (T) 0);
 }
 
 template

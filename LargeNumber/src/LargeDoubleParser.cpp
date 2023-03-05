@@ -73,7 +73,7 @@ LargeDoubleMath<T> LargeDoubleParser<T>::parse(std::string source) {
     std::vector<T> fractionSourceCoefficients;
     getFractionCoefficients(fractionSourceCoefficients, fractionSource);
 
-    auto coefficients = mantissa.getCoefficients();
+    std::vector<T> &coefficients = mantissa.getCoefficients();
     coefficients.pop_back();
     coefficients.resize(integralSourceCoefficients.size() + fractionSourceCoefficients.size());
 
