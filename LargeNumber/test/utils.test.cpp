@@ -26,7 +26,7 @@ TEST(utils, vectorUtils) {
         std::vector<uint8_t> v5 = {0, 1};
         EXPECT_EQ(trimFront(v5, (uint8_t) 0), 1);
         EXPECT_EQ(v5.size(), 1);
-        EXPECT_EQ(v5[1], 1);
+        EXPECT_EQ(v5[0], 1);
     }
 
     // trimBack
