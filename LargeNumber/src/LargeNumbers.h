@@ -5,7 +5,7 @@
 #ifndef ND1_LARGENUMBERS_H
 #define ND1_LARGENUMBERS_H
 
-#include "LargeInt/LargeInt.h"
-#include "LargeDouble/LargeDouble.h"
+#include "LargeInt.h"
+#include "LargeDouble.h"
 
 #endif //ND1_LARGENUMBERS_H

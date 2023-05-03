@@ -3,15 +3,14 @@
 
 #define TEST_MODE
 
-#include "LargeInt/LargeIntMath.h"
+#include "LargeIntMath.h"
 
 typedef uint8_t byte;
 
 TEST(LargeIntMath, settingCorrectCoefficients) {
     LargeIntMath<byte> n1("0");
     std::vector<byte> c1 = n1.getCoefficients();
-    EXPECT_EQ(c1.size(), 1);
-    EXPECT_EQ(c1[0], 0);
+    EXPECT_EQ(c1.size(), 0);
 
     LargeIntMath<byte> n2("13");
     std::vector<byte> c2 = n2.getCoefficients();
@@ -46,9 +45,6 @@ TEST(LargeIntMath, settingCorrectSign) {
     LargeIntMath<byte> n1("1");
     EXPECT_EQ(n1.getSign(), false);
 
-    LargeIntMath<byte> n2("+1");
-    EXPECT_EQ(n2.getSign(), false);
-
-    LargeIntMath<byte> n3("-1");
-    EXPECT_EQ(n3.getSign(), true);
+    LargeIntMath<byte> n2("-1");
+    EXPECT_EQ(n2.getSign(), true);
 }

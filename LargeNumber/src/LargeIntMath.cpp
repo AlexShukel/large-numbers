@@ -6,56 +6,50 @@
 #include <limits>
 #include <bitset>
 #include "LargeIntMath.h"
-#include "../utils.h"
+#include "LargeIntParser.h"
+#include "utils.h"
+
+template<class T>
+const T LargeIntMath<T>::maxValue = std::bitset<COEFFICIENT_BIT_SIZE>(0).flip().to_ulong();
 
 template<class T>
 LargeIntMath<T>::LargeIntMath() {
     sign = false;
-    coefficients.push_back(0);
 }
 
 // Conversion from readable string to coefficients
 template<class T>
 LargeIntMath<T>::LargeIntMath(const std::string &number) {
-    if (number.empty()) {
-        throw std::logic_error("Cannot initialize a LargeInt with empty string.");
-    }
-
-    sign = false;
-    int from = 0;
-    if (number[0] == '-') {
-        sign = true;
-    }
-
-    if (number[0] == '-' || number[0] == '+') {
-        ++from;
-    }
-
-    std::string normalizedNumber = number.substr(from);
-
-    LargeIntUtils<T>::getCoefficients(coefficients, normalizedNumber, sign);
-}
-
-template<class T>
-LargeIntMath<T>::LargeIntMath(int number) {
-    if (number < 0) {
-        sign = true;
-    } else {
-        sign = false;
-    }
-
-    LargeIntUtils<T>::integerToCoefficients(coefficients, number);
+    LargeIntParser<T>::fromString(coefficients, sign, number);
 }
 
 template<class T>
 LargeIntMath<T>::LargeIntMath(std::vector<T> coefficients, bool sign): coefficients(coefficients), sign(sign) {}
 
+template<class T>
+std::vector<T> &LargeIntMath<T>::getCoefficients() {
+    return coefficients;
+}
+
+template<class T>
+std::vector<T> LargeIntMath<T>::getCoefficients() const {
+    return coefficients;
+}
+
+template<class T>
+bool &LargeIntMath<T>::getSign() {
+    return sign;
+}
+
+template<class T>
+bool LargeIntMath<T>::getSign() const {
+    return sign;
+}
+
 // Conversion from coefficients to readable string
 template<class T>
 std::string LargeIntMath<T>::toString() const {
-    std::string decimal;
-    LargeIntUtils<T>::getDecimal(decimal, coefficients, sign);
-    return decimal;
+    return LargeIntParser<T>::toString(coefficients, sign);
 }
 
 template<class T>
@@ -87,12 +81,14 @@ void LargeIntMath<T>::add(const LargeIntMath<T> &addend) {
         }
     }
 
-    std::bitset<COEFFICIENT_SIZE> additional(getSupplementDigit() + addend.getSupplementDigit() + carry);
-    sign = additional[COEFFICIENT_SIZE - 1];
+    std::bitset<COEFFICIENT_BIT_SIZE> additional(getSupplementDigit() + addend.getSupplementDigit() + carry);
+    sign = additional[COEFFICIENT_BIT_SIZE - 1];
 
     if (additional != getSupplementDigit()) {
         coefficients.push_back(additional.to_ulong());
     }
+
+    this->normalize();
 }
 
 template<class T>
@@ -125,6 +121,8 @@ void LargeIntMath<T>::multiply(LargeIntMath<T> multiplier) {
     if (productSign) {
         product.negate();
     }
+
+    product.normalize();
 
     *this = product;
 }
@@ -164,23 +162,24 @@ int LargeIntMath<T>::compare(const LargeIntMath<T> &other) const {
 
 template<class T>
 void LargeIntMath<T>::negate() {
-    LargeIntUtils<T>::toTwosComplement(coefficients);
-    sign = !sign;
+    if (!coefficients.empty() || sign) {
+        sign = !sign;
+    }
+    LargeIntParser<T>::toTwosComplement(coefficients);
 }
 
 template<class T>
 void LargeIntMath<T>::positivate() {
     if (sign) {
         sign = false;
-        LargeIntUtils<T>::toTwosComplement(coefficients);
+        LargeIntParser<T>::toTwosComplement(coefficients);
     }
 }
 
 template<class T>
 void LargeIntMath<T>::multiplyByCoefficient(T coefficient) {
     T carry = 0;
-    auto base = static_cast<uint32_t>(pow(2, sizeof(T) * 8));
-
+    uint64_t base = std::bitset<sizeof(T) * 8>(0).flip().to_ulong() + 1;
     for (auto &current: coefficients) {
         uint64_t temp = carry + current * coefficient;
         current = temp % base;
@@ -190,6 +189,26 @@ void LargeIntMath<T>::multiplyByCoefficient(T coefficient) {
     if (carry > 0) {
         coefficients.push_back(carry);
     }
+}
+
+template<class T>
+void LargeIntMath<T>::shiftLeft(size_t shift) {
+    coefficients.insert(coefficients.begin(), shift, 0);
+}
+
+template<class T>
+void LargeIntMath<T>::shiftRight(size_t shift) {
+    coefficients.insert(coefficients.end(), shift, 0);
+}
+
+template<class T>
+T LargeIntMath<T>::getMaxValue() const {
+    return maxValue;
+}
+
+template<class T>
+void LargeIntMath<T>::normalize() {
+    trimBack(coefficients, sign ? getMaxValue() : (T) 0);
 }
 
 template<class T>

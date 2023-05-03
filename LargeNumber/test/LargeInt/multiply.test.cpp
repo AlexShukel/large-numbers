@@ -1,9 +1,10 @@
 #include <gtest/gtest.h>
-#include "LargeInt/LargeInt.h"
+#include "LargeInt.h"
 
 typedef uint8_t byte;
 
 TEST(LargeInt, multiply) {
+    EXPECT_EQ((LargeInt<byte>("1") * LargeInt<byte>("-1")).toString(), "-1");
     EXPECT_EQ((LargeInt<byte>("2") * LargeInt<byte>("3")).toString(), "6");
     EXPECT_EQ((LargeInt<byte>("1") * LargeInt<byte>("5")).toString(), "5");
     EXPECT_EQ((LargeInt<byte>("-2") * LargeInt<byte>("-3")).toString(), "6");

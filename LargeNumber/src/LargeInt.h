@@ -15,6 +15,8 @@ private:
     LargeIntMath<T> math;
 
 public:
+    explicit LargeInt();
+
     explicit LargeInt(const std::string &number);
 
     std::string toString() const;

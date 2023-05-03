@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "LargeInt/LargeInt.h"
+#include "LargeInt.h"
 
 typedef uint8_t byte;
 
