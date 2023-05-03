@@ -10,12 +10,13 @@
 #include <cmath>
 #include <string>
 #include <limits>
+#include <bitset>
 
 template<class T>
 class LargeIntMath {
 private:
     static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
-    static constexpr T maxValue = std::numeric_limits<T>::max();
+    static const T maxValue;
 
     // 1 means '-' and 0 means '+'
     bool sign;
@@ -31,7 +32,7 @@ public:
     std::vector<T> &getCoefficients();
 
     std::vector<T> getCoefficients() const;
-    
+
     bool &getSign();
 
     bool getSign() const;

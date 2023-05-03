@@ -10,6 +10,9 @@
 #include "utils.h"
 
 template<class T>
+const T LargeIntMath<T>::maxValue = std::bitset<COEFFICIENT_BIT_SIZE>(0).flip().to_ulong();
+
+template<class T>
 LargeIntMath<T>::LargeIntMath() {
     sign = false;
 }
