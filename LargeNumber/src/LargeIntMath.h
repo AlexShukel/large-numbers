@@ -14,11 +14,12 @@
 
 template<class T>
 class LargeIntMath {
+    friend class LargeIntMathTester;
+
 private:
     static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
     static const T maxValue;
 
-    // 1 means '-' and 0 means '+'
     bool sign;
     // Coefficients are stored in reverse order: a0 * 256^0 + a1 * 256^1 + ... + ak * 256^k
     std::vector<T> coefficients;
@@ -29,12 +30,8 @@ public:
 
     LargeIntMath(std::vector<T> coefficients, bool sign);
 
-    std::vector<T> &getCoefficients();
-
     std::vector<T> getCoefficients() const;
-
-    bool &getSign();
-
+    
     bool getSign() const;
 
     std::string toString() const;
@@ -53,7 +50,6 @@ public:
 
     void normalize();
 
-    // Multiply positive number by given coefficient.
     void multiplyByCoefficient(T coefficient);
 
     void add(const LargeIntMath &addend);

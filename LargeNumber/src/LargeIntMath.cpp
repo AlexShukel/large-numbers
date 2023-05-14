@@ -27,18 +27,8 @@ template<class T>
 LargeIntMath<T>::LargeIntMath(std::vector<T> coefficients, bool sign): coefficients(coefficients), sign(sign) {}
 
 template<class T>
-std::vector<T> &LargeIntMath<T>::getCoefficients() {
-    return coefficients;
-}
-
-template<class T>
 std::vector<T> LargeIntMath<T>::getCoefficients() const {
     return coefficients;
-}
-
-template<class T>
-bool &LargeIntMath<T>::getSign() {
-    return sign;
 }
 
 template<class T>

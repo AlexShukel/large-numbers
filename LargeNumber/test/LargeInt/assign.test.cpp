@@ -11,4 +11,8 @@ TEST(LargeInt, assignment) {
 
     a = LargeInt<uint8_t>("1");
     EXPECT_EQ(a.toString(), "1");
+
+    LargeInt<uint8_t> c(a);
+    EXPECT_EQ(c.toString(), "1");
+    std::cout << sizeof(uint8_t);
 }

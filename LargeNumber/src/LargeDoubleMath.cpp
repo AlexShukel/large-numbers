@@ -35,28 +35,13 @@ std::string LargeDoubleMath<T>::toString() const {
 }
 
 template<class T>
-bool &LargeDoubleMath<T>::getSign() {
-    return mantissa.getSign();
-}
-
-template<class T>
 bool LargeDoubleMath<T>::getSign() const {
     return mantissa.getSign();
 }
 
 template<class T>
-exponent_type &LargeDoubleMath<T>::getExponent() {
-    return exponent;
-}
-
-template<class T>
 exponent_type LargeDoubleMath<T>::getExponent() const {
     return exponent;
-}
-
-template<class T>
-LargeIntMath<T> &LargeDoubleMath<T>::getMantissa() {
-    return mantissa;
 }
 
 template<class T>

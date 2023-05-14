@@ -30,17 +30,11 @@ public:
 
     bool getSign() const;
 
-    bool &getSign();
-
     LargeIntMath<T> getMantissa() const;
-
-    LargeIntMath<T> &getMantissa();
 
     void setMantissa(LargeIntMath<T> mantissa);
 
     exponent_type getExponent() const;
-
-    exponent_type &getExponent();
 
     void setExponent(exponent_type exponent);
 
