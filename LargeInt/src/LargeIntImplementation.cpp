@@ -34,14 +34,14 @@ namespace LargeNumbers {
             ++coefficientSize;
 
             if (coefficientSize == COEFFICIENT_BIT_SIZE) {
-                coefficients.push_back(coefficient.to_ulong());
+                coefficients.push_back(static_cast<T>(coefficient.to_ulong()));
                 coefficient.reset();
                 coefficientSize = 0;
             }
 
-            int nextAdditive = 0;
+            uint8_t nextAdditive = 0;
             for (char &character: normalizedDecimal) {
-                int additive = nextAdditive;
+                uint8_t additive = nextAdditive;
                 uint8_t digit = charToDigit(character);
 
                 if (digit % 2 == 1) {
@@ -56,7 +56,7 @@ namespace LargeNumbers {
 
         if (coefficientSize > 0) {
             coefficient >>= COEFFICIENT_BIT_SIZE - coefficientSize;
-            coefficients.push_back(coefficient.to_ulong());
+            coefficients.push_back(static_cast<T>(coefficient.to_ulong()));
         }
 
         if (sign) {

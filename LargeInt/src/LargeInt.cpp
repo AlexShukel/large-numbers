@@ -27,6 +27,15 @@ namespace LargeNumbers {
         delete implementation;
     }
 
+    LargeInt &LargeInt::operator=(const LargeNumbers::LargeInt &other) {
+        if (implementation != other.implementation) {
+            delete implementation;
+            implementation = new Implementation(*other.implementation);
+        }
+
+        return *this;
+    }
+
     std::string LargeInt::toString() const {
         return implementation->implementation.toString();
     }

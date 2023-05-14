@@ -23,6 +23,8 @@ namespace LargeNumbers {
 
         ~LargeInt();
 
+        LargeInt &operator=(const LargeInt &other);
+
         std::string toString() const;
     };
 }
