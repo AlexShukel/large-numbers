@@ -40,9 +40,15 @@ namespace LargeNumbers {
 
         void negate();
 
+        void shiftLeft(size_t shift);
+
         void add(const LargeIntImplementation &addend);
 
         void subtract(LargeIntImplementation subtrahend);
+
+        void multiplyByCoefficient(T coefficient);
+
+        void multiply(LargeIntImplementation multiplier);
     };
 }
 

@@ -26,6 +26,7 @@ namespace LargeNumbers {
 
         if (isZero(normalizedDecimal)) {
             sign = false;
+            coefficients.push_back(0);
             return;
         }
 
@@ -97,10 +98,6 @@ namespace LargeNumbers {
         std::vector<T> coefficientsCopy = coefficients;
         std::string decimal;
 
-        if (coefficients.empty()) {
-            coefficientsCopy.push_back(sign ? std::numeric_limits<T>::max() : 0);
-        }
-
         if (sign) {
             toTwosComplement(coefficientsCopy);
         }
@@ -136,12 +133,17 @@ namespace LargeNumbers {
 
     template<class T>
     void LargeIntImplementation<T>::negate() {
-        if (coefficients.empty()) {
+        if (coefficients.size() == 1 && coefficients[0] == 0) {
             return;
         }
 
         sign = !sign;
         toTwosComplement(coefficients);
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::shiftLeft(size_t shift) {
+        coefficients.insert(coefficients.begin(), shift, 0);
     }
 
     template<class T>
@@ -187,6 +189,51 @@ namespace LargeNumbers {
     void LargeIntImplementation<T>::subtract(LargeIntImplementation<T> subtrahend) {
         subtrahend.negate();
         this->add(subtrahend);
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::multiplyByCoefficient(T coefficient) {
+        T carry = 0;
+        uint64_t base = MAX_COEFFICIENT_VALUE + 1;
+        for (T &current: coefficients) {
+            uint64_t temp = carry + current * coefficient;
+            current = static_cast<T>(temp % base);
+            carry = static_cast<T>(temp / base);
+        }
+
+        if (carry > 0) {
+            coefficients.push_back(carry);
+        }
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::multiply(LargeIntImplementation<T> multiplier) {
+        bool productSign = sign ^ multiplier.sign;
+
+        if (this->sign) {
+            this->negate();
+        }
+
+        if (multiplier.sign) {
+            multiplier.negate();
+        }
+
+        LargeIntImplementation<T> product;
+
+        for (size_t i = 0; i < multiplier.coefficients.size(); ++i) {
+            auto temp = *this;
+            temp.multiplyByCoefficient(multiplier.coefficients[i]);
+            temp.shiftLeft(i);
+            product.add(temp);
+        }
+
+        if (productSign) {
+            product.negate();
+        }
+
+        product.normalize();
+
+        *this = product;
     }
 
     // For debugging

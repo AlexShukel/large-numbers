@@ -80,6 +80,17 @@ namespace LargeNumbers {
         return *this;
     }
 
+    LargeInt LargeInt::operator*(const LargeNumbers::LargeInt &other) {
+        LargeInt copy = *this;
+        copy.implementation->math.multiply(other.implementation->math);
+        return copy;
+    }
+
+    LargeInt &LargeInt::operator*=(const LargeNumbers::LargeInt &other) {
+        this->implementation->math.multiply(other.implementation->math);
+        return *this;
+    }
+
     std::string LargeInt::toString() const {
         return implementation->math.toString();
     }

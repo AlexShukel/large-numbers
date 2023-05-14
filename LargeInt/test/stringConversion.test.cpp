@@ -20,7 +20,7 @@ namespace LargeNumbers {
 }
 
 TEST(large_int, string_conversion) {
-    LargeNumbers::LargeIntTester::testStringConversion("0", false, {});
+    LargeNumbers::LargeIntTester::testStringConversion("0", false, {0});
     LargeNumbers::LargeIntTester::testStringConversion("1", false, {1});
     LargeNumbers::LargeIntTester::testStringConversion("255", false, {255});
     LargeNumbers::LargeIntTester::testStringConversion("256", false, {0, 1});
