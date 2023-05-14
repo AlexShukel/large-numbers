@@ -14,9 +14,9 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_subdirectory(LargeNumber)
+add_subdirectory(LargeInt)
 
-add_executable(ND1 main.cpp)
-
-target_link_libraries(ND1 largeNumbers)
-target_include_directories(ND1 PUBLIC LargeNumber/src)
+#add_executable(ND1 main.cpp)
+#
+#target_link_libraries(ND1 largeNumbers)
+#target_include_directories(ND1 PUBLIC LargeNumber/src)
