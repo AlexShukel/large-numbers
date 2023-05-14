@@ -12,7 +12,7 @@ template<class T>
 void expectVectorsEquality(const std::vector<T> &a, const std::vector<T> &b) {
     ASSERT_EQ(a.size(), b.size());
 
-    for (int i = 0; i < a.size(); ++i) {
+    for (size_t i = 0; i < a.size(); ++i) {
         EXPECT_EQ(a[i], b[i]);
     }
 }

@@ -9,6 +9,10 @@
 
 namespace LargeNumbers {
     template<class T>
+    const T LargeIntImplementation<T>::MAX_COEFFICIENT_VALUE = static_cast<T>(std::bitset<COEFFICIENT_BIT_SIZE>(
+            0).flip().to_ulong());
+
+    template<class T>
     LargeIntImplementation<T>::LargeIntImplementation(): sign(false) {}
 
     template<class T>
@@ -118,6 +122,71 @@ namespace LargeNumbers {
         std::reverse(decimal.begin(), decimal.end());
 
         return decimal;
+    }
+
+    template<class T>
+    T LargeIntImplementation<T>::getSupplementDigit() const {
+        return sign ? std::numeric_limits<T>::max() : 0;
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::normalize() {
+        trimBack(coefficients, sign ? MAX_COEFFICIENT_VALUE : (T) 0);
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::negate() {
+        if (coefficients.empty()) {
+            return;
+        }
+
+        sign = !sign;
+        toTwosComplement(coefficients);
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::add(const LargeIntImplementation<T> &addend) {
+        auto firstIt = coefficients.begin();
+        auto secondIt = addend.coefficients.begin();
+
+        T carry = 0;
+
+        while (firstIt != coefficients.end() || secondIt != addend.coefficients.end()) {
+            T firstMember = firstIt != coefficients.end() ? *firstIt : getSupplementDigit();
+            T secondMember = secondIt != addend.coefficients.end() ? *secondIt : getSupplementDigit();
+
+            T sum = firstMember + secondMember + carry;
+
+            carry = (firstMember > sum) || (secondMember > sum) ||
+                    (carry && (firstMember == sum || secondMember == sum));
+
+            if (firstIt != coefficients.end()) {
+                *firstIt = sum;
+                ++firstIt;
+            } else {
+                coefficients.push_back(sum);
+                firstIt = coefficients.end();
+            }
+
+            if (secondIt != addend.coefficients.end()) {
+                ++secondIt;
+            }
+        }
+
+        std::bitset<COEFFICIENT_BIT_SIZE> additional(getSupplementDigit() + addend.getSupplementDigit() + carry);
+        sign = additional[COEFFICIENT_BIT_SIZE - 1];
+
+        if (additional != getSupplementDigit()) {
+            coefficients.push_back(static_cast<T>(additional.to_ulong()));
+        }
+
+        this->normalize();
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::subtract(LargeIntImplementation<T> subtrahend) {
+        subtrahend.negate();
+        this->add(subtrahend);
     }
 
     // For debugging

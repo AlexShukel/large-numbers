@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <bitset>
 
 namespace LargeNumbers {
     template<class T>
@@ -15,11 +16,16 @@ namespace LargeNumbers {
         friend class LargeIntTester;
 
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
+        static const T MAX_COEFFICIENT_VALUE;
 
         bool sign;
         std::vector<T> coefficients;
 
         void coefficientsToBinary(std::string &binary, const std::vector<T> &coefficients) const;
+
+        T getSupplementDigit() const;
+
+        void normalize();
 
     public:
         LargeIntImplementation();
@@ -31,6 +37,12 @@ namespace LargeNumbers {
         LargeIntImplementation(const std::vector<T> &coefficients, bool sign);
 
         std::string toString() const;
+
+        void negate();
+
+        void add(const LargeIntImplementation &addend);
+
+        void subtract(LargeIntImplementation subtrahend);
     };
 }
 

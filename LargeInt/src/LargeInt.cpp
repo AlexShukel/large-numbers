@@ -9,11 +9,11 @@
 namespace LargeNumbers {
     class LargeInt::Implementation {
     public:
-        LargeIntImplementation<CoefficientType> implementation;
+        LargeIntImplementation<CoefficientType> math;
 
         Implementation() = default;
 
-        explicit Implementation(const LargeIntImplementation<CoefficientType> &impl) : implementation(impl) {}
+        explicit Implementation(const LargeIntImplementation<CoefficientType> &impl) : math(impl) {}
     };
 
     LargeInt::LargeInt() : implementation(new Implementation()) {}
@@ -36,7 +36,51 @@ namespace LargeNumbers {
         return *this;
     }
 
+    LargeInt LargeInt::operator+(const LargeNumbers::LargeInt &other) {
+        LargeInt copy = *this;
+        copy.implementation->math.add(other.implementation->math);
+        return copy;
+    }
+
+    LargeInt &LargeInt::operator++() {
+        this->implementation->math.add(LargeIntImplementation<CoefficientType>("1"));
+        return *this;
+    }
+
+    const LargeInt LargeInt::operator++(int) {
+        LargeInt copy = *this;
+        ++(*this);
+        return copy;
+    }
+
+    LargeInt &LargeInt::operator+=(const LargeNumbers::LargeInt &other) {
+        this->implementation->math.add(other.implementation->math);
+        return *this;
+    }
+
+    LargeInt LargeInt::operator-(const LargeNumbers::LargeInt &other) const {
+        LargeInt copy = *this;
+        copy.implementation->math.subtract(other.implementation->math);
+        return copy;
+    }
+
+    LargeInt &LargeInt::operator--() {
+        this->implementation->math.subtract(LargeIntImplementation<CoefficientType>("1"));
+        return *this;
+    }
+
+    const LargeInt LargeInt::operator--(int) {
+        LargeInt copy = *this;
+        --(*this);
+        return copy;
+    }
+
+    LargeInt &LargeInt::operator-=(const LargeNumbers::LargeInt &other) {
+        this->implementation->math.subtract(other.implementation->math);
+        return *this;
+    }
+
     std::string LargeInt::toString() const {
-        return implementation->implementation.toString();
+        return implementation->math.toString();
     }
 }
