@@ -89,7 +89,7 @@ std::string LargeIntParser<T>::toString(std::vector<T> coefficients, bool sign) 
 template<class T>
 void LargeIntParser<T>::fromString(std::vector<T> &coefficients, bool &sign, const std::string &number) {
     if (!std::regex_match(number, std::regex("^-?\\d+$"))) {
-        throw std::invalid_argument("LargeInt validation error: number does not match regex format \"^-?\\d+$\"");
+        throw std::invalid_argument(R"(LargeInt validation error: number does not match regex format "^-?\d+$")");
     }
 
     sign = number[0] == '-';
