@@ -27,6 +27,16 @@ namespace LargeNumbers {
 
         void normalize();
 
+        bool isZero() const;
+
+        void shiftLeft(size_t shift);
+
+        void shiftRight(size_t shift);
+
+        void negate();
+
+        void multiplyByCoefficient(T coefficient);
+
     public:
         LargeIntImplementation();
 
@@ -38,17 +48,15 @@ namespace LargeNumbers {
 
         std::string toString() const;
 
-        void negate();
-
-        void shiftLeft(size_t shift);
-
         void add(const LargeIntImplementation &addend);
 
         void subtract(LargeIntImplementation subtrahend);
 
-        void multiplyByCoefficient(T coefficient);
-
         void multiply(LargeIntImplementation multiplier);
+
+        LargeIntImplementation<T> divide(LargeIntImplementation divisor);
+
+        int compare(const LargeIntImplementation &other) const;
     };
 }
 

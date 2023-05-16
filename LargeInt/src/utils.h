@@ -15,7 +15,7 @@ uint8_t charToDigit(char character);
 
 char digitToChar(uint8_t digit);
 
-bool isZero(const std::string &number);
+bool isStringZero(const std::string &number);
 
 uint8_t euclideanDivision(std::string &binary);
 
@@ -43,7 +43,7 @@ template<class T, class V>
 size_t trimBack(T &container, V value) {
     auto it = std::find_if_not(container.rbegin(), container.rend(), Equal<V>(value));
     size_t count = std::distance(container.rbegin(), it);
-    container.erase(it.base() + (container.size() == count), container.end());
+    container.erase(it.base(), container.end());
     return count;
 }
 

@@ -20,6 +20,12 @@ TEST(large_int, simple_addition) {
 
     integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("3"));
     EXPECT_EQ(integer.toString(), "2");
+
+    integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("254"));
+    EXPECT_EQ(integer.toString(), "256");
+
+    integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("-16"));
+    EXPECT_EQ(integer.toString(), "240");
 }
 
 TEST(large_int, large_numbers_addition) {

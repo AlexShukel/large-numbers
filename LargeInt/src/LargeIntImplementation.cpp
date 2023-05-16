@@ -6,6 +6,7 @@
 #include "utils.h"
 #include <regex>
 #include <bitset>
+#include <stdexcept>
 
 namespace LargeNumbers {
     template<class T>
@@ -24,7 +25,7 @@ namespace LargeNumbers {
         sign = number[0] == '-';
         std::string normalizedDecimal = number.substr(sign);
 
-        if (isZero(normalizedDecimal)) {
+        if (isStringZero(normalizedDecimal)) {
             sign = false;
             coefficients.push_back(0);
             return;
@@ -33,7 +34,7 @@ namespace LargeNumbers {
         std::bitset<COEFFICIENT_BIT_SIZE> coefficient = 0;
         int coefficientSize = 0;
 
-        while (!isZero(normalizedDecimal)) {
+        while (!isStringZero(normalizedDecimal)) {
             coefficient >>= 1;
             coefficient[COEFFICIENT_BIT_SIZE - 1] = charToDigit(normalizedDecimal[normalizedDecimal.size() - 1]) % 2;
             ++coefficientSize;
@@ -105,7 +106,7 @@ namespace LargeNumbers {
         std::string binary;
         coefficientsToBinary(binary, coefficientsCopy);
 
-        while (!isZero(binary)) {
+        while (!isStringZero(binary)) {
             uint8_t remainder = euclideanDivision(binary);
             decimal.push_back(digitToChar(remainder));
         }
@@ -123,17 +124,26 @@ namespace LargeNumbers {
 
     template<class T>
     T LargeIntImplementation<T>::getSupplementDigit() const {
-        return sign ? std::numeric_limits<T>::max() : 0;
+        return sign ? MAX_COEFFICIENT_VALUE : 0;
     }
 
     template<class T>
     void LargeIntImplementation<T>::normalize() {
-        trimBack(coefficients, sign ? MAX_COEFFICIENT_VALUE : (T) 0);
+        T meaninglessValue = sign ? MAX_COEFFICIENT_VALUE : (T) 0;
+        trimBack(coefficients, meaninglessValue);
+        if (coefficients.empty()) {
+            coefficients.push_back(meaninglessValue);
+        }
+    }
+
+    template<class T>
+    bool LargeIntImplementation<T>::isZero() const {
+        return coefficients.size() == 1 && coefficients[0] == 0;
     }
 
     template<class T>
     void LargeIntImplementation<T>::negate() {
-        if (coefficients.size() == 1 && coefficients[0] == 0) {
+        if (isZero()) {
             return;
         }
 
@@ -147,6 +157,11 @@ namespace LargeNumbers {
     }
 
     template<class T>
+    void LargeIntImplementation<T>::shiftRight(size_t shift) {
+        coefficients.erase(coefficients.begin(), coefficients.begin() + shift);
+    }
+
+    template<class T>
     void LargeIntImplementation<T>::add(const LargeIntImplementation<T> &addend) {
         auto firstIt = coefficients.begin();
         auto secondIt = addend.coefficients.begin();
@@ -155,7 +170,7 @@ namespace LargeNumbers {
 
         while (firstIt != coefficients.end() || secondIt != addend.coefficients.end()) {
             T firstMember = firstIt != coefficients.end() ? *firstIt : getSupplementDigit();
-            T secondMember = secondIt != addend.coefficients.end() ? *secondIt : getSupplementDigit();
+            T secondMember = secondIt != addend.coefficients.end() ? *secondIt : addend.getSupplementDigit();
 
             T sum = firstMember + secondMember + carry;
 
@@ -232,8 +247,114 @@ namespace LargeNumbers {
         }
 
         product.normalize();
-
         *this = product;
+    }
+
+    template<class T>
+    LargeIntImplementation<T> LargeIntImplementation<T>::divide(LargeIntImplementation<T> divisor) {
+        if (divisor.isZero()) {
+            throw std::logic_error("Can not divide by zero!");
+        }
+
+        bool quotientSign = sign ^ divisor.sign;
+
+        if (this->sign) {
+            this->negate(); // Adjust signs to be both positive
+        }
+
+        if (divisor.sign) {
+            divisor.negate(); // Adjust signs to be both positive
+        }
+
+        // Return early if divisor is greater than this
+        if (this->compare(divisor) < 0) {
+            coefficients.clear();
+            coefficients.push_back(0);
+            sign = false;
+            return *this;
+        }
+
+        // Return early if divisor is equal to this
+        if (this->compare(divisor) == 0) {
+            coefficients.clear();
+            coefficients.push_back(1);
+            if (quotientSign) {
+                this->negate();
+            }
+            return LargeIntImplementation<T>("0");
+        }
+
+        LargeIntImplementation<T> remainder = *this;
+        LargeIntImplementation<T> shiftedDivisor = divisor;
+        size_t maxShift = 0;
+        while (remainder.compare(shiftedDivisor) > 0) {
+            shiftedDivisor.shiftLeft(1);
+            ++maxShift;
+        }
+
+        coefficients.clear();
+        coefficients.resize(maxShift, 0);
+
+        while (remainder.compare(divisor) >= 0) {
+            shiftedDivisor = divisor;
+            size_t shift = 0;
+            while (remainder.compare(shiftedDivisor) >= 0) {
+                shiftedDivisor.shiftLeft(1);
+                ++shift;
+            }
+            shiftedDivisor.shiftRight(1);
+            --shift;
+
+            remainder.subtract(shiftedDivisor);
+            ++coefficients[shift];
+        }
+
+        if (quotientSign) {
+            negate();
+        }
+        normalize();
+
+        remainder.normalize();
+        return remainder;
+    }
+
+    template<class T>
+    int LargeIntImplementation<T>::compare(const LargeIntImplementation<T> &other) const {
+        if (sign && !other.sign) {
+            return -1;
+        }
+
+        if (!sign && other.sign) {
+            return 1;
+        }
+
+        if (other.coefficients.size() > coefficients.size()) {
+            return -1;
+        }
+
+        if (coefficients.size() > other.coefficients.size()) {
+            return 1;
+        }
+
+        // Signs and sized of coefficients are equal now
+
+        size_t i = coefficients.size() - 1;
+        while (true) {
+            if (coefficients[i] > other.coefficients[i]) {
+                return 1;
+            }
+
+            if (coefficients[i] < other.coefficients[i]) {
+                return -1;
+            }
+
+            if (i == 0) {
+                break;
+            }
+            --i;
+        }
+
+        return 0;
     }
 
     // For debugging

@@ -10,10 +10,10 @@ uint8_t charToDigit(char character) {
 }
 
 char digitToChar(uint8_t digit) {
-    return digit + 48;
+    return static_cast<char>(digit + 48);
 }
 
-bool isZero(const std::string &number) {
+bool isStringZero(const std::string &number) {
     return std::all_of(number.begin(), number.end(), [](char c) { return c == '0'; });
 }
 

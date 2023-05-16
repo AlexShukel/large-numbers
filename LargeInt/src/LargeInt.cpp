@@ -91,7 +91,42 @@ namespace LargeNumbers {
         return *this;
     }
 
+    LargeInt LargeInt::operator/(const LargeNumbers::LargeInt &other) {
+        LargeInt copy = *this;
+        copy.implementation->math.divide(other.implementation->math);
+        return copy;
+    }
+
+    LargeInt &LargeInt::operator/=(const LargeNumbers::LargeInt &other) {
+        this->implementation->math.divide(other.implementation->math);
+        return *this;
+    }
+
     std::string LargeInt::toString() const {
         return implementation->math.toString();
+    }
+
+    bool LargeInt::operator==(const LargeInt &other) const {
+        return this->implementation->math.compare(other.implementation->math) == 0;
+    }
+
+    bool LargeInt::operator!=(const LargeInt &other) const {
+        return this->implementation->math.compare(other.implementation->math) != 0;
+    }
+
+    bool LargeInt::operator<(const LargeInt &other) const {
+        return this->implementation->math.compare(other.implementation->math) < 0;
+    }
+
+    bool LargeInt::operator>(const LargeInt &other) const {
+        return this->implementation->math.compare(other.implementation->math) > 0;
+    }
+
+    bool LargeInt::operator<=(const LargeInt &other) const {
+        return this->implementation->math.compare(other.implementation->math) <= 0;
+    }
+
+    bool LargeInt::operator>=(const LargeInt &other) const {
+        return this->implementation->math.compare(other.implementation->math) >= 0;
     }
 }
