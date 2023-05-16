@@ -16,6 +16,7 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 add_subdirectory(LargeInt)
+add_subdirectory(LargeFloat)
 
 add_executable(ND1 main.cpp)
 

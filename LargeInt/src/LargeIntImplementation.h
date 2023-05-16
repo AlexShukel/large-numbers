@@ -7,7 +7,6 @@
 
 #include <vector>
 #include <string>
-#include <bitset>
 
 namespace LargeNumbers {
     template<class T>

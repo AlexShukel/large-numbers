@@ -4,7 +4,7 @@
 
 #include "LargeInt.h"
 #include "LargeIntImplementation.h"
-#include "config.h"
+#include "../../config.h"
 
 namespace LargeNumbers {
     class LargeInt::Implementation {
