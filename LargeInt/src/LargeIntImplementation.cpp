@@ -268,10 +268,11 @@ namespace LargeNumbers {
 
         // Return early if divisor is greater than this
         if (this->compare(divisor) < 0) {
+            LargeIntImplementation<T> remainder = *this;
             coefficients.clear();
             coefficients.push_back(0);
             sign = false;
-            return *this;
+            return remainder;
         }
 
         // Return early if divisor is equal to this
