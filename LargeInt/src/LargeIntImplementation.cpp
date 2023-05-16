@@ -256,6 +256,7 @@ namespace LargeNumbers {
             throw std::logic_error("Can not divide by zero!");
         }
 
+        bool prevSign = sign;
         bool quotientSign = sign ^ divisor.sign;
 
         if (this->sign) {
@@ -315,6 +316,9 @@ namespace LargeNumbers {
         }
         normalize();
 
+        if (prevSign) {
+            remainder.negate();
+        }
         remainder.normalize();
         return remainder;
     }

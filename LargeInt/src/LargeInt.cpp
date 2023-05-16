@@ -38,7 +38,7 @@ namespace LargeNumbers {
 
     LargeInt LargeInt::operator+(const LargeNumbers::LargeInt &other) {
         LargeInt copy = *this;
-        copy.implementation->math.add(other.implementation->math);
+        copy += other;
         return copy;
     }
 
@@ -60,7 +60,7 @@ namespace LargeNumbers {
 
     LargeInt LargeInt::operator-(const LargeNumbers::LargeInt &other) const {
         LargeInt copy = *this;
-        copy.implementation->math.subtract(other.implementation->math);
+        copy -= other;
         return copy;
     }
 
@@ -82,7 +82,7 @@ namespace LargeNumbers {
 
     LargeInt LargeInt::operator*(const LargeNumbers::LargeInt &other) {
         LargeInt copy = *this;
-        copy.implementation->math.multiply(other.implementation->math);
+        copy *= other;
         return copy;
     }
 
@@ -93,12 +93,23 @@ namespace LargeNumbers {
 
     LargeInt LargeInt::operator/(const LargeNumbers::LargeInt &other) {
         LargeInt copy = *this;
-        copy.implementation->math.divide(other.implementation->math);
+        copy /= other;
         return copy;
     }
 
     LargeInt &LargeInt::operator/=(const LargeNumbers::LargeInt &other) {
         this->implementation->math.divide(other.implementation->math);
+        return *this;
+    }
+
+    LargeInt LargeInt::operator%(const LargeNumbers::LargeInt &other) {
+        LargeInt copy = *this;
+        copy %= other;
+        return copy;
+    }
+
+    LargeInt &LargeInt::operator%=(const LargeNumbers::LargeInt &other) {
+        this->implementation->math = this->implementation->math.divide(other.implementation->math);
         return *this;
     }
 

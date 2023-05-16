@@ -49,6 +49,10 @@ namespace LargeNumbers {
 
         LargeInt &operator/=(const LargeInt &other);
 
+        LargeInt operator%(const LargeInt &other);
+
+        LargeInt &operator%=(const LargeInt &other);
+
         bool operator==(const LargeInt &other) const;
 
         bool operator!=(const LargeInt &other) const;
