@@ -1,6 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <bitset>
+#include <algorithm>
+#include "LargeIntImplementation.h"
 
 /**
  * Generic type T defines the base of numbers stored in vector
@@ -9,7 +12,23 @@
  * When T is uint32_t (32 bits), then numbers are stored like a0 * 2^32^0 + a1 * 2^32^1 + ... + an * 2^32^n
  */
 
+class LargeNumbers::LargeIntTester {
+public:
+    static void run() {
+        LargeNumbers::LargeIntImplementation<uint8_t> integer("100");
+        for (auto it = integer.coefficients.begin(); it != integer.coefficients.end(); ++it) {
+            std::cout << static_cast<int>(*it) << " ";
+        }
+    }
+};
+
 int main() {
-    std::cout << 5 % -3 << std::endl;
+    std::vector<int> v = {};
+    v.resize(2);
+    std::vector<int> c = {0, 1};
+    std::copy(c.rbegin(), c.rend(), v.begin());
+    for (auto x: v) {
+        std::cout << x << " ";
+    }
     return 0;
 }

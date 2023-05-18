@@ -11,10 +11,16 @@ namespace LargeNumbers {
     public:
         static void testStringConversion(const std::string &number, bool expectedSign,
                                          const std::vector<uint8_t> &expectedCoefficients) {
+            testStringConversion(number, expectedSign, expectedCoefficients, number);
+        }
+
+        static void testStringConversion(const std::string &number, bool expectedSign,
+                                         const std::vector<uint8_t> &expectedCoefficients,
+                                         const std::string &expectedNumber) {
             LargeNumbers::LargeIntImplementation<uint8_t> integer(number);
             expectVectorsEquality(integer.coefficients, expectedCoefficients);
             EXPECT_EQ(integer.sign, expectedSign);
-            EXPECT_EQ(integer.toString(), number);
+            EXPECT_EQ(integer.toString(), expectedNumber);
         }
     };
 }
@@ -39,4 +45,10 @@ TEST(large_int, string_conversion) {
     LargeNumbers::LargeIntTester::testStringConversion("-255", true, {1});
     LargeNumbers::LargeIntTester::testStringConversion("-256", true, {0, 255});
     LargeNumbers::LargeIntTester::testStringConversion("-257", true, {255, 254});
+
+    // Zeros should not be taken into account
+    LargeNumbers::LargeIntTester::testStringConversion("-01", true, {255}, "-1");
+    LargeNumbers::LargeIntTester::testStringConversion("-000000001", true, {255}, "-1");
+    LargeNumbers::LargeIntTester::testStringConversion("01", false, {1}, "1");
+    LargeNumbers::LargeIntTester::testStringConversion("00000000001", false, {1}, "1");
 }

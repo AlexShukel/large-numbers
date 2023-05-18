@@ -23,7 +23,7 @@ namespace LargeNumbers {
         }
 
         sign = number[0] == '-';
-        std::string normalizedDecimal = number.substr(sign);
+        std::string normalizedDecimal = normalizeDecimalString(number);
 
         if (isStringZero(normalizedDecimal)) {
             sign = false;
@@ -360,6 +360,25 @@ namespace LargeNumbers {
         }
 
         return 0;
+    }
+
+    template<class T>
+    bool LargeIntImplementation<T>::getSign() const {
+        return sign;
+    }
+
+    template<class T>
+    std::string LargeIntImplementation<T>::normalizeDecimalString(const std::string &number) {
+        bool numberSign = number[0] == '-';
+        auto from = std::find_if_not(number.begin() + numberSign, number.end(), [](const char &c) {
+            return c == '0';
+        });
+
+        if (from == number.end()) {
+            return number;
+        }
+
+        return std::string(from, number.end());
     }
 
     // For debugging

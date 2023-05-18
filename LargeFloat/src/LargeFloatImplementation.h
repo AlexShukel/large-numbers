@@ -19,13 +19,17 @@ namespace LargeNumbers {
         exponent_type exponent;
 
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
+        static constexpr size_t DECIMAL_PRECISION = 100;
+        static constexpr size_t PRECISION = 332.1928094887362347870 / COEFFICIENT_BIT_SIZE + 1;
+
+        std::vector<T> getFractionSourceCoefficients(std::string source) const;
 
     public:
         LargeFloatImplementation();
 
         LargeFloatImplementation(const LargeFloatImplementation<T> &other);
 
-        explicit LargeFloatImplementation(const std::string &number);
+        explicit LargeFloatImplementation(std::string number);
 
         std::string toString() const;
     };

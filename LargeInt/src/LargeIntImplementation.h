@@ -14,6 +14,9 @@ namespace LargeNumbers {
     private:
         friend class LargeIntTester;
 
+        template<class K> friend
+        class LargeFloatImplementation;
+
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
         static const T MAX_COEFFICIENT_VALUE;
 
@@ -36,6 +39,8 @@ namespace LargeNumbers {
 
         void multiplyByCoefficient(T coefficient);
 
+        std::string normalizeDecimalString(const std::string &number);
+
     public:
         LargeIntImplementation();
 
@@ -56,6 +61,8 @@ namespace LargeNumbers {
         LargeIntImplementation<T> divide(LargeIntImplementation divisor);
 
         int compare(const LargeIntImplementation &other) const;
+
+        bool getSign() const;
     };
 }
 
