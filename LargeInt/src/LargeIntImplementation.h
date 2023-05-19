@@ -14,6 +14,8 @@ namespace LargeNumbers {
     private:
         friend class LargeIntTester;
 
+        friend class LargeFloatTester;
+
         template<class K> friend
         class LargeFloatImplementation;
 
@@ -27,7 +29,7 @@ namespace LargeNumbers {
 
         T getSupplementDigit() const;
 
-        void normalize();
+        size_t normalize();
 
         bool isZero() const;
 

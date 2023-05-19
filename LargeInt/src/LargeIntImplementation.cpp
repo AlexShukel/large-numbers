@@ -128,12 +128,16 @@ namespace LargeNumbers {
     }
 
     template<class T>
-    void LargeIntImplementation<T>::normalize() {
+    size_t LargeIntImplementation<T>::normalize() {
         T meaninglessValue = sign ? MAX_COEFFICIENT_VALUE : (T) 0;
-        trimBack(coefficients, meaninglessValue);
+        auto result = trimBack(coefficients, meaninglessValue);
+        
         if (coefficients.empty()) {
             coefficients.push_back(meaninglessValue);
+            return result - 1;
         }
+
+        return result;
     }
 
     template<class T>

@@ -23,6 +23,7 @@ namespace LargeNumbers {
         }
 
         bool sign = number[0] == '-';
+        exponent = 0;
 
         if (sign) {
             number.erase(number.begin());
@@ -36,25 +37,34 @@ namespace LargeNumbers {
         auto integral = LargeIntImplementation<T>(integralSource);
         std::vector<T> fractionCoefficients = getFractionSourceCoefficients(fractionSource);
 
+        // The number is zero
+        if (integral.isZero() && fractionCoefficients.empty()) {
+            mantissa.coefficients.push_back(0);
+            return;
+        }
+
+        mantissa.coefficients.resize(integral.coefficients.size() + fractionCoefficients.size());
+        std::copy(fractionCoefficients.begin(), fractionCoefficients.end(), mantissa.coefficients.begin());
+        std::copy(integral.coefficients.begin(), integral.coefficients.end(),
+                  mantissa.coefficients.begin() + fractionCoefficients.size());
+
         if (integral.isZero()) {
-            size_t trimmedZeros = 0;
-            auto it = std::find_if_not(fractionCoefficients.begin(), fractionCoefficients.end(), [](const T &c) {
-                return c == 0;
-            });
-            fractionCoefficients.erase(fractionCoefficients.begin(), it);
-            exponent = -static_cast<exponent_type>(trimmedZeros);
+            size_t trimmedZeros = trimBack(mantissa.coefficients, 0);
+            exponent -= static_cast<exponent_type>(trimmedZeros);
         } else {
             exponent = static_cast<exponent_type>(integral.coefficients.size() - 1);
         }
 
-        mantissa.coefficients.resize(integral.coefficients.size() + fractionCoefficients.size());
-        std::copy(integral.coefficients.rbegin(), integral.coefficients.rend(), mantissa.coefficients.begin());
-        std::copy(fractionCoefficients.begin(), fractionCoefficients.end(),
-                  mantissa.coefficients.begin() + integral.coefficients.size());
+        if (fractionCoefficients.empty()) {
+            trimFront(mantissa.coefficients, 0);
+        }
 
-        mantissa.normalize();
+        if (mantissa.coefficients.empty()) {
+            mantissa.coefficients.push_back(0);
+        }
+
         if (sign) {
-            mantissa.sign = true;
+            mantissa.negate();
         }
     }
 
@@ -94,6 +104,9 @@ namespace LargeNumbers {
         if (currentIndex != COEFFICIENT_BIT_SIZE) {
             coefficients.push_back(static_cast<T>(current.to_ulong()));
         }
+
+        // Reverse coefficients as we store LSD -> MSD
+        std::reverse(coefficients.begin(), coefficients.end());
 
         return coefficients;
     }

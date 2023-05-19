@@ -31,13 +31,13 @@ public:
     }
 };
 
-//template<class T>
-//size_t trimFront(std::vector<T> &container, T value) {
-//    auto it = std::find_if_not(container.begin(), container.end(), Equal<T>(value));
-//    size_t count = std::distance(container.begin(), it);
-//    container.erase(container.begin(), it);
-//    return count;
-//}
+template<class T, class V>
+size_t trimFront(T &container, V value) {
+    auto it = std::find_if_not(container.begin(), container.end(), Equal<V>(value));
+    size_t count = std::distance(container.begin(), it);
+    container.erase(container.begin(), it);
+    return count;
+}
 
 template<class T, class V>
 size_t trimBack(T &container, V value) {
