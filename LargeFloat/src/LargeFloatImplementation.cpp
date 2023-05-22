@@ -113,8 +113,86 @@ namespace LargeNumbers {
 
     template<class T>
     std::string LargeFloatImplementation<T>::toString() const {
-        // TODO
-        return "0";
+        std::string result;
+
+        bool sign = mantissa.sign;
+        LargeIntImplementation<T> mantissaCopy = mantissa;
+        if (sign) {
+            mantissaCopy.negate();
+        }
+
+        std::vector<T> integralCoefficients, fractionalCoefficients;
+        splitCoefficients(integralCoefficients, fractionalCoefficients, mantissaCopy);
+
+        LargeIntImplementation<T> integral(integralCoefficients, false);
+        LargeIntImplementation<T> fraction(fractionalCoefficients, false);
+        LargeIntImplementation<T> ten({10}, false);
+
+        if (sign) {
+            result += '-';
+        }
+
+        result += integral.toString();
+        result += '.';
+
+        size_t currentPrecision = 0;
+        size_t threshold = exponent < 0 ? -exponent : countBackZeros(fractionalCoefficients) + 1;
+
+        while (!areCoefficientsEmpty(fraction.coefficients) && currentPrecision < PRECISION) {
+            fraction.multiply(ten);
+
+            if (fraction.coefficients.size() > threshold) {
+                result += digitToChar(static_cast<uint8_t>(fraction.coefficients.back()));
+                fraction.coefficients.pop_back();
+            } else {
+                result += '0';
+            }
+
+            ++currentPrecision;
+        }
+
+        if (result.back() == '.') {
+            result.push_back('0');
+        }
+
+        return result;
+    }
+
+    template<class T>
+    void LargeFloatImplementation<T>::splitCoefficients(std::vector<T> &integralCoefficients,
+                                                        std::vector<T> &fractionalCoefficients,
+                                                        const LargeIntImplementation<T> &mantissaCopy) const {
+        size_t size = mantissaCopy.coefficients.size();
+        auto begin = mantissaCopy.coefficients.begin();
+        auto end = mantissaCopy.coefficients.end();
+
+        // Integral part is 0
+        if (exponent < 0) {
+            fractionalCoefficients.resize(size);
+            std::copy(begin, end,
+                      fractionalCoefficients.begin());
+            integralCoefficients.push_back(0);
+            return;
+        }
+
+        // Fractional part is 0
+        if (size <= exponent + 1) {
+            integralCoefficients.resize(size);
+            std::copy(begin, end, integralCoefficients.begin());
+
+            if (exponent + 1 > size) {
+                size_t diff = exponent + 1 - size;
+                integralCoefficients.insert(integralCoefficients.begin(), diff, 0);
+            }
+            return;
+        }
+
+        integralCoefficients.resize(exponent + 1);
+        size_t fractionalCoefficientsSize = size - exponent - 1;
+        fractionalCoefficients.resize(fractionalCoefficientsSize);
+
+        std::copy(begin, begin + fractionalCoefficientsSize, fractionalCoefficients.begin());
+        std::copy(begin + fractionalCoefficientsSize, end, integralCoefficients.begin());
     }
 
     // For debugging

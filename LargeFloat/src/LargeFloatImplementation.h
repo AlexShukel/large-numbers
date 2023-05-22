@@ -24,6 +24,9 @@ namespace LargeNumbers {
 
         std::vector<T> getFractionSourceCoefficients(std::string source) const;
 
+        void splitCoefficients(std::vector<T> &integralCoefficients, std::vector<T> &fractionalCoefficients,
+                               const LargeIntImplementation<T> &mantissaCopy) const;
+
     public:
         LargeFloatImplementation();
 

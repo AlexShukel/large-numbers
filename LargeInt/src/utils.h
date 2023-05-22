@@ -20,6 +20,28 @@ bool isStringZero(const std::string &number);
 uint8_t euclideanDivision(std::string &binary);
 
 template<class T>
+bool areCoefficientsEmpty(const std::vector<T> &coefficients) {
+    return std::all_of(coefficients.begin(), coefficients.end(), [](const T &c) {
+        return c == 0;
+    });
+}
+
+template<class T>
+size_t countBackZeros(const std::vector<T> &coefficients) {
+    size_t count = 0;
+
+    for (auto it = coefficients.rbegin(); it != coefficients.rend(); ++it) {
+        if (*it != 0) {
+            break;
+        }
+
+        ++count;
+    }
+
+    return count;
+}
+
+template<class T>
 class Equal {
     T value;
 public:
