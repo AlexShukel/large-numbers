@@ -6,6 +6,7 @@
 #include "utils.h"
 #include <regex>
 #include <bitset>
+#include <cctype>
 
 namespace LargeNumbers {
     template<class T>
@@ -127,35 +128,87 @@ namespace LargeNumbers {
         LargeIntImplementation<T> integral(integralCoefficients, false);
         LargeIntImplementation<T> fraction(fractionalCoefficients, false);
         LargeIntImplementation<T> ten({10}, false);
+        LargeIntImplementation<T> one({1}, false);
 
         if (sign) {
             result += '-';
         }
 
-        result += integral.toString();
-        result += '.';
-
         size_t currentPrecision = 0;
-        size_t threshold = exponent < 0 ? -exponent : countBackZeros(fractionalCoefficients) + 1;
+        std::string fractionalString;
 
-        while (!areCoefficientsEmpty(fraction.coefficients) && currentPrecision < PRECISION) {
+        size_t thresholdSize = fraction.coefficients.size() + 1;
+        if (exponent < 0) {
+            thresholdSize += static_cast<size_t>(-exponent) - 1;
+        }
+
+        while (!areCoefficientsEmpty(fraction.coefficients) && currentPrecision <= DECIMAL_PRECISION) {
             fraction.multiply(ten);
 
-            if (fraction.coefficients.size() > threshold) {
-                result += digitToChar(static_cast<uint8_t>(fraction.coefficients.back()));
+            if (fraction.coefficients.size() >= thresholdSize) {
+                fractionalString += digitToChar(static_cast<uint8_t>(fraction.coefficients.back()));
                 fraction.coefficients.pop_back();
             } else {
-                result += '0';
+                fractionalString += '0';
             }
 
             ++currentPrecision;
         }
+
+        // Adjust last digit
+        if (currentPrecision > DECIMAL_PRECISION) {
+            fraction.multiply(ten);
+            T lastDigit = fraction.coefficients.back();
+            if (lastDigit >= 5) {
+                ++fractionalString[fractionalString.size() - 1];
+            }
+        }
+
+        bool carry = roundFractionalString(fractionalString);
+        if (carry) {
+            integral.add(one);
+        }
+
+        result += integral.toString();
+        result += '.';
+
+        result += fractionalString;
 
         if (result.back() == '.') {
             result.push_back('0');
         }
 
         return result;
+    }
+
+    template<class T>
+    bool LargeFloatImplementation<T>::roundFractionalString(std::string &fraction) const {
+        if (fraction.size() > DECIMAL_PRECISION) {
+            char last = fraction.back();
+            fraction.pop_back();
+
+            bool shouldIncrementIntegral = false;
+
+            if (last >= '5') {
+                for (auto it = fraction.rbegin(); it != fraction.rend(); ++it) {
+                    ++(*it);
+
+                    if (*it > '9') {
+                        *it = '0';
+                        shouldIncrementIntegral = true;
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            trimBack(fraction, '0');
+            if (fraction.empty()) {
+                return shouldIncrementIntegral;
+            }
+        }
+
+        return false;
     }
 
     template<class T>

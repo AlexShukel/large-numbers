@@ -25,6 +25,12 @@ namespace LargeNumbers {
             LargeNumbers::LargeFloatImplementation<uint8_t> realNumber(number);
             EXPECT_EQ(realNumber.toString(), number);
         }
+
+        static void
+        testStringConversion(const std::string &number, const std::string &expected) {
+            LargeNumbers::LargeFloatImplementation<uint8_t> realNumber(number);
+            EXPECT_EQ(realNumber.toString(), expected);
+        }
     };
 }
 
@@ -49,7 +55,7 @@ TEST(large_float, string_conversion_with_fraction) {
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("-0.125", true, {224}, -1);
 
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("0.75", false, {192}, -1);
-
+//
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("0.001953125", false, {128}, -2);
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("-0.001953125", true, {128}, -2);
 
@@ -61,4 +67,42 @@ TEST(large_float, string_conversion_with_fraction) {
 
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("259.001953125", false, {128, 0, 3, 1}, 1);
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("-259.001953125", true, {128, 255, 252, 254}, 1);
+}
+
+TEST(large_float, float_rounding) {
+    LargeNumbers::LargeFloatTester::testStringConversion("0.1");
+    LargeNumbers::LargeFloatTester::testStringConversion("0.01");
+    LargeNumbers::LargeFloatTester::testStringConversion("0.9");
+    LargeNumbers::LargeFloatTester::testStringConversion("0.91");
+    LargeNumbers::LargeFloatTester::testStringConversion("0.95");
+    LargeNumbers::LargeFloatTester::testStringConversion("0.55555555555555555555555555555555555555555555555555");
+    LargeNumbers::LargeFloatTester::testStringConversion("0.12345678912345678912345678912345678912345678912345");
+
+    // 50 char precision
+    LargeNumbers::LargeFloatTester::testStringConversion("0.00000000000000000000000000000000000000000000000001");
+    LargeNumbers::LargeFloatTester::testStringConversion("0.99999999999999999999999999999999999999999999999999");
+}
+
+TEST(large_float, after_max_precision) {
+    // 51 char precision
+    LargeNumbers::LargeFloatTester::testStringConversion("0.000000000000000000000000000000000000000000000000001",
+                                                         "0.0");
+
+    LargeNumbers::LargeFloatTester::testStringConversion("0.000000000000000000000000000000000000000000000000004",
+                                                         "0.0");
+
+    LargeNumbers::LargeFloatTester::testStringConversion("0.000000000000000000000000000000000000000000000000005",
+                                                         "0.00000000000000000000000000000000000000000000000001");
+
+    LargeNumbers::LargeFloatTester::testStringConversion("0.999999999999999999999999999999999999999999999999991",
+                                                         "0.99999999999999999999999999999999999999999999999999");
+
+    LargeNumbers::LargeFloatTester::testStringConversion("0.999999999999999999999999999999999999999999999999995",
+                                                         "1.0");
+
+    LargeNumbers::LargeFloatTester::testStringConversion("0.999999999999999999999999999999999999999999999999999",
+                                                         "1.0");
+
+    LargeNumbers::LargeFloatTester::testStringConversion("0.999999999999999999999999999999999999999899999999999",
+                                                         "0.9999999999999999999999999999999999999999");
 }

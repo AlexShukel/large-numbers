@@ -19,13 +19,14 @@ namespace LargeNumbers {
         exponent_type exponent;
 
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
-        static constexpr size_t DECIMAL_PRECISION = 100;
         static constexpr size_t PRECISION = 332.1928094887362347870 / COEFFICIENT_BIT_SIZE + 1;
 
         std::vector<T> getFractionSourceCoefficients(std::string source) const;
 
         void splitCoefficients(std::vector<T> &integralCoefficients, std::vector<T> &fractionalCoefficients,
                                const LargeIntImplementation<T> &mantissaCopy) const;
+
+        bool roundFractionalString(std::string &fraction) const;
 
     public:
         LargeFloatImplementation();
