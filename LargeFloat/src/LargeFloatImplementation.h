@@ -19,7 +19,7 @@ namespace LargeNumbers {
         exponent_type exponent;
 
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
-        static constexpr size_t PRECISION = 332.1928094887362347870 / COEFFICIENT_BIT_SIZE + 1;
+        static constexpr size_t PRECISION = static_cast<size_t>(332.1928094887362347870 / COEFFICIENT_BIT_SIZE) + 1;
 
         std::vector<T> getFractionSourceCoefficients(std::string source) const;
 

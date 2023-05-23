@@ -229,11 +229,11 @@ namespace LargeNumbers {
         }
 
         // Fractional part is 0
-        if (size <= exponent + 1) {
+        if (size <= static_cast<size_t>(exponent) + 1) {
             integralCoefficients.resize(size);
             std::copy(begin, end, integralCoefficients.begin());
 
-            if (exponent + 1 > size) {
+            if (static_cast<size_t>(exponent) + 1 > size) {
                 size_t diff = exponent + 1 - size;
                 integralCoefficients.insert(integralCoefficients.begin(), diff, 0);
             }
