@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.23)
 project(ND1)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 
 include(FetchContent)
 FetchContent_Declare(
@@ -22,3 +21,9 @@ add_executable(ND1 main.cpp)
 
 target_link_libraries(ND1 large_int)
 target_include_directories(ND1 PUBLIC LargeInt/src)
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Wall")
+else ()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+endif ()

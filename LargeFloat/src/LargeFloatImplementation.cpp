@@ -45,15 +45,15 @@ namespace LargeNumbers {
         }
 
         mantissa.coefficients.resize(integral.coefficients.size() + fractionCoefficients.size());
-        std::copy(fractionCoefficients.begin(), fractionCoefficients.end(), mantissa.coefficients.begin());
-        std::copy(integral.coefficients.begin(), integral.coefficients.end(),
-                  mantissa.coefficients.begin() + fractionCoefficients.size());
+        std::copy(integral.coefficients.begin(), integral.coefficients.end(), mantissa.coefficients.begin());
+        std::copy(fractionCoefficients.begin(), fractionCoefficients.end(),
+                  mantissa.coefficients.begin() + integral.coefficients.size());
 
         if (integral.isZero()) {
-            size_t trimmedZeros = trimBack(mantissa.coefficients, 0);
+            size_t trimmedZeros = trimFront(mantissa.coefficients, 0);
             exponent -= static_cast<exponent_type>(trimmedZeros);
         } else {
-            exponent = static_cast<exponent_type>(integral.coefficients.size() - 1);
+            exponent = static_cast<exponent_type>(integral.coefficients.size());
         }
 
         if (fractionCoefficients.empty()) {
@@ -106,9 +106,6 @@ namespace LargeNumbers {
             coefficients.push_back(static_cast<T>(current.to_ulong()));
         }
 
-        // Reverse coefficients as we store LSD -> MSD
-        std::reverse(coefficients.begin(), coefficients.end());
-
         return coefficients;
     }
 
@@ -137,7 +134,10 @@ namespace LargeNumbers {
         size_t currentPrecision = 0;
         std::string fractionalString;
 
-        size_t thresholdSize = fraction.coefficients.size() + 1;
+        size_t thresholdSize = fraction.coefficients.size();
+        std::reverse(fraction.coefficients.begin(), fraction.coefficients.end());
+        fraction.normalize();
+
         if (exponent < 0) {
             thresholdSize += static_cast<size_t>(-exponent) - 1;
         }
@@ -145,7 +145,7 @@ namespace LargeNumbers {
         while (!areCoefficientsEmpty(fraction.coefficients) && currentPrecision <= DECIMAL_PRECISION) {
             fraction.multiply(ten);
 
-            if (fraction.coefficients.size() >= thresholdSize) {
+            if (fraction.coefficients.size() > thresholdSize) {
                 fractionalString += digitToChar(static_cast<uint8_t>(fraction.coefficients.back()));
                 fraction.coefficients.pop_back();
             } else {
@@ -229,23 +229,22 @@ namespace LargeNumbers {
         }
 
         // Fractional part is 0
-        if (size <= static_cast<size_t>(exponent) + 1) {
+        if (static_cast<size_t>(exponent) >= size) {
             integralCoefficients.resize(size);
             std::copy(begin, end, integralCoefficients.begin());
 
-            if (static_cast<size_t>(exponent) + 1 > size) {
-                size_t diff = exponent + 1 - size;
-                integralCoefficients.insert(integralCoefficients.begin(), diff, 0);
-            }
+            size_t diff = exponent - size;
+            integralCoefficients.insert(integralCoefficients.begin(), diff, 0);
+
             return;
         }
 
-        integralCoefficients.resize(exponent + 1);
-        size_t fractionalCoefficientsSize = size - exponent - 1;
+        integralCoefficients.resize(exponent);
+        size_t fractionalCoefficientsSize = size - exponent;
         fractionalCoefficients.resize(fractionalCoefficientsSize);
 
-        std::copy(begin, begin + fractionalCoefficientsSize, fractionalCoefficients.begin());
-        std::copy(begin + fractionalCoefficientsSize, end, integralCoefficients.begin());
+        std::copy(begin, begin + exponent, integralCoefficients.begin());
+        std::copy(begin + exponent, end, fractionalCoefficients.begin());
     }
 
     // For debugging

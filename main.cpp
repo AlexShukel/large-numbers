@@ -23,10 +23,8 @@ public:
 };
 
 int main() {
-    std::vector<int> v = {};
-    v.resize(2);
-    std::vector<int> c = {0, 1};
-    std::copy(c.rbegin(), c.rend(), v.begin());
+    std::vector<int> v = {1, 2, 3};
+    v.insert(v.begin(), 0, 1);
     for (auto x: v) {
         std::cout << x << " ";
     }
