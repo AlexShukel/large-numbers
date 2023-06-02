@@ -131,6 +131,10 @@ namespace LargeNumbers {
     size_t LargeIntImplementation<T>::normalize() {
         T meaninglessValue = sign ? MAX_COEFFICIENT_VALUE : (T) 0;
         auto result = trimBack(coefficients, meaninglessValue);
+
+        if (sign && result > 0) {
+            coefficients.push_back(meaninglessValue);
+        }
         
         if (coefficients.empty()) {
             coefficients.push_back(meaninglessValue);

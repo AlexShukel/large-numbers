@@ -35,3 +35,13 @@ TEST(large_int, large_numbers_multiplication) {
     integer.multiply(LargeNumbers::LargeIntImplementation<uint8_t>("-1"));
     EXPECT_EQ(integer.toString(), "1397736938998500242527258272");
 }
+
+TEST(large_int, base_256_multiplication) {
+    LargeNumbers::LargeIntImplementation<uint8_t> integer("2");
+
+    integer.multiply(LargeNumbers::LargeIntImplementation<uint8_t>("-128"));
+    EXPECT_EQ(integer.toString(), "-256");
+
+    integer.multiply(LargeNumbers::LargeIntImplementation<uint8_t>("256"));
+    EXPECT_EQ(integer.toString(), "-65536");
+}
