@@ -27,21 +27,6 @@ bool areCoefficientsEmpty(const std::vector<T> &coefficients) {
 }
 
 template<class T>
-size_t countBackZeros(const std::vector<T> &coefficients) {
-    size_t count = 0;
-
-    for (auto it = coefficients.rbegin(); it != coefficients.rend(); ++it) {
-        if (*it != 0) {
-            break;
-        }
-
-        ++count;
-    }
-
-    return count;
-}
-
-template<class T>
 class Equal {
     T value;
 public:
@@ -67,22 +52,6 @@ size_t trimBack(T &container, V value) {
     size_t count = std::distance(container.rbegin(), it);
     container.erase(it.base(), container.end());
     return count;
-}
-
-template<class T>
-void toTwosComplement(std::vector<T> &coefficients) {
-    T carry = 1;
-
-    for (auto &c: coefficients) {
-        c = ~c;
-
-        T prevC = c;
-        c += carry;
-
-        if (c > prevC) {
-            carry = 0;
-        }
-    }
 }
 
 #endif //ND1_UTILS_H

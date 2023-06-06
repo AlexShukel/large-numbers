@@ -29,7 +29,7 @@ namespace LargeNumbers {
 
         T getSupplementDigit() const;
 
-        size_t normalize();
+        void normalize();
 
         bool isZero() const;
 
@@ -42,6 +42,10 @@ namespace LargeNumbers {
         void multiplyByCoefficient(T coefficient);
 
         std::string normalizeDecimalString(const std::string &number);
+
+        void invertCoefficients();
+
+        void toTwosComplement();
 
     public:
         LargeIntImplementation();

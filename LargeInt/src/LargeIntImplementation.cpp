@@ -66,7 +66,7 @@ namespace LargeNumbers {
         }
 
         if (sign) {
-            toTwosComplement(coefficients);
+            toTwosComplement();
         }
     }
 
@@ -96,15 +96,15 @@ namespace LargeNumbers {
 
     template<class T>
     std::string LargeIntImplementation<T>::toString() const {
-        std::vector<T> coefficientsCopy = coefficients;
+        LargeIntImplementation<T> copy = *this;
         std::string decimal;
 
         if (sign) {
-            toTwosComplement(coefficientsCopy);
+            copy.toTwosComplement();
         }
 
         std::string binary;
-        coefficientsToBinary(binary, coefficientsCopy);
+        coefficientsToBinary(binary, copy.coefficients);
 
         while (!isStringZero(binary)) {
             uint8_t remainder = euclideanDivision(binary);
@@ -128,20 +128,17 @@ namespace LargeNumbers {
     }
 
     template<class T>
-    size_t LargeIntImplementation<T>::normalize() {
-        T meaninglessValue = sign ? MAX_COEFFICIENT_VALUE : (T) 0;
+    void LargeIntImplementation<T>::normalize() {
+        T meaninglessValue = getSupplementDigit();
         auto result = trimBack(coefficients, meaninglessValue);
 
         if (sign && result > 0) {
             coefficients.push_back(meaninglessValue);
         }
-        
+
         if (coefficients.empty()) {
             coefficients.push_back(meaninglessValue);
-            return result - 1;
         }
-
-        return result;
     }
 
     template<class T>
@@ -156,7 +153,8 @@ namespace LargeNumbers {
         }
 
         sign = !sign;
-        toTwosComplement(coefficients);
+
+        toTwosComplement();
     }
 
     template<class T>
@@ -387,6 +385,20 @@ namespace LargeNumbers {
         }
 
         return std::string(from, number.end());
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::invertCoefficients() {
+        for (auto &c: coefficients) {
+            c = ~c;
+        }
+    }
+
+    template<class T>
+    void LargeIntImplementation<T>::toTwosComplement() {
+        LargeIntImplementation<T> one({1}, false);
+        invertCoefficients();
+        add(one);
     }
 
     // For debugging
