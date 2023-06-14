@@ -164,7 +164,7 @@ namespace LargeNumbers {
 
         auto comparisonResult = abs().compare(addend.abs());
 
-        if (comparisonResult == 0) {
+        if (comparisonResult == 0 && sign ^ addend.sign) {
             sign = false;
             coefficients.clear();
             coefficients.push_back(0);
