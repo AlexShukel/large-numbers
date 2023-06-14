@@ -162,7 +162,16 @@ namespace LargeNumbers {
     void LargeIntImplementation<T>::add(const LargeIntImplementation<T> &addend) {
         bool oldSign = sign;
 
-        if (sign != addend.sign && abs().compare(addend.abs()) < 0) {
+        auto comparisonResult = abs().compare(addend.abs());
+
+        if (comparisonResult == 0) {
+            sign = false;
+            coefficients.clear();
+            coefficients.push_back(0);
+            return;
+        }
+
+        if (sign != addend.sign && comparisonResult < 0) {
             sign = addend.sign;
         }
 

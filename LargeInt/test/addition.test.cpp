@@ -40,6 +40,14 @@ TEST(large_int, large_numbers_addition) {
 
 TEST(large_int, addition_edge_cases) {
     LargeNumbers::LargeIntImplementation<uint8_t> integer("255");
+
     integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("1"));
     EXPECT_EQ(integer.toString(), "256");
+
+    integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("-256"));
+    EXPECT_EQ(integer.toString(), "0");
+
+    integer = LargeNumbers::LargeIntImplementation<uint8_t>("-256");
+    integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("256"));
+    EXPECT_EQ(integer.toString(), "0");
 }
