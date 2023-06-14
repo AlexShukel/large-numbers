@@ -15,8 +15,8 @@ TEST(large_int_api, modulo) {
     EXPECT_EQ((integer % LargeNumbers::LargeInt("-2")).toString(), "1");
 
     integer = LargeNumbers::LargeInt("-5");
-    EXPECT_EQ((integer % LargeNumbers::LargeInt("6")).toString(), "5");
-    EXPECT_EQ((integer % LargeNumbers::LargeInt("-6")).toString(), "5");
+    EXPECT_EQ((integer % LargeNumbers::LargeInt("6")).toString(), "-5");
+    EXPECT_EQ((integer % LargeNumbers::LargeInt("-6")).toString(), "-5");
     EXPECT_EQ((integer % LargeNumbers::LargeInt("4")).toString(), "-1");
     EXPECT_EQ((integer % LargeNumbers::LargeInt("-4")).toString(), "-1");
     EXPECT_EQ((integer % LargeNumbers::LargeInt("1")).toString(), "0");

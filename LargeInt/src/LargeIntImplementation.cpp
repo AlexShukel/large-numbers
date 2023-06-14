@@ -100,7 +100,7 @@ namespace LargeNumbers {
         std::string decimal;
 
         if (sign) {
-            copy.toTwosComplement();
+            copy.negate();
         }
 
         std::string binary;
@@ -130,20 +130,12 @@ namespace LargeNumbers {
     template<class T>
     void LargeIntImplementation<T>::normalize() {
         T meaninglessValue = getSupplementDigit();
-        auto result = trimBack(coefficients, meaninglessValue);
-
-        if (sign && result > 0) {
-            coefficients.push_back(meaninglessValue);
-        }
-
-        if (coefficients.empty()) {
-            coefficients.push_back(meaninglessValue);
-        }
+        trimBack(coefficients, meaninglessValue);
     }
 
     template<class T>
     bool LargeIntImplementation<T>::isZero() const {
-        return coefficients.size() == 1 && coefficients[0] == 0;
+        return coefficients.size() == 1 && coefficients[0] == 0 && !sign;
     }
 
     template<class T>
@@ -153,7 +145,6 @@ namespace LargeNumbers {
         }
 
         sign = !sign;
-
         toTwosComplement();
     }
 
@@ -169,6 +160,12 @@ namespace LargeNumbers {
 
     template<class T>
     void LargeIntImplementation<T>::add(const LargeIntImplementation<T> &addend) {
+        bool oldSign = sign;
+
+        if (sign != addend.sign && abs().compare(addend.abs()) < 0) {
+            sign = addend.sign;
+        }
+
         auto firstIt = coefficients.begin();
         auto secondIt = addend.coefficients.begin();
 
@@ -196,11 +193,8 @@ namespace LargeNumbers {
             }
         }
 
-        std::bitset<COEFFICIENT_BIT_SIZE> additional(getSupplementDigit() + addend.getSupplementDigit() + carry);
-        sign = additional[COEFFICIENT_BIT_SIZE - 1];
-
-        if (additional != getSupplementDigit()) {
-            coefficients.push_back(static_cast<T>(additional.to_ulong()));
+        if (!oldSign && !addend.sign) {
+            coefficients.push_back(carry);
         }
 
         this->normalize();
@@ -262,6 +256,8 @@ namespace LargeNumbers {
             throw std::logic_error("Can not divide by zero!");
         }
 
+        LargeIntImplementation<T> initial = *this;
+
         bool prevSign = sign;
         bool quotientSign = sign ^ divisor.sign;
 
@@ -273,17 +269,18 @@ namespace LargeNumbers {
             divisor.negate(); // Adjust signs to be both positive
         }
 
+        auto comparisonResult = this->compare(divisor);
+
         // Return early if divisor is greater than this
-        if (this->compare(divisor) < 0) {
-            LargeIntImplementation<T> remainder = *this;
+        if (comparisonResult < 0) {
             coefficients.clear();
             coefficients.push_back(0);
             sign = false;
-            return remainder;
+            return initial;
         }
 
         // Return early if divisor is equal to this
-        if (this->compare(divisor) == 0) {
+        if (comparisonResult == 0) {
             coefficients.clear();
             coefficients.push_back(1);
             if (quotientSign) {
@@ -326,6 +323,7 @@ namespace LargeNumbers {
             remainder.negate();
         }
         remainder.normalize();
+
         return remainder;
     }
 
@@ -399,6 +397,15 @@ namespace LargeNumbers {
         LargeIntImplementation<T> one({1}, false);
         invertCoefficients();
         add(one);
+    }
+
+    template<class T>
+    LargeIntImplementation<T> LargeIntImplementation<T>::abs() const {
+        LargeIntImplementation<T> copy = *this;
+        if (copy.sign) {
+            copy.negate();
+        }
+        return copy;
     }
 
     // For debugging

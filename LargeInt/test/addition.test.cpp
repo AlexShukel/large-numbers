@@ -37,3 +37,9 @@ TEST(large_int, large_numbers_addition) {
     integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("-564589415613548547687945261"));
     EXPECT_EQ(integer.toString(), "-564589415613548547687945262");
 }
+
+TEST(large_int, addition_edge_cases) {
+    LargeNumbers::LargeIntImplementation<uint8_t> integer("255");
+    integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("1"));
+    EXPECT_EQ(integer.toString(), "256");
+}

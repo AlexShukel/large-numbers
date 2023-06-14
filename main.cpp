@@ -22,11 +22,27 @@
 //    }
 //};
 
-int main() {
-    std::vector<int> v = {1, 2, 3};
-    v.insert(v.begin(), 0, 1);
-    for (auto x: v) {
-        std::cout << x << " ";
+template<class T>
+class Equal {
+    T value;
+public:
+    explicit Equal(T value) : value(value) {
     }
+
+    bool operator()(T another) {
+        return value == another;
+    }
+};
+
+int main() {
+//    std::vector<int> v = {1, 1, 1};
+//    auto it = std::find_if_not(v.rbegin(), v.rend(), Equal<int>(1));
+//
+//    if (it.base() == v.begin()) {
+//        --it;
+//        std::cout << std::distance(v.begin(), it.base());
+//    }
+    int a = -5, b = 1;
+    std::cout << a % b;
     return 0;
 }

@@ -69,6 +69,8 @@ namespace LargeNumbers {
         int compare(const LargeIntImplementation &other) const;
 
         bool getSign() const;
+
+        LargeIntImplementation abs() const;
     };
 }
 

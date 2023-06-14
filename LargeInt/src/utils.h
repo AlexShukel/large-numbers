@@ -41,6 +41,12 @@ public:
 template<class T, class V>
 size_t trimFront(T &container, V value) {
     auto it = std::find_if_not(container.begin(), container.end(), Equal<V>(value));
+
+    // Retain one element in container
+    if (it == container.end()) {
+        --it;
+    }
+
     size_t count = std::distance(container.begin(), it);
     container.erase(container.begin(), it);
     return count;
@@ -49,6 +55,12 @@ size_t trimFront(T &container, V value) {
 template<class T, class V>
 size_t trimBack(T &container, V value) {
     auto it = std::find_if_not(container.rbegin(), container.rend(), Equal<V>(value));
+
+    // Retain one element in container
+    if (it.base() == container.begin()) {
+        --it;
+    }
+
     size_t count = std::distance(container.rbegin(), it);
     container.erase(it.base(), container.end());
     return count;
