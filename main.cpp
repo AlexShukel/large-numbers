@@ -35,14 +35,12 @@ public:
 };
 
 int main() {
-//    std::vector<int> v = {1, 1, 1};
-//    auto it = std::find_if_not(v.rbegin(), v.rend(), Equal<int>(1));
-//
-//    if (it.base() == v.begin()) {
-//        --it;
-//        std::cout << std::distance(v.begin(), it.base());
-//    }
-    int a = -5, b = 1;
-    std::cout << a % b;
+    std::vector<int> v;
+    std::vector<int> c = {1, 2, 3, 4, 5};
+    v.resize(5);
+    std::copy(c.begin(), c.end(), v.rbegin());
+    for (auto x : v) {
+        std::cout << x << " ";
+    }
     return 0;
 }

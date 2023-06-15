@@ -35,38 +35,25 @@ namespace LargeNumbers {
         std::string integralSource = number.substr(0, pointIndex);
         std::string fractionSource = number.substr(pointIndex + 1);
 
-        auto integral = LargeIntImplementation<T>(integralSource);
-        std::vector<T> fractionCoefficients = getFractionSourceCoefficients(fractionSource);
+        auto integral = LargeIntImplementation<T>(integralSource); // LSD -> MSD
+        std::vector<T> fractionCoefficients = getFractionSourceCoefficients(fractionSource); // MSD -> LSD
 
-        // The number is zero
-        if (integral.isZero() && fractionCoefficients.empty()) {
-            mantissa.coefficients.push_back(0);
-            return;
-        }
+        mantissa.coefficients.resize(fractionCoefficients.size() + integral.coefficients.size());
+        std::copy(fractionCoefficients.rbegin(), fractionCoefficients.rend(), mantissa.coefficients.begin());
+        std::copy(integral.coefficients.begin(), integral.coefficients.end(),
+                  mantissa.coefficients.begin() + fractionCoefficients.size());
 
-        mantissa.coefficients.resize(integral.coefficients.size() + fractionCoefficients.size());
-        std::copy(integral.coefficients.begin(), integral.coefficients.end(), mantissa.coefficients.begin());
-        std::copy(fractionCoefficients.begin(), fractionCoefficients.end(),
-                  mantissa.coefficients.begin() + integral.coefficients.size());
-
-        if (integral.isZero()) {
-            size_t trimmedZeros = trimFront(mantissa.coefficients, 0);
-            exponent -= static_cast<exponent_type>(trimmedZeros);
+        if (!fractionCoefficients.empty()) {
+            exponent = -fractionCoefficients.size();
         } else {
-            exponent = static_cast<exponent_type>(integral.coefficients.size());
-        }
-
-        if (fractionCoefficients.empty()) {
-            trimFront(mantissa.coefficients, 0);
-        }
-
-        if (mantissa.coefficients.empty()) {
-            mantissa.coefficients.push_back(0);
+            auto trimmed = trimFront(mantissa.coefficients, 0);
+            exponent = trimmed;
         }
 
         if (sign) {
             mantissa.negate();
         }
+        mantissa.normalize();
     }
 
     template<class T>
@@ -115,6 +102,7 @@ namespace LargeNumbers {
 
         bool sign = mantissa.sign;
         LargeIntImplementation<T> mantissaCopy = mantissa;
+
         if (sign) {
             mantissaCopy.negate();
         }
@@ -134,13 +122,8 @@ namespace LargeNumbers {
         size_t currentPrecision = 0;
         std::string fractionalString;
 
-        size_t thresholdSize = fraction.coefficients.size();
-        std::reverse(fraction.coefficients.begin(), fraction.coefficients.end());
-        fraction.normalize();
-
-        if (exponent < 0) {
-            thresholdSize += static_cast<size_t>(-exponent) - 1;
-        }
+        size_t diff = -exponent > mantissaCopy.coefficients.size() ? (-exponent) - mantissaCopy.coefficients.size() : 0;
+        size_t thresholdSize = fraction.coefficients.size() + diff;
 
         while (!areCoefficientsEmpty(fraction.coefficients) && currentPrecision <= DECIMAL_PRECISION) {
             fraction.multiply(ten);
@@ -171,7 +154,6 @@ namespace LargeNumbers {
 
         result += integral.toString();
         result += '.';
-
         result += fractionalString;
 
         if (result.back() == '.') {
@@ -203,6 +185,11 @@ namespace LargeNumbers {
             }
 
             trimBack(fraction, '0');
+
+            if (fraction.size() == 1 && fraction[0] == '0') {
+                fraction.clear();
+            }
+
             if (fraction.empty()) {
                 return shouldIncrementIntegral;
             }
@@ -216,11 +203,20 @@ namespace LargeNumbers {
                                                         std::vector<T> &fractionalCoefficients,
                                                         const LargeIntImplementation<T> &mantissaCopy) const {
         size_t size = mantissaCopy.coefficients.size();
+
         auto begin = mantissaCopy.coefficients.begin();
         auto end = mantissaCopy.coefficients.end();
 
+        // Fractional part is 0
+        if (exponent >= 0) {
+            integralCoefficients.resize(size);
+            std::copy(begin, end, integralCoefficients.begin());
+            integralCoefficients.insert(integralCoefficients.begin(), exponent, 0);
+            return;
+        }
+
         // Integral part is 0
-        if (exponent < 0) {
+        if (-exponent >= size) {
             fractionalCoefficients.resize(size);
             std::copy(begin, end,
                       fractionalCoefficients.begin());
@@ -228,23 +224,14 @@ namespace LargeNumbers {
             return;
         }
 
-        // Fractional part is 0
-        if (static_cast<size_t>(exponent) >= size) {
-            integralCoefficients.resize(size);
-            std::copy(begin, end, integralCoefficients.begin());
+        // There are both integral and fractional parts
 
-            size_t diff = exponent - size;
-            integralCoefficients.insert(integralCoefficients.begin(), diff, 0);
+        size_t diff = size - (-exponent);
+        fractionalCoefficients.resize(-exponent);
+        integralCoefficients.resize(diff);
 
-            return;
-        }
-
-        integralCoefficients.resize(exponent);
-        size_t fractionalCoefficientsSize = size - exponent;
-        fractionalCoefficients.resize(fractionalCoefficientsSize);
-
-        std::copy(begin, begin + exponent, integralCoefficients.begin());
-        std::copy(begin + exponent, end, fractionalCoefficients.begin());
+        std::copy(begin, begin + (-exponent), fractionalCoefficients.begin()); // MSD -> LSD
+        std::copy(begin + (-exponent), end, integralCoefficients.begin()); // LSD -> MSD
     }
 
     // For debugging
