@@ -24,6 +24,10 @@ namespace LargeNumbers {
         ~LargeFloat();
 
         std::string toString() const;
+
+        LargeFloat operator*(const LargeFloat &multiplier);
+
+        LargeFloat &operator*=(const LargeFloat &multiplier);
     };
 }
 

@@ -31,4 +31,15 @@ namespace LargeNumbers {
     std::string LargeFloat::toString() const {
         return this->implementation->math.toString();
     }
+
+    LargeFloat LargeFloat::operator*(const LargeFloat &multiplier) {
+        LargeFloat copy = *this;
+        copy *= multiplier;
+        return copy;
+    }
+
+    LargeFloat &LargeFloat::operator*=(const LargeFloat &multiplier) {
+        implementation->math.multiply(multiplier.implementation->math);
+        return *this;
+    }
 }

@@ -28,6 +28,8 @@ namespace LargeNumbers {
 
         bool roundFractionalString(std::string &fraction) const;
 
+        void normalize();
+
     public:
         LargeFloatImplementation();
 
@@ -36,6 +38,8 @@ namespace LargeNumbers {
         explicit LargeFloatImplementation(std::string number);
 
         std::string toString() const;
+
+        void multiply(const LargeFloatImplementation &multiplier);
     };
 }
 

@@ -234,6 +234,21 @@ namespace LargeNumbers {
         std::copy(begin + (-exponent), end, integralCoefficients.begin()); // LSD -> MSD
     }
 
+    template<class T>
+    void LargeFloatImplementation<T>::multiply(const LargeFloatImplementation &multiplier) {
+        mantissa.multiply(multiplier.mantissa);
+        exponent += multiplier.exponent;
+        normalize();
+    }
+
+    template<class T>
+    void LargeFloatImplementation<T>::normalize() {
+        mantissa.normalize();
+        if (mantissa.isZero()) {
+            exponent = 0;
+        }
+    }
+
     // For debugging
     template
     class LargeFloatImplementation<uint8_t>;
