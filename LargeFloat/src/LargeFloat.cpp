@@ -42,4 +42,15 @@ namespace LargeNumbers {
         implementation->math.multiply(multiplier.implementation->math);
         return *this;
     }
+
+    LargeFloat LargeFloat::operator+(const LargeNumbers::LargeFloat &other) {
+        LargeFloat copy = *this;
+        copy += other;
+        return copy;
+    }
+
+    LargeFloat &LargeFloat::operator+=(const LargeNumbers::LargeFloat &other) {
+        implementation->math.add(other.implementation->math);
+        return *this;
+    }
 }

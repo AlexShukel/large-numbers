@@ -36,6 +36,12 @@ TEST(large_int, large_numbers_addition) {
     EXPECT_EQ(integer.toString(), "-1");
     integer.add(LargeNumbers::LargeIntImplementation<uint8_t>("-564589415613548547687945261"));
     EXPECT_EQ(integer.toString(), "-564589415613548547687945262");
+
+    integer = LargeNumbers::LargeIntImplementation<uint8_t>("65792");
+    integer.add(LargeNumbers::LargeIntImplementation<uint8_t>(
+            "-4564152315458796846561315646876541521345648645321321545645231165753"));
+
+    EXPECT_EQ(integer.toString(), "-4564152315458796846561315646876541521345648645321321545645231099961");
 }
 
 TEST(large_int, addition_edge_cases) {

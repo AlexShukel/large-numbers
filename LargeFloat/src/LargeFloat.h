@@ -28,6 +28,10 @@ namespace LargeNumbers {
         LargeFloat operator*(const LargeFloat &multiplier);
 
         LargeFloat &operator*=(const LargeFloat &multiplier);
+
+        LargeFloat operator+(const LargeFloat &other);
+
+        LargeFloat &operator+=(const LargeFloat &other);
     };
 }
 

@@ -158,6 +158,10 @@ namespace LargeNumbers {
 
         if (result.back() == '.') {
             result.push_back('0');
+
+            if (integral.isZero() && sign) {
+                result.erase(result.begin());
+            }
         }
 
         return result;
@@ -247,6 +251,26 @@ namespace LargeNumbers {
         if (mantissa.isZero()) {
             exponent = 0;
         }
+    }
+
+    template<class T>
+    void LargeFloatImplementation<T>::add(LargeFloatImplementation<T> other) {
+        auto diff = abs(exponent - other.exponent);
+
+        if (exponent > other.exponent) {
+            exponent = other.exponent;
+            shiftRight(diff);
+        } else {
+            other.shiftRight(diff);
+        }
+
+        mantissa.add(other.mantissa);
+        normalize();
+    }
+
+    template<class T>
+    void LargeFloatImplementation<T>::shiftRight(size_t n) {
+        mantissa.coefficients.insert(mantissa.coefficients.begin(), n, mantissa.getSupplementDigit());
     }
 
     // For debugging

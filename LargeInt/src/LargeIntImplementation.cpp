@@ -171,10 +171,6 @@ namespace LargeNumbers {
             return;
         }
 
-        if (sign != addend.sign && comparisonResult < 0) {
-            sign = addend.sign;
-        }
-
         auto firstIt = coefficients.begin();
         auto secondIt = addend.coefficients.begin();
 
@@ -200,6 +196,10 @@ namespace LargeNumbers {
             if (secondIt != addend.coefficients.end()) {
                 ++secondIt;
             }
+        }
+
+        if (sign != addend.sign && comparisonResult < 0) {
+            sign = addend.sign;
         }
 
         if (!oldSign && !addend.sign) {

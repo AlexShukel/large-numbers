@@ -6,6 +6,7 @@
 #define ND1_LARGEFLOATIMPLEMENTATION_H
 
 #include <string>
+#include <cmath>
 #include "LargeIntImplementation.h"
 #include "../../config.h"
 
@@ -19,7 +20,7 @@ namespace LargeNumbers {
         exponent_type exponent;
 
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
-        static constexpr size_t PRECISION = static_cast<size_t>(332.1928094887362347870 / COEFFICIENT_BIT_SIZE) + 1;
+        static constexpr size_t PRECISION = static_cast<size_t>(336.0 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
 
         std::vector<T> getFractionSourceCoefficients(std::string source) const;
 
@@ -29,6 +30,8 @@ namespace LargeNumbers {
         bool roundFractionalString(std::string &fraction) const;
 
         void normalize();
+
+        void shiftRight(size_t n);
 
     public:
         LargeFloatImplementation();
@@ -40,6 +43,8 @@ namespace LargeNumbers {
         std::string toString() const;
 
         void multiply(const LargeFloatImplementation &multiplier);
+
+        void add(LargeFloatImplementation other);
     };
 }
 
