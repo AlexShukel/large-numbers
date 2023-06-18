@@ -21,6 +21,7 @@ namespace LargeNumbers {
 
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
         static constexpr size_t PRECISION = static_cast<size_t>(336.0 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
+        static int DECIMAL_PRECISION;
 
         std::vector<T> getFractionSourceCoefficients(std::string source) const;
 
@@ -41,6 +42,8 @@ namespace LargeNumbers {
         explicit LargeFloatImplementation(std::string number);
 
         std::string toString() const;
+
+        static void setDecimalPrecision(int precision);
 
         void multiply(const LargeFloatImplementation &multiplier);
 

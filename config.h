@@ -8,10 +8,9 @@
 #include <cstdint>
 
 namespace LargeNumbers {
-    // The type of stored coefficient. For debugging it is 8 bites. For final result - 32 bits.
+    // The type of stored coefficient. For debugging, it is 8 bites. For final result - 32 bits.
     using CoefficientType = uint8_t;
     using exponent_type = int32_t;
-    const int DECIMAL_PRECISION = 50;
 }
 
 #endif //ND1_CONFIG_H

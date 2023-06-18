@@ -14,7 +14,7 @@ namespace LargeNumbers {
             0).flip().to_ulong());
 
     template<class T>
-    LargeIntImplementation<T>::LargeIntImplementation(): sign(false) {}
+    LargeIntImplementation<T>::LargeIntImplementation(): sign(false), coefficients({0}) {}
 
     template<class T>
     LargeIntImplementation<T>::LargeIntImplementation(const std::string &number) {
@@ -69,11 +69,6 @@ namespace LargeNumbers {
             toTwosComplement();
         }
     }
-
-    template<class T>
-    LargeIntImplementation<T>::LargeIntImplementation(const LargeIntImplementation<T> &other): sign(other.sign),
-                                                                                               coefficients(
-                                                                                                       other.coefficients) {}
 
     template<class T>
     LargeIntImplementation<T>::LargeIntImplementation(const std::vector<T> &coefficients, bool sign): coefficients(
@@ -233,7 +228,6 @@ namespace LargeNumbers {
     template<class T>
     void LargeIntImplementation<T>::multiply(LargeIntImplementation<T> multiplier) {
         bool productSign = sign ^ multiplier.sign;
-
         if (this->sign) {
             this->negate();
         }
@@ -245,7 +239,7 @@ namespace LargeNumbers {
         LargeIntImplementation<T> product;
 
         for (size_t i = 0; i < multiplier.coefficients.size(); ++i) {
-            auto temp = *this;
+            LargeIntImplementation<T> temp = *this;
             temp.multiplyByCoefficient(multiplier.coefficients[i]);
             temp.shiftLeft(i);
             product.add(temp);

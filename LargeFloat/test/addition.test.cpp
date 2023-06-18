@@ -14,7 +14,10 @@ TEST(large_float, addition_basic) {
     number.add(LargeNumbers::LargeFloatImplementation<uint8_t>("0.1"));
     EXPECT_EQ(number.toString(), "0.1");
 
-    number.add(LargeNumbers::LargeFloatImplementation<uint8_t>("-0.2"));
+    number.add(LargeNumbers::LargeFloatImplementation<uint8_t>("0.2"));
+    EXPECT_EQ(number.toString(), "0.3");
+
+    number.add(LargeNumbers::LargeFloatImplementation<uint8_t>("-0.4"));
     EXPECT_EQ(number.toString(), "-0.1");
 
     number.add(LargeNumbers::LargeFloatImplementation<uint8_t>("0.05"));

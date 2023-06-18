@@ -76,6 +76,7 @@ TEST(large_float, string_conversion_with_fraction) {
 
 TEST(large_float, float_rounding) {
     LargeNumbers::LargeFloatTester::testStringConversion("0.1");
+    LargeNumbers::LargeFloatTester::testStringConversion("0.3");
     LargeNumbers::LargeFloatTester::testStringConversion("0.01");
     LargeNumbers::LargeFloatTester::testStringConversion("0.9");
     LargeNumbers::LargeFloatTester::testStringConversion("0.91");
@@ -83,31 +84,40 @@ TEST(large_float, float_rounding) {
     LargeNumbers::LargeFloatTester::testStringConversion("0.55555555555555555555555555555555555555555555555555");
     LargeNumbers::LargeFloatTester::testStringConversion("0.12345678912345678912345678912345678912345678912345");
 
-    // 50 char precision
-    LargeNumbers::LargeFloatTester::testStringConversion("0.00000000000000000000000000000000000000000000000001");
-    LargeNumbers::LargeFloatTester::testStringConversion("0.99999999999999999999999999999999999999999999999999");
+    // 100 char precision
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001");
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
 }
 
 TEST(large_float, after_max_precision) {
-    // 51 char precision
-    LargeNumbers::LargeFloatTester::testStringConversion("0.000000000000000000000000000000000000000000000000001",
-                                                         "0.0");
+    // 101 char precision
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+            "0.0");
 
-    LargeNumbers::LargeFloatTester::testStringConversion("0.000000000000000000000000000000000000000000000000004",
-                                                         "0.0");
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004",
+            "0.0");
 
-    LargeNumbers::LargeFloatTester::testStringConversion("0.000000000000000000000000000000000000000000000000005",
-                                                         "0.00000000000000000000000000000000000000000000000001");
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005",
+            "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001");
 
-    LargeNumbers::LargeFloatTester::testStringConversion("0.999999999999999999999999999999999999999999999999991",
-                                                         "0.99999999999999999999999999999999999999999999999999");
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999991",
+            "0.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999");
 
-    LargeNumbers::LargeFloatTester::testStringConversion("0.999999999999999999999999999999999999999999999999995",
-                                                         "1.0");
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999995",
+            "1.0");
 
-    LargeNumbers::LargeFloatTester::testStringConversion("0.999999999999999999999999999999999999999999999999999",
-                                                         "1.0");
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.99999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+            "1.0");
 
-    LargeNumbers::LargeFloatTester::testStringConversion("0.999999999999999999999999999999999999999899999999999",
-                                                         "0.9999999999999999999999999999999999999999");
+    LargeNumbers::LargeFloatTester::testStringConversion(
+            "0.99999999999999999999999999999999999999989999999999999999999999999999999999999999999999999999999999995",
+            "0.9999999999999999999999999999999999999999");
 }

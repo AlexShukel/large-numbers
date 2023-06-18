@@ -7,8 +7,12 @@
 #include <regex>
 #include <bitset>
 #include <cctype>
+#include <iostream>
 
 namespace LargeNumbers {
+    template<class T>
+    int LargeFloatImplementation<T>::DECIMAL_PRECISION = 100;
+
     template<class T>
     LargeFloatImplementation<T>::LargeFloatImplementation(): mantissa(LargeIntImplementation<T>()), exponent(0) {}
 
@@ -119,14 +123,13 @@ namespace LargeNumbers {
             result += '-';
         }
 
-        size_t currentPrecision = 0;
         std::string fractionalString;
 
         size_t diff = -exponent > mantissaCopy.coefficients.size() ? (-exponent) - mantissaCopy.coefficients.size() : 0;
         size_t thresholdSize = fraction.coefficients.size() + diff;
 
-        while (!areCoefficientsEmpty(fraction.coefficients) && currentPrecision <= DECIMAL_PRECISION) {
-            fraction.multiply(ten);
+        while (!areCoefficientsEmpty(fraction.coefficients) && fractionalString.size() <= DECIMAL_PRECISION) {
+            fraction.multiplyByCoefficient(10);
 
             if (fraction.coefficients.size() > thresholdSize) {
                 fractionalString += digitToChar(static_cast<uint8_t>(fraction.coefficients.back()));
@@ -134,13 +137,11 @@ namespace LargeNumbers {
             } else {
                 fractionalString += '0';
             }
-
-            ++currentPrecision;
         }
 
         // Adjust last digit
-        if (currentPrecision > DECIMAL_PRECISION) {
-            fraction.multiply(ten);
+        if (fractionalString.size() > DECIMAL_PRECISION) {
+            fraction.multiplyByCoefficient(10);
             T lastDigit = fraction.coefficients.back();
             if (lastDigit >= 5) {
                 ++fractionalString[fractionalString.size() - 1];
@@ -234,8 +235,8 @@ namespace LargeNumbers {
         fractionalCoefficients.resize(-exponent);
         integralCoefficients.resize(diff);
 
-        std::copy(begin, begin + (-exponent), fractionalCoefficients.begin()); // MSD -> LSD
-        std::copy(begin + (-exponent), end, integralCoefficients.begin()); // LSD -> MSD
+        std::copy(begin, begin + (-exponent), fractionalCoefficients.begin());
+        std::copy(begin + (-exponent), end, integralCoefficients.begin());
     }
 
     template<class T>
@@ -247,7 +248,6 @@ namespace LargeNumbers {
 
     template<class T>
     void LargeFloatImplementation<T>::normalize() {
-        mantissa.normalize();
         if (mantissa.isZero()) {
             exponent = 0;
         }
@@ -271,6 +271,11 @@ namespace LargeNumbers {
     template<class T>
     void LargeFloatImplementation<T>::shiftRight(size_t n) {
         mantissa.coefficients.insert(mantissa.coefficients.begin(), n, mantissa.getSupplementDigit());
+    }
+
+    template<class T>
+    void LargeFloatImplementation<T>::setDecimalPrecision(int precision) {
+        DECIMAL_PRECISION = precision;
     }
 
     // For debugging
