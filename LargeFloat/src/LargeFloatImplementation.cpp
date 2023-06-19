@@ -9,9 +9,16 @@
 #include <cctype>
 #include <iostream>
 
+// TODO: get rid of cmath
+#include <cmath>
+
 namespace LargeNumbers {
     template<class T>
     int LargeFloatImplementation<T>::DECIMAL_PRECISION = 100;
+
+    template<class T>
+    size_t LargeFloatImplementation<T>::PRECISION =
+            static_cast<size_t>(336.0 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
 
     template<class T>
     LargeFloatImplementation<T>::LargeFloatImplementation(): mantissa(LargeIntImplementation<T>()), exponent(0) {}
@@ -241,7 +248,12 @@ namespace LargeNumbers {
 
     template<class T>
     void LargeFloatImplementation<T>::multiply(const LargeFloatImplementation &multiplier) {
+//        std::cout << mantissa.toString() << " * " << multiplier.mantissa.toString();
+
         mantissa.multiply(multiplier.mantissa);
+
+//        std::cout << " = " << mantissa.toString() << std::endl;
+
         exponent += multiplier.exponent;
         normalize();
     }
@@ -276,6 +288,7 @@ namespace LargeNumbers {
     template<class T>
     void LargeFloatImplementation<T>::setDecimalPrecision(int precision) {
         DECIMAL_PRECISION = precision;
+        PRECISION = static_cast<size_t>((precision + 1) * log2(10) / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
     }
 
     // For debugging

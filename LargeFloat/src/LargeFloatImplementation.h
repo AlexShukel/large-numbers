@@ -7,6 +7,7 @@
 
 #include <string>
 #include <cmath>
+#include <iostream>
 #include "LargeIntImplementation.h"
 #include "../../config.h"
 
@@ -20,7 +21,7 @@ namespace LargeNumbers {
         exponent_type exponent;
 
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
-        static constexpr size_t PRECISION = static_cast<size_t>(336.0 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
+        static size_t PRECISION;
         static int DECIMAL_PRECISION;
 
         std::vector<T> getFractionSourceCoefficients(std::string source) const;
@@ -48,6 +49,10 @@ namespace LargeNumbers {
         void multiply(const LargeFloatImplementation &multiplier);
 
         void add(LargeFloatImplementation other);
+
+        static void printPrecisions() {
+            std::cout << "Current precision: " << DECIMAL_PRECISION << " " << PRECISION << std::endl;
+        }
     };
 }
 

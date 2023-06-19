@@ -245,6 +245,13 @@ namespace LargeNumbers {
             product.add(temp);
         }
 
+//        for (int64_t i = multiplier.coefficients.size() - 1; i >= 0; --i) {
+//            LargeIntImplementation<T> temp = *this;
+//            temp.multiplyByCoefficient(multiplier.coefficients[i]);
+//            temp.shiftRight(multiplier.coefficients.size() - 1 - i);
+//            product.add(temp);
+//        }
+
         if (productSign) {
             product.negate();
         }
