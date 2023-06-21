@@ -39,7 +39,7 @@ public:
 };
 
 template<class T, class V>
-size_t trimFromNotLast(T &container, V value) {
+size_t trimFrontNotLast(T &container, V value) {
     auto it = std::find_if_not(container.begin(), container.end(), Equal<V>(value));
 
     // Retain one element in container

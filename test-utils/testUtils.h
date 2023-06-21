@@ -5,7 +5,6 @@
 #ifndef ND1_TESTUTILS_H
 #define ND1_TESTUTILS_H
 
-#include "gtest/gtest.h"
 #include "vector"
 
 template<class T>
