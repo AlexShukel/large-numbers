@@ -255,17 +255,33 @@ namespace LargeNumbers {
     }
 
     template<class T>
-    void LargeFloatImplementation<T>::multiply(const LargeFloatImplementation &multiplier) {
-        mantissa.multiply(multiplier.mantissa);
-        exponent += multiplier.exponent;
-        normalize();
+    size_t LargeFloatImplementation<T>::fractionSize() const {
+        return mantissa.coefficients.size() - 1;
     }
 
     template<class T>
-    void LargeFloatImplementation<T>::normalize() {
-//        if (mantissa.isZero()) {
-//            exponent = 0;
-//        }
+    void LargeFloatImplementation<T>::adjustPrecision() {
+        size_t correctMantissaSize = PRECISION + std::max(exponent + 1, 0);
+
+        if (mantissa.coefficients.size() > correctMantissaSize) {
+            mantissa.coefficients.erase(mantissa.coefficients.begin(),
+                                        mantissa.coefficients.end() - correctMantissaSize);
+        }
+    }
+
+    template<class T>
+    void LargeFloatImplementation<T>::multiply(const LargeFloatImplementation &multiplier) {
+        std::size_t bothFractionSize = fractionSize() + multiplier.fractionSize();
+
+        mantissa.multiply(multiplier.mantissa);
+
+        exponent = exponent + multiplier.exponent + static_cast<exponent_type>(fractionSize() - bothFractionSize);
+
+        if (mantissa.coefficients.empty()) {
+            exponent = 0;
+        }
+
+        adjustPrecision();
     }
 
     template<class T>
@@ -317,17 +333,6 @@ namespace LargeNumbers {
         } else {
             exponent = finalExponent;
         }
-    }
-
-    template<class T>
-    void LargeFloatImplementation<T>::shiftRight(size_t n) {
-        mantissa.coefficients.insert(mantissa.coefficients.begin(), n, mantissa.getSupplementDigit());
-    }
-
-    template<class T>
-    void LargeFloatImplementation<T>::setDecimalPrecision(int precision) {
-        DECIMAL_PRECISION = precision;
-        PRECISION = static_cast<size_t>((precision + 1) * log2(10) / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
     }
 
     // For debugging

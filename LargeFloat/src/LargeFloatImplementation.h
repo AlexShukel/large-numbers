@@ -31,9 +31,9 @@ namespace LargeNumbers {
 
         bool roundFractionalString(std::string &fraction) const;
 
-        void normalize();
+        size_t fractionSize() const;
 
-        void shiftRight(size_t n);
+        void adjustPrecision();
 
     public:
         LargeFloatImplementation();
@@ -44,15 +44,9 @@ namespace LargeNumbers {
 
         std::string toString() const;
 
-        static void setDecimalPrecision(int precision);
-
         void multiply(const LargeFloatImplementation &multiplier);
 
         void add(LargeFloatImplementation other);
-
-        static void printPrecisions() {
-            std::cout << "Current precision: " << DECIMAL_PRECISION << " " << PRECISION << std::endl;
-        }
     };
 }
 
