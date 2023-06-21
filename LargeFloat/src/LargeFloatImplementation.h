@@ -47,6 +47,8 @@ namespace LargeNumbers {
         void multiply(const LargeFloatImplementation &multiplier);
 
         void add(LargeFloatImplementation other);
+
+        int compare(const LargeFloatImplementation &other);
     };
 }
 

@@ -53,4 +53,28 @@ namespace LargeNumbers {
         implementation->math.add(other.implementation->math);
         return *this;
     }
+
+    bool LargeFloat::operator<(const LargeFloat &other) {
+        return implementation->math.compare(other.implementation->math) < 0;
+    }
+
+    bool LargeFloat::operator<=(const LargeFloat &other) {
+        return implementation->math.compare(other.implementation->math) <= 0;
+    }
+
+    bool LargeFloat::operator>(const LargeFloat &other) {
+        return implementation->math.compare(other.implementation->math) > 0;
+    }
+
+    bool LargeFloat::operator>=(const LargeFloat &other) {
+        return implementation->math.compare(other.implementation->math) >= 0;
+    }
+
+    bool LargeFloat::operator==(const LargeFloat &other) {
+        return implementation->math.compare(other.implementation->math) == 0;
+    }
+
+    bool LargeFloat::operator!=(const LargeFloat &other) {
+        return implementation->math.compare(other.implementation->math) != 0;
+    }
 }

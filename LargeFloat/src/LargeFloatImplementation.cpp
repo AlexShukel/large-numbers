@@ -335,6 +335,59 @@ namespace LargeNumbers {
         }
     }
 
+    template<class T>
+    int LargeFloatImplementation<T>::compare(const LargeFloatImplementation<T> &other) {
+        if (mantissa.sign != other.mantissa.sign) {
+            if (mantissa.sign > other.mantissa.sign) {
+                return -1;
+            }
+
+            return 1;
+        }
+
+        if (exponent != other.exponent) {
+            bool isFirstZero = mantissa.coefficients.empty();
+            bool isSecondZero = other.mantissa.coefficients.empty();
+
+            if (isFirstZero) {
+                return -1;
+            } else if (isSecondZero) {
+                return 1;
+            }
+
+            if (exponent > other.exponent) {
+                return 1;
+            }
+
+            return -1;
+        }
+
+        LargeIntImplementation<T> firstMantissa = mantissa;
+        LargeIntImplementation<T> secondMantissa = other.mantissa;
+
+        bool wasNegated = false;
+
+        if (firstMantissa.getSign()) {
+            firstMantissa.negate();
+            secondMantissa.negate();
+            wasNegated = true;
+        }
+
+        std::size_t maxSize = std::max(firstMantissa.coefficients.size(), secondMantissa.coefficients.size());
+
+        firstMantissa.coefficients.insert(firstMantissa.coefficients.begin(),
+                                          maxSize - firstMantissa.coefficients.size(), 0);
+        secondMantissa.coefficients.insert(secondMantissa.coefficients.begin(),
+                                           maxSize - secondMantissa.coefficients.size(), 0);
+
+        int mantissaComparisonResult = firstMantissa.compare(secondMantissa);
+        if (wasNegated) {
+            mantissaComparisonResult *= -1;
+        }
+
+        return mantissaComparisonResult;
+    }
+
     // For debugging
     template
     class LargeFloatImplementation<uint8_t>;
