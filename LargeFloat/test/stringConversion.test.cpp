@@ -40,7 +40,7 @@ TEST(large_float, string_conversion_no_fraction) {
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("-1.0", true, {255}, 0);
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("256.0", false, {1}, 1);
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("-256.0", true, {255}, 1);
-    LargeNumbers::LargeFloatTester::detailedTestStringConversion("-257.0", true, {255, 254}, 0);
+    LargeNumbers::LargeFloatTester::detailedTestStringConversion("-257.0", true, {255, 254}, 1);
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("-65536.0", true, {255}, 2);
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("65536.0", false, {1}, 2);
 }
@@ -64,14 +64,14 @@ TEST(large_float, string_conversion_with_fraction) {
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("0.001953125", false, {128}, -2);
     LargeNumbers::LargeFloatTester::detailedTestStringConversion("-0.001953125", true, {128}, -2);
 
-    LargeNumbers::LargeFloatTester::detailedTestStringConversion("1.001953125", false, {128, 0, 1}, -2);
-    LargeNumbers::LargeFloatTester::detailedTestStringConversion("-1.001953125", true, {128, 255, 254}, -2);
+    LargeNumbers::LargeFloatTester::detailedTestStringConversion("1.001953125", false, {128, 0, 1}, 0);
+    LargeNumbers::LargeFloatTester::detailedTestStringConversion("-1.001953125", true, {128, 255, 254}, 0);
 
-    LargeNumbers::LargeFloatTester::detailedTestStringConversion("256.001953125", false, {128, 0, 0, 1}, -2);
-    LargeNumbers::LargeFloatTester::detailedTestStringConversion("-256.001953125", true, {128, 255, 255, 254}, -2);
+    LargeNumbers::LargeFloatTester::detailedTestStringConversion("256.001953125", false, {128, 0, 0, 1}, 1);
+    LargeNumbers::LargeFloatTester::detailedTestStringConversion("-256.001953125", true, {128, 255, 255, 254}, 1);
 
-    LargeNumbers::LargeFloatTester::detailedTestStringConversion("259.001953125", false, {128, 0, 3, 1}, -2);
-    LargeNumbers::LargeFloatTester::detailedTestStringConversion("-259.001953125", true, {128, 255, 252, 254}, -2);
+    LargeNumbers::LargeFloatTester::detailedTestStringConversion("259.001953125", false, {128, 0, 3, 1}, 1);
+    LargeNumbers::LargeFloatTester::detailedTestStringConversion("-259.001953125", true, {128, 255, 252, 254}, 1);
 }
 
 TEST(large_float, float_rounding) {

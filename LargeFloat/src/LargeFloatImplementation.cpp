@@ -46,6 +46,10 @@ namespace LargeNumbers {
         std::string integralSource = number.substr(0, pointIndex);
         std::string fractionSource = number.substr(pointIndex + 1);
 
+        if (integralSource == "0" && fractionSource == "0") {
+            return;
+        }
+
         auto integral = LargeIntImplementation<T>(integralSource); // LSD -> MSD
         std::vector<T> fractionCoefficients = getFractionSourceCoefficients(fractionSource); // MSD -> LSD
 
@@ -54,12 +58,10 @@ namespace LargeNumbers {
         std::copy(integral.coefficients.begin(), integral.coefficients.end(),
                   mantissa.coefficients.begin() + fractionCoefficients.size());
 
-        if (!fractionCoefficients.empty()) {
-            exponent = -fractionCoefficients.size();
-        } else {
-            auto trimmed = trimFrontNotLast(mantissa.coefficients, 0);
-            exponent = trimmed;
-        }
+        trimFront(mantissa.coefficients, 0);
+
+        exponent = integral.coefficients.size() - 1;
+        exponent -= trimBack(mantissa.coefficients, 0);
 
         if (sign) {
             mantissa.negate();
@@ -132,13 +134,12 @@ namespace LargeNumbers {
 
         std::string fractionalString;
 
-        size_t diff = -exponent > mantissaCopy.coefficients.size() ? (-exponent) - mantissaCopy.coefficients.size() : 0;
-        size_t thresholdSize = fraction.coefficients.size() + diff;
+        auto initialSize = fraction.coefficients.size();
 
         while (!areCoefficientsEmpty(fraction.coefficients) && fractionalString.size() <= DECIMAL_PRECISION) {
             fraction.multiplyByCoefficient(10);
 
-            if (fraction.coefficients.size() > thresholdSize) {
+            if (fraction.coefficients.size() > initialSize) {
                 fractionalString += digitToChar(static_cast<uint8_t>(fraction.coefficients.back()));
                 fraction.coefficients.pop_back();
             } else {
@@ -196,11 +197,7 @@ namespace LargeNumbers {
                 }
             }
 
-            trimBackNotLast(fraction, '0');
-
-            if (fraction.size() == 1 && fraction[0] == '0') {
-                fraction.clear();
-            }
+            trimBack(fraction, '0');
 
             if (fraction.empty()) {
                 return shouldIncrementIntegral;
@@ -219,41 +216,47 @@ namespace LargeNumbers {
         auto begin = mantissaCopy.coefficients.begin();
         auto end = mantissaCopy.coefficients.end();
 
-        // Fractional part is 0
-        if (exponent >= 0) {
-            integralCoefficients.resize(size);
-            std::copy(begin, end, integralCoefficients.begin());
-            integralCoefficients.insert(integralCoefficients.begin(), exponent, 0);
-            return;
-        }
-
         // Integral part is 0
-        if (-exponent >= size) {
+        if (exponent < 0 || mantissaCopy.coefficients.back() == 0) {
             fractionalCoefficients.resize(size);
             std::copy(begin, end,
                       fractionalCoefficients.begin());
+
+            if (fractionalCoefficients.back() == 0) {
+                fractionalCoefficients.pop_back();
+            }
+
             integralCoefficients.push_back(0);
+
+            if (exponent < 0) {
+                fractionalCoefficients.insert(fractionalCoefficients.end(), -exponent - 1, 0);
+            }
+            return;
+        }
+
+        // Fractional part is 0
+        if (static_cast<size_t>(exponent + 1) >= size) {
+            integralCoefficients.resize(size);
+            std::copy(begin, end, integralCoefficients.begin());
+            integralCoefficients.insert(integralCoefficients.begin(), exponent + 1 - size, 0);
             return;
         }
 
         // There are both integral and fractional parts
 
-        size_t diff = size - (-exponent);
-        fractionalCoefficients.resize(-exponent);
-        integralCoefficients.resize(diff);
+        size_t integralSize = exponent + 1;
+        size_t fractionSize = size - integralSize;
 
-        std::copy(begin, begin + (-exponent), fractionalCoefficients.begin());
-        std::copy(begin + (-exponent), end, integralCoefficients.begin());
+        integralCoefficients.resize(integralSize);
+        fractionalCoefficients.resize(fractionSize);
+
+        std::copy(begin, begin + fractionSize, fractionalCoefficients.begin());
+        std::copy(begin + fractionSize, end, integralCoefficients.begin());
     }
 
     template<class T>
     void LargeFloatImplementation<T>::multiply(const LargeFloatImplementation &multiplier) {
-//        std::cout << mantissa.toString() << " * " << multiplier.mantissa.toString();
-
         mantissa.multiply(multiplier.mantissa);
-
-//        std::cout << " = " << mantissa.toString() << std::endl;
-
         exponent += multiplier.exponent;
         normalize();
     }

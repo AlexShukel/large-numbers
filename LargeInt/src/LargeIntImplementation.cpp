@@ -125,7 +125,11 @@ namespace LargeNumbers {
     template<class T>
     void LargeIntImplementation<T>::normalize() {
         T meaninglessValue = getSupplementDigit();
-        trimBackNotLast(coefficients, meaninglessValue);
+        trimBack(coefficients, meaninglessValue);
+
+        if (coefficients.empty()) {
+            coefficients.push_back(meaninglessValue);
+        }
     }
 
     template<class T>

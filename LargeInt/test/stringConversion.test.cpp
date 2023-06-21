@@ -40,14 +40,14 @@ TEST(large_int, string_conversion) {
     LargeNumbers::LargeIntTester::testStringConversion("18446744073709551616", false,
                                                        {0, 0, 0, 0, 0, 0, 0, 0, 1});
 
-    // Negative numbers are stored in two's complement form
+//    // Negative numbers are stored in two's complement form
     LargeNumbers::LargeIntTester::testStringConversion("-1", true, {255});
     LargeNumbers::LargeIntTester::testStringConversion("-255", true, {1});
-    LargeNumbers::LargeIntTester::testStringConversion("-256", true, {0, 255});
-    LargeNumbers::LargeIntTester::testStringConversion("-65536", true, {0, 0, 255});
+    LargeNumbers::LargeIntTester::testStringConversion("-256", true, {0});
+    LargeNumbers::LargeIntTester::testStringConversion("-65536", true, {0, 0});
     LargeNumbers::LargeIntTester::testStringConversion("-257", true, {255, 254});
-
-    // Zeros should not be taken into account
+//
+//    // Zeros should not be taken into account
     LargeNumbers::LargeIntTester::testStringConversion("-01", true, {255}, "-1");
     LargeNumbers::LargeIntTester::testStringConversion("-000000001", true, {255}, "-1");
     LargeNumbers::LargeIntTester::testStringConversion("01", false, {1}, "1");

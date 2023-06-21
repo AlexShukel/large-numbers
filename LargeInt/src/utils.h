@@ -39,30 +39,38 @@ public:
 };
 
 template<class T, class V>
-size_t trimFrontNotLast(T &container, V value) {
+size_t trimFront(T &container, V value) {
     auto it = std::find_if_not(container.begin(), container.end(), Equal<V>(value));
-
-    // Retain one element in container
-    if (it != container.begin()) {
-        --it;
-    }
-
     size_t count = std::distance(container.begin(), it);
     container.erase(container.begin(), it);
     return count;
 }
 
 template<class T, class V>
-size_t trimBackNotLast(T &container, V value) {
+size_t trimBack(T &container, V value) {
     auto it = std::find_if_not(container.rbegin(), container.rend(), Equal<V>(value));
-
-    // Retain one element in container
-    if (it.base() != container.end()) {
-        --it;
-    }
-
     size_t count = std::distance(container.rbegin(), it);
     container.erase(it.base(), container.end());
+    return count;
+}
+
+template<class T, class V>
+size_t trimFrontNotLast(T &container, V value) {
+    size_t count = trimFront(container, value);
+    if (count > 0) {
+        container.insert(container.begin(), value);
+        return count - 1;
+    }
+    return count;
+}
+
+template<class T, class V>
+size_t trimBackNotLast(T &container, V value) {
+    size_t count = trimBack(container, value);
+    if (count > 0) {
+        container.insert(container.end(), value);
+        return count - 1;
+    }
     return count;
 }
 
