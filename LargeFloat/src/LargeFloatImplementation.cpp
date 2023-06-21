@@ -263,24 +263,60 @@ namespace LargeNumbers {
 
     template<class T>
     void LargeFloatImplementation<T>::normalize() {
-        if (mantissa.isZero()) {
-            exponent = 0;
-        }
+//        if (mantissa.isZero()) {
+//            exponent = 0;
+//        }
     }
 
     template<class T>
     void LargeFloatImplementation<T>::add(LargeFloatImplementation<T> other) {
-        auto diff = abs(exponent - other.exponent);
+        exponent_type finalExponent = std::max(exponent, other.exponent);
 
-        if (exponent > other.exponent) {
-            exponent = other.exponent;
-            shiftRight(diff);
-        } else {
-            other.shiftRight(diff);
+        bool thisSign = mantissa.sign;
+        bool otherSign = other.mantissa.sign;
+
+        if (thisSign) {
+            mantissa.negate();
+        }
+
+        if (otherSign) {
+            other.mantissa.negate();
+        }
+
+        mantissa.coefficients.insert(mantissa.coefficients.end(), finalExponent - exponent, static_cast<T>(0));
+        other.mantissa.coefficients.insert(other.mantissa.coefficients.end(), finalExponent - other.exponent,
+                                           static_cast<T>(0));
+
+        std::size_t maxSize = std::max(mantissa.coefficients.size(), other.mantissa.coefficients.size());
+
+        mantissa.coefficients.insert(mantissa.coefficients.begin(), maxSize - mantissa.coefficients.size(),
+                                     static_cast<T>(0));
+        other.mantissa.coefficients.insert(other.mantissa.coefficients.begin(),
+                                           maxSize - other.mantissa.coefficients.size(), static_cast<T>(0));
+
+        if (thisSign) {
+            mantissa.negate();
+        }
+
+        if (otherSign) {
+            other.mantissa.negate();
         }
 
         mantissa.add(other.mantissa);
-        normalize();
+
+        finalExponent += mantissa.coefficients.size() - maxSize;
+
+        maxSize = mantissa.coefficients.size();
+        mantissa.normalize();
+        finalExponent -= maxSize - mantissa.coefficients.size();
+        trimFront(mantissa.coefficients, mantissa.getSupplementDigit());
+
+        if (mantissa.coefficients.empty()) {
+            mantissa.coefficients.push_back(0);
+            exponent = 0;
+        } else {
+            exponent = finalExponent;
+        }
     }
 
     template<class T>
