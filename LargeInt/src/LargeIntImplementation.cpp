@@ -125,7 +125,7 @@ namespace LargeNumbers {
     template<class T>
     void LargeIntImplementation<T>::normalize() {
         T meaninglessValue = getSupplementDigit();
-        trimBack(coefficients, meaninglessValue);
+        trimBackNotLast(coefficients, meaninglessValue);
     }
 
     template<class T>
@@ -155,25 +155,16 @@ namespace LargeNumbers {
 
     template<class T>
     void LargeIntImplementation<T>::add(const LargeIntImplementation<T> &addend) {
-        bool oldSign = sign;
-
-        auto comparisonResult = abs().compare(addend.abs());
-
-        if (comparisonResult == 0 && sign ^ addend.sign) {
-            sign = false;
-            coefficients.clear();
-            coefficients.push_back(0);
-            return;
-        }
-
         auto firstIt = coefficients.begin();
         auto secondIt = addend.coefficients.begin();
 
-        T carry = 0;
+        auto firstSupplementDigit = getSupplementDigit();
+        auto secondSupplementDigit = addend.getSupplementDigit();
 
+        T carry = 0;
         while (firstIt != coefficients.end() || secondIt != addend.coefficients.end()) {
-            T firstMember = firstIt != coefficients.end() ? *firstIt : getSupplementDigit();
-            T secondMember = secondIt != addend.coefficients.end() ? *secondIt : addend.getSupplementDigit();
+            T firstMember = firstIt != coefficients.end() ? *firstIt : firstSupplementDigit;
+            T secondMember = secondIt != addend.coefficients.end() ? *secondIt : secondSupplementDigit;
 
             T sum = firstMember + secondMember + carry;
 
@@ -193,12 +184,13 @@ namespace LargeNumbers {
             }
         }
 
-        if (sign != addend.sign && comparisonResult < 0) {
-            sign = addend.sign;
-        }
+        std::bitset<LargeIntImplementation<T>::COEFFICIENT_BIT_SIZE> additional(
+                firstSupplementDigit + secondSupplementDigit + carry);
 
-        if (!oldSign && !addend.sign) {
-            coefficients.push_back(carry);
+        sign = additional[LargeIntImplementation<T>::COEFFICIENT_BIT_SIZE - 1];
+
+        if (additional != firstSupplementDigit) {
+            coefficients.push_back(additional.to_ulong());
         }
 
         this->normalize();
@@ -244,13 +236,6 @@ namespace LargeNumbers {
             temp.shiftLeft(i);
             product.add(temp);
         }
-
-//        for (int64_t i = multiplier.coefficients.size() - 1; i >= 0; --i) {
-//            LargeIntImplementation<T> temp = *this;
-//            temp.multiplyByCoefficient(multiplier.coefficients[i]);
-//            temp.shiftRight(multiplier.coefficients.size() - 1 - i);
-//            product.add(temp);
-//        }
 
         if (productSign) {
             product.negate();
@@ -302,7 +287,7 @@ namespace LargeNumbers {
         LargeIntImplementation<T> remainder = *this;
         LargeIntImplementation<T> shiftedDivisor = divisor;
         size_t maxShift = 0;
-        while (remainder.compare(shiftedDivisor) > 0) {
+        while (remainder.compare(shiftedDivisor) >= 0) {
             shiftedDivisor.shiftLeft(1);
             ++maxShift;
         }

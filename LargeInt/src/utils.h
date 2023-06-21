@@ -39,11 +39,11 @@ public:
 };
 
 template<class T, class V>
-size_t trimFront(T &container, V value) {
+size_t trimFromNotLast(T &container, V value) {
     auto it = std::find_if_not(container.begin(), container.end(), Equal<V>(value));
 
     // Retain one element in container
-    if (it == container.end()) {
+    if (it != container.begin()) {
         --it;
     }
 
@@ -53,11 +53,11 @@ size_t trimFront(T &container, V value) {
 }
 
 template<class T, class V>
-size_t trimBack(T &container, V value) {
+size_t trimBackNotLast(T &container, V value) {
     auto it = std::find_if_not(container.rbegin(), container.rend(), Equal<V>(value));
 
     // Retain one element in container
-    if (it.base() == container.begin()) {
+    if (it.base() != container.end()) {
         --it;
     }
 

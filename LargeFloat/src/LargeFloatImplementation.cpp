@@ -57,7 +57,7 @@ namespace LargeNumbers {
         if (!fractionCoefficients.empty()) {
             exponent = -fractionCoefficients.size();
         } else {
-            auto trimmed = trimFront(mantissa.coefficients, 0);
+            auto trimmed = trimFromNotLast(mantissa.coefficients, 0);
             exponent = trimmed;
         }
 
@@ -196,7 +196,7 @@ namespace LargeNumbers {
                 }
             }
 
-            trimBack(fraction, '0');
+            trimBackNotLast(fraction, '0');
 
             if (fraction.size() == 1 && fraction[0] == '0') {
                 fraction.clear();

@@ -35,12 +35,7 @@ public:
 };
 
 int main() {
-    std::vector<int> v;
-    std::vector<int> c = {1, 2, 3, 4, 5};
-    v.resize(5);
-    std::copy(c.begin(), c.end(), v.rbegin());
-    for (auto x : v) {
-        std::cout << x << " ";
-    }
+    std::bitset<8> bs(2);
+    std::cout << bs[0];
     return 0;
 }

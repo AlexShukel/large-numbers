@@ -43,8 +43,8 @@ TEST(large_int, string_conversion) {
     // Negative numbers are stored in two's complement form
     LargeNumbers::LargeIntTester::testStringConversion("-1", true, {255});
     LargeNumbers::LargeIntTester::testStringConversion("-255", true, {1});
-    LargeNumbers::LargeIntTester::testStringConversion("-256", true, {0});
-    LargeNumbers::LargeIntTester::testStringConversion("-65536", true, {0, 0});
+    LargeNumbers::LargeIntTester::testStringConversion("-256", true, {0, 255});
+    LargeNumbers::LargeIntTester::testStringConversion("-65536", true, {0, 0, 255});
     LargeNumbers::LargeIntTester::testStringConversion("-257", true, {255, 254});
 
     // Zeros should not be taken into account
