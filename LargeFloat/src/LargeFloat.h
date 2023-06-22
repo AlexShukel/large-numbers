@@ -19,7 +19,13 @@ namespace LargeNumbers {
 
         LargeFloat(const LargeFloat &other);
 
+        LargeFloat &operator=(const LargeFloat &other);
+
         explicit LargeFloat(const std::string &number);
+
+        LargeFloat(LargeFloat &&other) noexcept;
+
+        LargeFloat &operator=(LargeFloat &&other) noexcept;
 
         ~LargeFloat();
 
@@ -33,17 +39,17 @@ namespace LargeNumbers {
 
         LargeFloat &operator+=(const LargeFloat &other);
 
-        bool operator<(const LargeFloat &other);
+        bool operator<(const LargeFloat &other) const;
 
-        bool operator<=(const LargeFloat &other);
+        bool operator<=(const LargeFloat &other) const;
 
-        bool operator>(const LargeFloat &other);
+        bool operator>(const LargeFloat &other) const;
 
-        bool operator>=(const LargeFloat &other);
+        bool operator>=(const LargeFloat &other) const;
 
-        bool operator==(const LargeFloat &other);
+        bool operator==(const LargeFloat &other) const;
 
-        bool operator!=(const LargeFloat &other);
+        bool operator!=(const LargeFloat &other) const;
     };
 }
 

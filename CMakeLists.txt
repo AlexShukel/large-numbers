@@ -12,6 +12,14 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+add_executable(demo demo.cpp)
+target_link_libraries(demo large_float)
+target_include_directories(demo PUBLIC "./LargeFloat/src")
+
+add_executable(test_exe test.cpp)
+target_link_libraries(test_exe large_float)
+target_include_directories(test_exe PUBLIC "./LargeFloat/src")
+
 enable_testing()
 
 add_subdirectory(LargeInt)

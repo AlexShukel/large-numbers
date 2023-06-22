@@ -18,11 +18,34 @@ namespace LargeNumbers {
 
     LargeFloat::LargeFloat() : implementation(new Implementation()) {}
 
-    LargeFloat::LargeFloat(const LargeNumbers::LargeFloat &other) : implementation(
+    LargeFloat::LargeFloat(const LargeFloat &other) : implementation(
             new Implementation(*other.implementation)) {}
+
+    LargeFloat &LargeFloat::operator=(const LargeFloat &other) {
+        if (&other != this) {
+            delete implementation;
+            implementation = new Implementation(*other.implementation);
+        }
+
+        return *this;
+    }
 
     LargeFloat::LargeFloat(const std::string &number) : implementation(
             new Implementation(LargeFloatImplementation<CoefficientType>(number))) {}
+
+    LargeFloat::LargeFloat(LargeFloat &&other) noexcept: implementation(other.implementation) {
+        other.implementation = nullptr;
+    }
+
+    LargeFloat &LargeFloat::operator=(LargeFloat &&other) noexcept {
+        if (&other != this) {
+            delete implementation;
+            implementation = other.implementation;
+            other.implementation = nullptr;
+        }
+
+        return *this;
+    }
 
     LargeFloat::~LargeFloat() {
         delete implementation;
@@ -54,27 +77,27 @@ namespace LargeNumbers {
         return *this;
     }
 
-    bool LargeFloat::operator<(const LargeFloat &other) {
+    bool LargeFloat::operator<(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) < 0;
     }
 
-    bool LargeFloat::operator<=(const LargeFloat &other) {
+    bool LargeFloat::operator<=(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) <= 0;
     }
 
-    bool LargeFloat::operator>(const LargeFloat &other) {
+    bool LargeFloat::operator>(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) > 0;
     }
 
-    bool LargeFloat::operator>=(const LargeFloat &other) {
+    bool LargeFloat::operator>=(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) >= 0;
     }
 
-    bool LargeFloat::operator==(const LargeFloat &other) {
+    bool LargeFloat::operator==(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) == 0;
     }
 
-    bool LargeFloat::operator!=(const LargeFloat &other) {
+    bool LargeFloat::operator!=(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) != 0;
     }
 }
