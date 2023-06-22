@@ -68,6 +68,17 @@ namespace LargeNumbers {
         return *this;
     }
 
+    LargeFloat LargeFloat::operator/(const LargeNumbers::LargeFloat &other) {
+        LargeFloat copy = *this;
+        copy /= other;
+        return copy;
+    }
+
+    LargeFloat &LargeFloat::operator/=(const LargeNumbers::LargeFloat &other) {
+        implementation->math.divide(other.implementation->math);
+        return *this;
+    }
+
     LargeFloat LargeFloat::operator+(const LargeNumbers::LargeFloat &other) {
         LargeFloat copy = *this;
         copy += other;

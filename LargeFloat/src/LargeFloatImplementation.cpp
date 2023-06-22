@@ -8,6 +8,7 @@
 #include <bitset>
 #include <cctype>
 #include <iostream>
+#include <stdexcept>
 
 namespace LargeNumbers {
     template<class T>
@@ -18,9 +19,24 @@ namespace LargeNumbers {
             static_cast<size_t>(672 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
 
     template<class T>
+    LargeFloatImplementation<T> LargeFloatImplementation<T>::EPSILON
+            = LargeFloatImplementation<T>(
+                    "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001");
+
+    template<class T>
     void LargeFloatImplementation<T>::setDecimalPrecision(int precision) {
         DECIMAL_PRECISION = precision;
-        PRECISION = static_cast<size_t>((static_cast<size_t>((precision + 1) * log2(10)) + 1) / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;;
+        PRECISION = static_cast<size_t>((static_cast<size_t>((precision + 1) * log2(10)) + 1) /
+                                        static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
+
+        std::string eps = "0.";
+
+        for (int i = 0; i < DECIMAL_PRECISION - 1; ++i) {
+            eps.push_back('0');
+        }
+        eps.push_back('1');
+
+        EPSILON = LargeFloatImplementation<T>();
     }
 
     template<class T>
@@ -78,6 +94,11 @@ namespace LargeNumbers {
     }
 
     template<class T>
+    LargeFloatImplementation<T>::LargeFloatImplementation(const LargeIntImplementation<T> &mantissa,
+                                                          exponent_type exponent): mantissa(mantissa),
+                                                                                   exponent(exponent) {}
+
+    template<class T>
     std::vector<T> LargeFloatImplementation<T>::getFractionSourceCoefficients(std::string source) const {
         std::vector<T> coefficients;
 
@@ -121,7 +142,7 @@ namespace LargeNumbers {
     std::string LargeFloatImplementation<T>::toString() const {
         std::string result;
 
-        bool sign = mantissa.sign;
+        bool sign = isNegative();
         LargeIntImplementation<T> mantissaCopy = mantissa;
 
         if (sign) {
@@ -297,8 +318,8 @@ namespace LargeNumbers {
     void LargeFloatImplementation<T>::add(LargeFloatImplementation<T> other) {
         exponent_type finalExponent = std::max(exponent, other.exponent);
 
-        bool thisSign = mantissa.sign;
-        bool otherSign = other.mantissa.sign;
+        bool thisSign = isNegative();
+        bool otherSign = other.isNegative();
 
         if (thisSign) {
             mantissa.negate();
@@ -362,8 +383,8 @@ namespace LargeNumbers {
 
     template<class T>
     int LargeFloatImplementation<T>::compare(const LargeFloatImplementation<T> &other) {
-        if (mantissa.sign != other.mantissa.sign) {
-            if (mantissa.sign > other.mantissa.sign) {
+        if (isNegative() != other.isNegative()) {
+            if (isNegative() > other.isNegative()) {
                 return -1;
             }
 
@@ -411,6 +432,78 @@ namespace LargeNumbers {
         }
 
         return mantissaComparisonResult;
+    }
+
+    template<class T>
+    void LargeFloatImplementation<T>::divide(LargeFloatImplementation<T> divisor) {
+        if (divisor.mantissa.isZero()) {
+            throw std::invalid_argument("Cannot divide by zero!");
+        }
+
+        bool quotientSign = isNegative() ^ divisor.isNegative();
+
+        if (isNegative()) {
+            mantissa.negate();
+        }
+
+        if (divisor.isNegative()) {
+            divisor.mantissa.negate();
+        }
+
+        exponent -= divisor.exponent + 1;
+        divisor.exponent = -1;
+
+        size_t iterations = 0;
+        // Initial guess
+        LargeFloatImplementation<T> x = getInitialGuess(divisor);
+        LargeFloatImplementation<T> two(2);
+
+        while (iterations < DECIMAL_PRECISION) {
+            LargeFloatImplementation<T> temp = divisor;
+            temp.multiply(x);
+            LargeFloatImplementation<T> multiplier = two;
+            multiplier.subtract(temp);
+
+            x.multiply(multiplier);
+
+            if (multiplier.isCloseToOne()) {
+                break;
+            }
+
+            ++iterations;
+        }
+
+        multiply(x);
+
+        if (quotientSign) {
+            mantissa.negate();
+        }
+    }
+
+    template<class T>
+    bool LargeFloatImplementation<T>::isCloseToOne() const {
+        LargeFloatImplementation<T> copy = *this;
+        copy.subtract(LargeFloatImplementation<T>(1));
+
+        if (copy.isNegative()) {
+            copy.negate();
+        }
+
+        return copy.compare(EPSILON) <= 0;
+    }
+
+    template<class T>
+    LargeFloatImplementation<T>
+    LargeFloatImplementation<T>::getInitialGuess(const LargeFloatImplementation<T> &divisor) {
+        // Taking initial division guess as described here https://en.wikipedia.org/wiki/Division_algorithm#Newton%E2%80%93Raphson_division
+        LargeFloatImplementation<T> guess("2.8235294117647058823529411764706");
+
+        LargeFloatImplementation<T> temp("1.8823529411764705882352941176471");
+        temp.multiply(divisor);
+
+        guess.subtract(temp);
+
+        return guess;
     }
 
     // For debugging

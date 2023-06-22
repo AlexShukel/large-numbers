@@ -35,7 +35,5 @@ public:
 };
 
 int main() {
-    std::bitset<8> bs(2);
-    std::cout << bs[0];
     return 0;
 }
