@@ -93,6 +93,8 @@ TEST(large_float, float_rounding) {
 
 TEST(large_float, after_max_precision) {
     // 101 char precision
+    LargeNumbers::LargeFloatImplementation<uint8_t>::setDecimalPrecision(100);
+
     LargeNumbers::LargeFloatTester::testStringConversion(
             "0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
             "0.0");

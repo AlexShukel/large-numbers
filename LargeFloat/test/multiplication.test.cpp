@@ -102,6 +102,8 @@ LargeNumbers::LargeFloatImplementation<uint8_t> createNumber(const std::string &
 }
 
 TEST(large_float, high_precision_multiplication_1) {
+    LargeNumbers::LargeFloatImplementation<uint8_t>::setDecimalPrecision(100);
+
     auto n1 = createNumber(
             "0.1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
 
@@ -131,27 +133,26 @@ TEST(large_float, high_precision_multiplication_1) {
 //    EXPECT_EQ(n1.toString(),
 //              "4809201023814296104800879450164.856849018891609004588628065474914598736529749743323350577001026205656903849007272826405795410130297");
 //}
-//
-//TEST(large_float, high_precision_multiplication_3) {
-//    auto n1 = createNumber(
-//            "2.3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
-//    );
-//    auto n2 = createNumber(
-//            "3.1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
-//
-//    n1.multiply(n2);
-//
-//    EXPECT_EQ(n1.toString(),
-//              "7.2592592592592592592592592592592592592592592592592592592592592592592592592592592592592592592592592593");
-//}
-//
-//TEST(large_float, multiplication_large_numbers) {
-//    auto n1 = createNumber("456486768454531453453.456465415416453123");
-//    auto n2 = createNumber("7874654153412.146551534564");
-//
-//    n1.multiply(n2);
-//    EXPECT_EQ(n1.toString(), "3594675427188164949046079279342197.315943069945180624309620243372");
-//
-//    n1.multiply(LargeNumbers::LargeFloatImplementation<uint8_t>("0.0"));
-//    EXPECT_EQ(n1.toString(), "0.0");
-//}
+
+TEST(large_float, high_precision_multiplication_3) {
+    LargeNumbers::LargeFloatImplementation<uint8_t>::setDecimalPrecision(100);
+
+    LargeNumbers::LargeFloatImplementation<uint8_t> n1("2.3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333");
+    LargeNumbers::LargeFloatImplementation<uint8_t> n2("3.1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
+
+    n1.multiply(n2);
+
+    EXPECT_EQ(n1.toString(),
+              "7.2592592592592592592592592592592592592592592592592592592592592592592592592592592592592592592592592593");
+}
+
+TEST(large_float, multiplication_large_numbers) {
+    auto n1 = createNumber("456486768454531453453.456465415416453123");
+    auto n2 = createNumber("7874654153412.146551534564");
+
+    n1.multiply(n2);
+    EXPECT_EQ(n1.toString(), "3594675427188164949046079279342197.315943069945180624309620243372");
+
+    n1.multiply(LargeNumbers::LargeFloatImplementation<uint8_t>("0.0"));
+    EXPECT_EQ(n1.toString(), "0.0");
+}

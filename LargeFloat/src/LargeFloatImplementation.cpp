@@ -11,11 +11,17 @@
 
 namespace LargeNumbers {
     template<class T>
-    int LargeFloatImplementation<T>::DECIMAL_PRECISION = 100;
+    int LargeFloatImplementation<T>::DECIMAL_PRECISION = 200;
 
     template<class T>
     size_t LargeFloatImplementation<T>::PRECISION =
-            static_cast<size_t>(336.0 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
+            static_cast<size_t>(800 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
+
+    template<class T>
+    void LargeFloatImplementation<T>::setDecimalPrecision(int precision) {
+        DECIMAL_PRECISION = precision;
+        PRECISION = static_cast<size_t>((static_cast<size_t>((precision + 1) * log2(10)) + 1) / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;;
+    }
 
     template<class T>
     LargeFloatImplementation<T>::LargeFloatImplementation(): mantissa(LargeIntImplementation<T>()), exponent(0) {}
