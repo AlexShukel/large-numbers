@@ -25,8 +25,6 @@ enable_testing()
 add_subdirectory(LargeInt)
 add_subdirectory(LargeFloat)
 
-add_subdirectory(submissions)
-
 add_executable(ND1 main.cpp)
 target_link_libraries(ND1 large_int)
 target_include_directories(ND1 PUBLIC LargeInt/src)
