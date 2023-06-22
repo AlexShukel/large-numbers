@@ -3,9 +3,9 @@
 //
 
 #include "LargeFloat.h"
+#include "bubbleSort.h"
 #include <cassert>
 #include <iostream>
-#include <algorithm>
 
 using namespace LargeNumbers;
 
@@ -20,7 +20,7 @@ int myFind(LargeFloat *numbers, const LargeFloat &number, size_t n) {
 }
 
 bool compare(const LargeFloat &a, const LargeFloat &b) {
-    return a <= b;
+    return a < b;
 }
 
 void checkArrayIsSorted(LargeFloat *arr, size_t n) {
@@ -37,7 +37,7 @@ int main() {
     assert(myFind(numbers, LargeFloat("1.5"), n) == 2);
     assert(myFind(numbers, LargeFloat("0.5"), n) == -1);
 
-    std::sort(numbers, numbers + n);
+    bubbleSort(numbers, numbers + n, compare);
 
     for (auto &x: numbers) {
         std::cout << x.toString() << " ";
