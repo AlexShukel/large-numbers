@@ -50,7 +50,13 @@ namespace LargeNumbers {
 
         void add(LargeFloatImplementation other);
 
+        void subtract(LargeFloatImplementation other);
+
         int compare(const LargeFloatImplementation &other);
+
+        void negate();
+
+        bool isNegative() const;
     };
 }
 

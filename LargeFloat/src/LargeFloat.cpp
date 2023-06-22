@@ -90,6 +90,42 @@ namespace LargeNumbers {
         return copy;
     }
 
+    LargeFloat LargeFloat::operator+() const {
+        LargeFloat copy = *this;
+        if (copy.implementation->math.isNegative()) {
+            copy.implementation->math.negate();
+        }
+        return copy;
+    }
+
+    LargeFloat LargeFloat::operator-(const LargeNumbers::LargeFloat &other) {
+        LargeFloat copy = *this;
+        copy -= other;
+        return copy;
+    }
+
+    LargeFloat &LargeFloat::operator-=(const LargeNumbers::LargeFloat &other) {
+        implementation->math.subtract(other.implementation->math);
+        return *this;
+    }
+
+    LargeFloat &LargeFloat::operator--() {
+        implementation->math.subtract(LargeFloatImplementation<CoefficientType>(1));
+        return *this;
+    }
+
+    const LargeFloat LargeFloat::operator--(int) {
+        LargeFloat copy = *this;
+        --(*this);
+        return copy;
+    }
+
+    LargeFloat LargeFloat::operator-() const {
+        LargeFloat copy = *this;
+        copy.implementation->math.negate();
+        return copy;
+    }
+
     bool LargeFloat::operator<(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) < 0;
     }

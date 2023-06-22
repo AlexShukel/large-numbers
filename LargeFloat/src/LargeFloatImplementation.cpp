@@ -341,6 +341,22 @@ namespace LargeNumbers {
     }
 
     template<class T>
+    void LargeFloatImplementation<T>::subtract(LargeFloatImplementation<T> other) {
+        other.negate();
+        this->add(other);
+    }
+
+    template<class T>
+    void LargeFloatImplementation<T>::negate() {
+        mantissa.negate();
+    }
+
+    template<class T>
+    bool LargeFloatImplementation<T>::isNegative() const {
+        return mantissa.sign;
+    }
+
+    template<class T>
     int LargeFloatImplementation<T>::compare(const LargeFloatImplementation<T> &other) {
         if (mantissa.sign != other.mantissa.sign) {
             if (mantissa.sign > other.mantissa.sign) {
