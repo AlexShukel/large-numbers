@@ -17,15 +17,21 @@ namespace LargeNumbers {
     public:
         LargeFloat();
 
+        // Copy constructor
         LargeFloat(const LargeFloat &other);
 
+        // Copy assignment
         LargeFloat &operator=(const LargeFloat &other);
+
+        // Move constructor
+        LargeFloat(LargeFloat &&other) noexcept;
+
+        // Move assignment
+        LargeFloat &operator=(LargeFloat &&other) noexcept;
 
         explicit LargeFloat(const std::string &number);
 
-        LargeFloat(LargeFloat &&other) noexcept;
-
-        LargeFloat &operator=(LargeFloat &&other) noexcept;
+        explicit LargeFloat(int n);
 
         ~LargeFloat();
 

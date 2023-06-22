@@ -42,6 +42,8 @@ namespace LargeNumbers {
 
         explicit LargeFloatImplementation(std::string number);
 
+        explicit LargeFloatImplementation(int n);
+
         std::string toString() const;
 
         void multiply(const LargeFloatImplementation &multiplier);

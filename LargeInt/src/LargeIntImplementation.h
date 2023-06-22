@@ -52,6 +52,8 @@ namespace LargeNumbers {
 
         LargeIntImplementation(const std::vector<T> &coefficients, bool sign);
 
+        explicit LargeIntImplementation(int n);
+
         std::string toString() const;
 
         void add(const LargeIntImplementation &addend);

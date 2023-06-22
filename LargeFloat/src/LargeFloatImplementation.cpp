@@ -70,6 +70,11 @@ namespace LargeNumbers {
     }
 
     template<class T>
+    LargeFloatImplementation<T>::LargeFloatImplementation(int n): mantissa(LargeIntImplementation<T>(n)) {
+        exponent = std::max(0, static_cast<exponent_type>(mantissa.coefficients.size()) - 1);
+    }
+
+    template<class T>
     std::vector<T> LargeFloatImplementation<T>::getFractionSourceCoefficients(std::string source) const {
         std::vector<T> coefficients;
 

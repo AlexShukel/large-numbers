@@ -75,6 +75,29 @@ namespace LargeNumbers {
             coefficients), sign(sign) {}
 
     template<class T>
+    LargeIntImplementation<T>::LargeIntImplementation(int n): sign(false) {
+        if (n < 0) {
+            sign = true;
+            n *= -1;
+        }
+
+        int base = MAX_COEFFICIENT_VALUE + 1;
+
+        while (n > 0) {
+            coefficients.push_back(n % base);
+            n /= base;
+        }
+
+        if (coefficients.empty()) {
+            coefficients.push_back(0);
+        }
+
+        if (sign) {
+            toTwosComplement();
+        }
+    }
+
+    template<class T>
     void
     LargeIntImplementation<T>::coefficientsToBinary(std::string &binary, const std::vector<T> &coefficientsCopy) const {
         binary.resize(coefficientsCopy.size() * COEFFICIENT_BIT_SIZE);
@@ -126,6 +149,10 @@ namespace LargeNumbers {
     void LargeIntImplementation<T>::normalize() {
         T meaninglessValue = getSupplementDigit();
         trimBack(coefficients, meaninglessValue);
+
+        if (sign && areCoefficientsEmpty(coefficients)) {
+            coefficients.push_back(meaninglessValue);
+        }
 
         if (coefficients.empty()) {
             coefficients.push_back(meaninglessValue);

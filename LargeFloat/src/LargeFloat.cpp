@@ -47,6 +47,8 @@ namespace LargeNumbers {
         return *this;
     }
 
+    LargeFloat::LargeFloat(int n) : implementation(new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
+
     LargeFloat::~LargeFloat() {
         delete implementation;
     }

@@ -59,11 +59,31 @@ int myFind(myType *data, int n, myType value);
 void mySort(myType *data, int n);
 
 myType myFactorial(int n) {
-    return myType("0.0");
+    myType result(1);
+
+    for (int i = 2; i < n; ++i) {
+        result *= myType(i);
+    }
+
+    return result;
+}
+
+bool isPrime(int n) {
+    if (n == 1) {
+        return false;
+    }
+
+    for (int i = 2; i * i <= n; ++i) {
+        if (n % i == 0) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 myType myPrime(myType n) {
-    return myType("0.0");
+    return n;
 }
 
 myType myPow(double d, int p) {
