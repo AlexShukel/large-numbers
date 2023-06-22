@@ -79,6 +79,17 @@ namespace LargeNumbers {
         return *this;
     }
 
+    LargeFloat &LargeFloat::operator++() {
+        implementation->math.add(LargeFloatImplementation<CoefficientType>(1));
+        return *this;
+    }
+
+    const LargeFloat LargeFloat::operator++(int) {
+        LargeFloat copy = *this;
+        ++(*this);
+        return copy;
+    }
+
     bool LargeFloat::operator<(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) < 0;
     }

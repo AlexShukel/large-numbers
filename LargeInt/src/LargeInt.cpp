@@ -43,7 +43,7 @@ namespace LargeNumbers {
     }
 
     LargeInt &LargeInt::operator++() {
-        this->implementation->math.add(LargeIntImplementation<CoefficientType>("1"));
+        this->implementation->math.add(LargeIntImplementation<CoefficientType>(1));
         return *this;
     }
 
@@ -65,7 +65,7 @@ namespace LargeNumbers {
     }
 
     LargeInt &LargeInt::operator--() {
-        this->implementation->math.subtract(LargeIntImplementation<CoefficientType>("1"));
+        this->implementation->math.subtract(LargeIntImplementation<CoefficientType>(1));
         return *this;
     }
 

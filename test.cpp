@@ -68,20 +68,6 @@ myType myFactorial(int n) {
     return result;
 }
 
-bool isPrime(int n) {
-    if (n == 1) {
-        return false;
-    }
-
-    for (int i = 2; i * i <= n; ++i) {
-        if (n % i == 0) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 myType myPrime(myType n) {
     return n;
 }

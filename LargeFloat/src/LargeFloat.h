@@ -45,6 +45,10 @@ namespace LargeNumbers {
 
         LargeFloat &operator+=(const LargeFloat &other);
 
+        LargeFloat &operator++();
+
+        const LargeFloat operator++(int);
+
         bool operator<(const LargeFloat &other) const;
 
         bool operator<=(const LargeFloat &other) const;
