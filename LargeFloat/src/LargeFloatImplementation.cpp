@@ -11,11 +11,11 @@
 
 namespace LargeNumbers {
     template<class T>
-    int LargeFloatImplementation<T>::DECIMAL_PRECISION = 200;
+    int LargeFloatImplementation<T>::DECIMAL_PRECISION = 100;
 
     template<class T>
     size_t LargeFloatImplementation<T>::PRECISION =
-            static_cast<size_t>(800 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
+            static_cast<size_t>(672 / static_cast<double>(COEFFICIENT_BIT_SIZE)) + 1;
 
     template<class T>
     void LargeFloatImplementation<T>::setDecimalPrecision(int precision) {

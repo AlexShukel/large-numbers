@@ -178,6 +178,12 @@ namespace LargeNumbers {
     template<class T>
     void LargeIntImplementation<T>::shiftLeft(size_t shift) {
         coefficients.insert(coefficients.begin(), shift, 0);
+
+//        size_t idx = shift;
+//        for (size_t i = 0; i < shift; ++i) {
+//            coefficients[i] = coefficients[idx];
+//            idx = (idx + 1) % coefficients.size();
+//        }
     }
 
     template<class T>
