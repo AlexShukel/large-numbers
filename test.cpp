@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string.h>
 #include "LargeFloat.h"
+#include "LargeInt.h"
 #include "bubbleSort.h"
 
 // other includes and definitions
@@ -17,6 +18,7 @@ using namespace std;
 
 // define your datatype here
 typedef LargeNumbers::LargeFloat myType;
+typedef LargeNumbers::LargeInt myIntType;
 
 // convert from string to myType
 myType convert(string s) {
@@ -67,6 +69,18 @@ myType myFactorial(int n) {
 
     return result;
 }
+
+//bool isPrime(const myIntType &n) {
+//    if (n == 1) {
+//        return false;
+//    }
+//
+//    for (int i = 2; i*i <= n; i++) {
+//        if (n % i == 0) return 0;
+//    }
+//
+//    return 1;
+//}
 
 myType myPrime(myType n) {
     return n;

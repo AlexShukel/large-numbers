@@ -506,6 +506,23 @@ namespace LargeNumbers {
         return guess;
     }
 
+    template<class T>
+    void LargeFloatImplementation<T>::ceil() {
+        if (exponent < 0) {
+            exponent = 0;
+            mantissa = LargeIntImplementation<T>(1);
+            return;
+        }
+
+        if (exponent + 1 >= mantissa.coefficients.size()) {
+            return;
+        }
+
+        size_t shift = mantissa.coefficients.size() - (exponent + 1);
+        mantissa.coefficients.erase(mantissa.coefficients.begin(), mantissa.coefficients.begin() + shift);
+        mantissa.add(LargeIntImplementation<T>(1));
+    }
+
     // For debugging
     template
     class LargeFloatImplementation<uint8_t>;

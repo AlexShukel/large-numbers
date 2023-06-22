@@ -35,5 +35,7 @@ public:
 };
 
 int main() {
+    std::cout << floorf(-1.5f);
+
     return 0;
 }

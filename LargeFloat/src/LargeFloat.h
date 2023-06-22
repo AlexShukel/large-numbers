@@ -10,6 +10,8 @@
 namespace LargeNumbers {
     class LargeFloat {
     private:
+        friend class LargeInt;
+
         class Implementation;
 
         Implementation *implementation;
@@ -76,6 +78,8 @@ namespace LargeNumbers {
         bool operator==(const LargeFloat &other) const;
 
         bool operator!=(const LargeFloat &other) const;
+
+        void ceil();
     };
 }
 

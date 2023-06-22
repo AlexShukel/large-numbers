@@ -69,6 +69,8 @@ namespace LargeNumbers {
         static void setDecimalPrecision(int precision);
 
         void divide(LargeFloatImplementation divisor);
+
+        void ceil();
     };
 }
 

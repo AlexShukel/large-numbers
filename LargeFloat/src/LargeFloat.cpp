@@ -160,4 +160,8 @@ namespace LargeNumbers {
     bool LargeFloat::operator!=(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) != 0;
     }
+
+    void LargeFloat::ceil() {
+        implementation->math.ceil();
+    }
 }
