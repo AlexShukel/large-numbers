@@ -39,15 +39,15 @@ namespace LargeNumbers {
 
         std::string toString() const;
 
-        LargeFloat operator*(const LargeFloat &multiplier);
+        LargeFloat operator*(const LargeFloat &multiplier) const;
 
         LargeFloat &operator*=(const LargeFloat &multiplier);
 
-        LargeFloat operator/(const LargeFloat &other);
+        LargeFloat operator/(const LargeFloat &other) const;
 
         LargeFloat &operator/=(const LargeFloat &other);
 
-        LargeFloat operator+(const LargeFloat &other);
+        LargeFloat operator+(const LargeFloat &other) const;
 
         LargeFloat &operator+=(const LargeFloat &other);
 
@@ -57,7 +57,7 @@ namespace LargeNumbers {
 
         LargeFloat operator+() const;
 
-        LargeFloat operator-(const LargeFloat &other);
+        LargeFloat operator-(const LargeFloat &other) const;
 
         LargeFloat &operator-=(const LargeFloat &other);
 

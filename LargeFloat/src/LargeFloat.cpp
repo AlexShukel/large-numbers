@@ -57,7 +57,7 @@ namespace LargeNumbers {
         return this->implementation->math.toString();
     }
 
-    LargeFloat LargeFloat::operator*(const LargeFloat &multiplier) {
+    LargeFloat LargeFloat::operator*(const LargeFloat &multiplier) const {
         LargeFloat copy = *this;
         copy *= multiplier;
         return copy;
@@ -68,7 +68,7 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeFloat LargeFloat::operator/(const LargeNumbers::LargeFloat &other) {
+    LargeFloat LargeFloat::operator/(const LargeNumbers::LargeFloat &other) const {
         LargeFloat copy = *this;
         copy /= other;
         return copy;
@@ -79,7 +79,7 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeFloat LargeFloat::operator+(const LargeNumbers::LargeFloat &other) {
+    LargeFloat LargeFloat::operator+(const LargeNumbers::LargeFloat &other) const {
         LargeFloat copy = *this;
         copy += other;
         return copy;
@@ -109,7 +109,7 @@ namespace LargeNumbers {
         return copy;
     }
 
-    LargeFloat LargeFloat::operator-(const LargeNumbers::LargeFloat &other) {
+    LargeFloat LargeFloat::operator-(const LargeNumbers::LargeFloat &other) const {
         LargeFloat copy = *this;
         copy -= other;
         return copy;

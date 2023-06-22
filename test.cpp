@@ -17,100 +17,118 @@ class NotImplementedException {
 using namespace std;
 
 // define your datatype here
-typedef LargeNumbers::LargeFloat myType;
+typedef LargeNumbers::LargeFloat myFloatType;
 typedef LargeNumbers::LargeInt myIntType;
 
-// convert from string to myType
-myType convert(string s) {
-    return myType(s);
+myIntType oneInt(1);
+myIntType zeroInt(0);
+
+// convert from string to myFloatType
+myFloatType convert(string s) {
+    return myFloatType(s);
 }
 
-// convert from myType to string
-string toStr(myType m) {
+// convert from myFloatType to string
+string toStr(myFloatType m) {
     return m.toString();
 }
 
 // compute a factorial
-myType myFactorial(int n);
+myFloatType myFactorial(int n);
 
 // finds the next prime, bigger than n					
-myType myPrime(myType n);
+myFloatType myPrime(myFloatType n);
 
 // finds d to the power of (positive) p					
-myType myPow(double d, int p);
+myFloatType myPow(double d, int p);
 
 // finds (natural) logarithm of d				
-myType myLog(double d);
+myFloatType myLog(double d);
 
 // finds sinus of d						
-myType mySin(double d);
+myFloatType mySin(double d);
 
 // finds square root of d						
-myType mySqrt(double d);
+myFloatType mySqrt(double d);
 
 // finds a value of PI with n digits of precision (zeroes afterwards)						
-myType myPi(int n);
+myFloatType myPi(int n);
 
 // computes an average of n valus in an array 					
-myType myAvg(myType *data, int n);
+myFloatType myAvg(myFloatType *data, int n);
 
 // search for a value in an array of n numbers and return an index		
-int myFind(myType *data, int n, myType value);
+int myFind(myFloatType *data, int n, myFloatType value);
 
 // sorts data in an array of n numbers by (optimized) bubble sort algorithm
-void mySort(myType *data, int n);
+void mySort(myFloatType *data, int n);
 
-myType myFactorial(int n) {
-    myType result(1);
+myFloatType myFactorial(int n) {
+    myFloatType result(1);
 
     for (int i = 2; i < n; ++i) {
-        result *= myType(i);
+        result *= myFloatType(i);
     }
 
     return result;
 }
 
-//bool isPrime(const myIntType &n) {
-//    if (n == 1) {
-//        return false;
-//    }
-//
-//    for (int i = 2; i*i <= n; i++) {
-//        if (n % i == 0) return 0;
-//    }
-//
-//    return 1;
-//}
+bool isPrime(const myIntType &n) {
+    if (n == oneInt) {
+        return false;
+    }
 
-myType myPrime(myType n) {
-    return n;
+    for (myIntType i = myIntType(2); i * i <= n; i++) {
+        if (n % i == zeroInt) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-myType myPow(double d, int p) {
-    return myType("0.0");
+myFloatType myPrime(myFloatType n) {
+    n.ceil();
+
+    std::string decimal = n.toString();
+    decimal.erase(decimal.end() - 2, decimal.end());
+    myIntType integer(decimal);
+
+    while (!isPrime(integer)) {
+        ++integer;
+    }
+
+    std::string finalDecimal = integer.toString();
+    finalDecimal += ".0";
+
+    return myFloatType(finalDecimal);
 }
 
-myType myLog(double d) {
-    return myType("0.0");
+myFloatType myPow(double d, int p) {
+    return myFloatType("0.0");
 }
 
-myType mySin(double d) {
-    return myType("0.0");
+myFloatType myLog(double d) {
+    return myFloatType("0.0");
 }
 
-myType mySqrt(double d) {
-    return myType("0.0");
+myFloatType mySin(double d) {
+    return myFloatType("0.0");
 }
 
-myType myPi(int n) {
-    return myType("0.0");
+myFloatType mySqrt(double d) {
+    return myFloatType("0.0");
 }
 
-myType myAvg(myType *data, int n) {
-    return myType("0.0");
+myFloatType myPi(int n) {
+    return myFloatType("0.0");
 }
 
-int myFind(myType *data, int n, myType value) {
+myFloatType myAvg(myFloatType *data, int n) {
+    return myFloatType("0.0");
+}
+
+int myFind(myFloatType *data, int n, myFloatType value) {
     for (int i = 0; i < n; ++i) {
         if (data[i] == value) {
             return i;
@@ -120,11 +138,11 @@ int myFind(myType *data, int n, myType value) {
     return -1;
 }
 
-bool compare(const myType &a, const myType &b) {
+bool compare(const myFloatType &a, const myFloatType &b) {
     return a <= b;
 }
 
-void mySort(myType *data, int n) {
+void mySort(myFloatType *data, int n) {
     bubbleSort(data, data + n, compare);
 }
 
@@ -139,7 +157,7 @@ int main() {
         string s;
         double d;
         int n;
-        myType *data = NULL;
+        myFloatType *data = NULL;
         string output;
         switch (x) {
             case 1:
@@ -173,7 +191,7 @@ int main() {
                 break;
             case 8:
                 cin >> n;
-                data = new myType[n];
+                data = new myFloatType[n];
                 for (int i = 0; i < n; ++i) {
                     string s;
                     cin >> s;
@@ -184,7 +202,7 @@ int main() {
                 break;
             case 9:
                 cin >> n;
-                data = new myType[n];
+                data = new myFloatType[n];
                 for (int i = 0; i < n; ++i) {
                     string s;
                     cin >> s;
@@ -197,7 +215,7 @@ int main() {
                 break;
             case 10:
                 cin >> n;
-                data = new myType[n];
+                data = new myFloatType[n];
                 for (int i = 0; i < n; ++i) {
                     string s;
                     cin >> s;
