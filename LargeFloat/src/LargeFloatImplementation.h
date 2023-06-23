@@ -46,6 +46,8 @@ namespace LargeNumbers {
 
         LargeFloatImplementation(const LargeFloatImplementation<T> &other);
 
+        LargeFloatImplementation &operator=(const LargeFloatImplementation<T> &other);
+
         explicit LargeFloatImplementation(std::string number);
 
         explicit LargeFloatImplementation(int n);

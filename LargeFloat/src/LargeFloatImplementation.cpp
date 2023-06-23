@@ -36,7 +36,7 @@ namespace LargeNumbers {
         }
         eps.push_back('1');
 
-        EPSILON = LargeFloatImplementation<T>();
+        EPSILON = LargeFloatImplementation<T>(eps);
     }
 
     template<class T>
@@ -453,12 +453,13 @@ namespace LargeNumbers {
         exponent -= divisor.exponent + 1;
         divisor.exponent = -1;
 
+        size_t maxIterations = 100;
         size_t iterations = 0;
         // Initial guess
         LargeFloatImplementation<T> x = getInitialGuess(divisor);
         LargeFloatImplementation<T> two(2);
 
-        while (iterations < DECIMAL_PRECISION) {
+        while (iterations < maxIterations) {
             LargeFloatImplementation<T> temp = divisor;
             temp.multiply(x);
             LargeFloatImplementation<T> multiplier = two;
@@ -514,13 +515,23 @@ namespace LargeNumbers {
             return;
         }
 
-        if (exponent + 1 >= mantissa.coefficients.size()) {
+        if (exponent + 1 >= static_cast<exponent_type>(mantissa.coefficients.size())) {
             return;
         }
 
         size_t shift = mantissa.coefficients.size() - (exponent + 1);
         mantissa.coefficients.erase(mantissa.coefficients.begin(), mantissa.coefficients.begin() + shift);
         mantissa.add(LargeIntImplementation<T>(1));
+    }
+
+    template<class T>
+    LargeFloatImplementation<T> &LargeFloatImplementation<T>::operator=(const LargeFloatImplementation<T> &other) {
+        if (&other != this) {
+            mantissa = other.mantissa;
+            exponent = other.exponent;
+        }
+
+        return *this;
     }
 
     // For debugging
