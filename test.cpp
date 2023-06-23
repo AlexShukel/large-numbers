@@ -14,90 +14,90 @@ class NotImplementedException {
 };
 
 using namespace std;
+using namespace LargeNumbers;
 
 // define your datatype here
-typedef LargeNumbers::LargeFloat myFloatType;
-typedef LargeNumbers::LargeInt myIntType;
+typedef LargeFloat myType;
 
-// convert from string to myFloatType
-myFloatType convert(string s) {
-    return myFloatType(s);
+// convert from string to myType
+myType convert(string s) {
+    return myType(s);
 }
 
-// convert from myFloatType to string
-string toStr(myFloatType m) {
+// convert from myType to string
+string toStr(myType m) {
     return m.toString();
 }
 
 // compute a factorial
-myFloatType myFactorial(int n);
+myType myFactorial(int n);
 
 // finds the next prime, bigger than n					
-myFloatType myPrime(myFloatType n);
+myType myPrime(myType n);
 
 // finds d to the power of (positive) p					
-myFloatType myPow(double d, int p);
+myType myPow(double d, int p);
 
 // finds (natural) logarithm of d				
-myFloatType myLog(double d);
+myType myLog(double d);
 
 // finds sinus of d						
-myFloatType mySin(double d);
+myType mySin(double d);
 
 // finds square root of d						
-myFloatType mySqrt(double d);
+myType mySqrt(double d);
 
 // finds a value of PI with n digits of precision (zeroes afterwards)						
-myFloatType myPi(int n);
+myType myPi(int n);
 
 // computes an average of n valus in an array 					
-myFloatType myAvg(myFloatType *data, int n);
+myType myAvg(myType *data, int n);
 
 // search for a value in an array of n numbers and return an index		
-int myFind(myFloatType *data, int n, myFloatType value);
+int myFind(myType *data, int n, myType value);
 
 // sorts data in an array of n numbers by (optimized) bubble sort algorithm
-void mySort(myFloatType *data, int n);
+void mySort(myType *data, int n);
 
-myFloatType myFactorial(int n) {
-    return myFloatType(LargeNumbers::factorial(myIntType(n)));
+myType myFactorial(int n) {
+    return myType(LargeNumbers::factorial(LargeInt(n)));
 }
 
-myFloatType myPrime(myFloatType n) {
+myType myPrime(myType n) {
     n.floor();
 
     std::string decimal = n.toString();
     decimal.erase(decimal.end() - 2, decimal.end());
-    myIntType integer(decimal);
+    LargeInt integer(decimal);
 
-    return myFloatType(LargeNumbers::nextPrime(integer));
+    return myType(LargeNumbers::nextPrime(integer));
 }
 
-myFloatType myPow(double d, int p) {
-    return myFloatType("0.0");
+myType myPow(double d, int p) {
+    return LargeNumbers::pow(myType(d), LargeInt(p));
 }
 
-myFloatType myLog(double d) {
-    return myFloatType("0.0");
+myType myLog(double d) {
+    return myType("0.0");
 }
 
-myFloatType mySin(double d) {
-    return myFloatType("0.0");
+myType mySin(double d) {
+    return myType("0.0");
 }
 
-myFloatType mySqrt(double d) {
-    return myFloatType("0.0");
+myType mySqrt(double d) {
+    return myType("0.0");
 }
 
-myFloatType myPi(int n) {
-    return myFloatType("0.0");
+myType myPi(int n) {
+    return myType("0.0");
 }
 
-myFloatType myAvg(myFloatType *data, int n) {
-    return myFloatType("0.0");
+myType myAvg(myType *data, int n) {
+    return myType("0.0");
 }
 
-int myFind(myFloatType *data, int n, myFloatType value) {
+int myFind(myType *data, int n, myType value) {
     for (int i = 0; i < n; ++i) {
         if (data[i] == value) {
             return i;
@@ -107,11 +107,11 @@ int myFind(myFloatType *data, int n, myFloatType value) {
     return -1;
 }
 
-bool compare(const myFloatType &a, const myFloatType &b) {
+bool compare(const myType &a, const myType &b) {
     return a <= b;
 }
 
-void mySort(myFloatType *data, int n) {
+void mySort(myType *data, int n) {
     bubbleSort(data, data + n, compare);
 }
 
@@ -126,7 +126,7 @@ int main() {
         string s;
         double d;
         int n;
-        myFloatType *data = NULL;
+        myType *data = NULL;
         string output;
         switch (x) {
             case 1:
@@ -160,7 +160,7 @@ int main() {
                 break;
             case 8:
                 cin >> n;
-                data = new myFloatType[n];
+                data = new myType[n];
                 for (int i = 0; i < n; ++i) {
                     string s;
                     cin >> s;
@@ -171,7 +171,7 @@ int main() {
                 break;
             case 9:
                 cin >> n;
-                data = new myFloatType[n];
+                data = new myType[n];
                 for (int i = 0; i < n; ++i) {
                     string s;
                     cin >> s;
@@ -184,7 +184,7 @@ int main() {
                 break;
             case 10:
                 cin >> n;
-                data = new myFloatType[n];
+                data = new myType[n];
                 for (int i = 0; i < n; ++i) {
                     string s;
                     cin >> s;

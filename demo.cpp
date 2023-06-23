@@ -72,9 +72,19 @@ void testFactorial() {
     assert(factorial(LargeInt(5)).toString() == "120");
 }
 
+void testPow() {
+    assert(pow(LargeFloat(0), LargeInt(0)).toString() == "1.0");
+    assert(pow(LargeFloat("0.1"), LargeInt(1)).toString() == "0.1");
+    assert(pow(LargeFloat("0.1"), LargeInt(2)).toString() == "0.01");
+    assert(pow(LargeFloat("0.1"), LargeInt(3)).toString() == "0.001");
+    assert(pow(LargeFloat("1.1"), LargeInt(3)).toString() == "1.331");
+    assert(pow(LargeFloat("94567342.94567132595"), LargeInt(4)).toString() == "79976933344681599935603491186526.49198674427702399196065870258573151927700625");
+}
+
 int main() {
     testFactorial();
     testPrime();
+    testPow();
     testFind();
     testSort();
 
