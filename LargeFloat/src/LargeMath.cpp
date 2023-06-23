@@ -44,4 +44,18 @@ namespace LargeNumbers {
 
         return n;
     }
+
+    LargeFloat pow(const LargeFloat &n, const LargeInt &p) {
+        if (p == zero) {
+            return LargeFloat(1);
+        }
+
+        LargeFloat result = n;
+
+        for (LargeInt i = one; i < p; ++i) {
+            result *= n;
+        }
+
+        return result;
+    }
 }

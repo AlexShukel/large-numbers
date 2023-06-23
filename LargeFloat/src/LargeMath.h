@@ -14,6 +14,9 @@ namespace LargeNumbers {
 
     // Finds the next prime number greater than n
     LargeInt nextPrime(LargeInt n);
+
+    // Raise n to the power p
+    LargeFloat pow(const LargeFloat &n, const LargeInt &p);
 }
 
 #endif //ND1_LARGEMATH_H
