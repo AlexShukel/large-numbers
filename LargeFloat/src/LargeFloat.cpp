@@ -55,6 +55,8 @@ namespace LargeNumbers {
         *this = LargeFloat(decimal);
     }
 
+    LargeFloat::LargeFloat(double n) : implementation(new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
+
     LargeFloat::~LargeFloat() {
         delete implementation;
     }

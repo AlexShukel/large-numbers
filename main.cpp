@@ -1,14 +1,9 @@
 #include <iostream>
-#include <cmath>
+#include <limits>
 
 int main() {
-    double value = 123.456;
-    int exponent;
-    double mantissa = frexp(value, &exponent);
-
-    std::cout << "Value: " << value << std::endl;
-    std::cout << "Mantissa: " << mantissa << std::endl;
-    std::cout << "Exponent: " << exponent << std::endl;
-
+//    double d = 123.456456456;
+//    std::cout << std::to_string(d);
+    std::cout << std::numeric_limits<double>::digits10;
     return 0;
 }

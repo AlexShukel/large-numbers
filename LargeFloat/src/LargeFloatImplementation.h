@@ -54,6 +54,8 @@ namespace LargeNumbers {
 
         LargeFloatImplementation(const LargeIntImplementation<T> &mantissa, exponent_type exponent);
 
+        explicit LargeFloatImplementation(double n);
+
         std::string toString() const;
 
         void multiply(const LargeFloatImplementation &multiplier);

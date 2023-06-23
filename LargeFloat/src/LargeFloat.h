@@ -38,6 +38,8 @@ namespace LargeNumbers {
 
         explicit LargeFloat(const LargeInt &n);
 
+        explicit LargeFloat(double n);
+
         ~LargeFloat();
 
         std::string toString() const;
