@@ -21,7 +21,10 @@ typedef LargeNumbers::LargeFloat myFloatType;
 typedef LargeNumbers::LargeInt myIntType;
 
 myIntType oneInt(1);
+myIntType twoInt(2);
 myIntType zeroInt(0);
+
+myFloatType twoFloat(2);
 
 // convert from string to myFloatType
 myFloatType convert(string s) {
@@ -93,6 +96,10 @@ myFloatType myPrime(myFloatType n) {
     std::string decimal = n.toString();
     decimal.erase(decimal.end() - 2, decimal.end());
     myIntType integer(decimal);
+
+    if (integer < twoInt) {
+        return twoFloat;
+    }
 
     while (!isPrime(integer)) {
         ++integer;
