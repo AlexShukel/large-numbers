@@ -403,8 +403,8 @@ namespace LargeNumbers {
         }
 
         if (exponent != other.exponent) {
-            bool isFirstZero = mantissa.coefficients.empty();
-            bool isSecondZero = other.mantissa.coefficients.empty();
+            bool isFirstZero = mantissa.isZero();
+            bool isSecondZero = other.mantissa.isZero();
 
             if (isFirstZero) {
                 return -1;
@@ -424,7 +424,7 @@ namespace LargeNumbers {
 
         bool wasNegated = false;
 
-        if (firstMantissa.getSign()) {
+        if (firstMantissa.sign) {
             firstMantissa.negate();
             secondMantissa.negate();
             wasNegated = true;

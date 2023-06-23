@@ -72,7 +72,7 @@ TEST(large_float, comparison_edge_cases) {
 TEST(large_float, comparison_crash_test) {
     LargeNumbers::LargeFloatImplementation<uint8_t> n1("512.0");
     LargeNumbers::LargeFloatImplementation<uint8_t> n2("0.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n3("1.5");
+    LargeNumbers::LargeFloatImplementation<uint8_t> n3("0.5");
     LargeNumbers::LargeFloatImplementation<uint8_t> n4("-1.25");
 
     EXPECT_GT(n1.compare(n2), 0);
