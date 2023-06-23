@@ -508,10 +508,10 @@ namespace LargeNumbers {
     }
 
     template<class T>
-    void LargeFloatImplementation<T>::ceil() {
+    void LargeFloatImplementation<T>::floor() {
         if (exponent < 0) {
             exponent = 0;
-            mantissa = LargeIntImplementation<T>(1);
+            mantissa = LargeIntImplementation<T>(0);
             return;
         }
 
@@ -521,7 +521,6 @@ namespace LargeNumbers {
 
         size_t shift = mantissa.coefficients.size() - (exponent + 1);
         mantissa.coefficients.erase(mantissa.coefficients.begin(), mantissa.coefficients.begin() + shift);
-        mantissa.add(LargeIntImplementation<T>(1));
     }
 
     template<class T>

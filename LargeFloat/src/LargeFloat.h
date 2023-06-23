@@ -83,6 +83,8 @@ namespace LargeNumbers {
         bool operator!=(const LargeFloat &other) const;
 
         void ceil();
+
+        void floor();
     };
 }
 

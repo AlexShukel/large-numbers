@@ -72,7 +72,7 @@ namespace LargeNumbers {
 
         void divide(LargeFloatImplementation divisor);
 
-        void ceil();
+        void floor();
     };
 }
 

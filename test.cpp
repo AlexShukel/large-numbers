@@ -19,12 +19,6 @@ using namespace std;
 typedef LargeNumbers::LargeFloat myFloatType;
 typedef LargeNumbers::LargeInt myIntType;
 
-myIntType oneInt(1);
-myIntType twoInt(2);
-myIntType zeroInt(0);
-
-myFloatType twoFloat(2);
-
 // convert from string to myFloatType
 myFloatType convert(string s) {
     return myFloatType(s);
@@ -69,39 +63,14 @@ myFloatType myFactorial(int n) {
     return myFloatType(LargeNumbers::factorial(myIntType(n)));
 }
 
-bool isPrime(const myIntType &n) {
-    if (n == oneInt) {
-        return false;
-    }
-
-    for (myIntType i = myIntType(2); i * i <= n; i++) {
-        if (n % i == zeroInt) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 myFloatType myPrime(myFloatType n) {
-    n.ceil();
+    n.floor();
 
     std::string decimal = n.toString();
     decimal.erase(decimal.end() - 2, decimal.end());
     myIntType integer(decimal);
 
-    if (integer < twoInt) {
-        return twoFloat;
-    }
-
-    while (!isPrime(integer)) {
-        ++integer;
-    }
-
-    std::string finalDecimal = integer.toString();
-    finalDecimal += ".0";
-
-    return myFloatType(finalDecimal);
+    return myFloatType(LargeNumbers::nextPrime(integer));
 }
 
 myFloatType myPow(double d, int p) {

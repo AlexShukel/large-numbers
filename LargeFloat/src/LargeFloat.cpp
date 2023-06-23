@@ -168,6 +168,11 @@ namespace LargeNumbers {
     }
 
     void LargeFloat::ceil() {
-        implementation->math.ceil();
+        implementation->math.floor();
+        implementation->math.add(LargeFloatImplementation<CoefficientType>(1));
+    }
+
+    void LargeFloat::floor() {
+        implementation->math.floor();
     }
 }

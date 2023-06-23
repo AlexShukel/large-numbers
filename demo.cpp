@@ -43,45 +43,14 @@ void testSort() {
     checkArrayIsSorted(numbers, n);
 }
 
-LargeInt oneInt(1);
-LargeInt twoInt(2);
-LargeInt zeroInt(0);
-
-LargeFloat twoFloat(2);
-
-bool isPrime(const LargeInt &n) {
-    if (n == oneInt) {
-        return false;
-    }
-
-    for (LargeInt i = LargeInt(2); i * i <= n; i++) {
-        if (n % i == zeroInt) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 LargeFloat findPrime(LargeFloat n) {
-    n.ceil();
+    n.floor();
 
     std::string decimal = n.toString();
     decimal.erase(decimal.end() - 2, decimal.end());
     LargeInt integer(decimal);
 
-    if (integer < twoInt) {
-        return twoFloat;
-    }
-
-    while (!isPrime(integer)) {
-        ++integer;
-    }
-
-    std::string finalDecimal = integer.toString();
-    finalDecimal += ".0";
-
-    return LargeFloat(finalDecimal);
+    return LargeFloat(LargeNumbers::nextPrime(integer));
 }
 
 void testPrime() {
@@ -106,9 +75,9 @@ void testFactorial() {
 
 int main() {
     testFactorial();
+    testPrime();
     testFind();
     testSort();
-    testPrime();
 
     std::cout << "Tests passed successfully!" << std::endl;
     return 0;
