@@ -49,6 +49,12 @@ namespace LargeNumbers {
 
     LargeFloat::LargeFloat(int n) : implementation(new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
 
+    LargeFloat::LargeFloat(const LargeInt &n) : implementation(nullptr) {
+        std::string decimal = n.toString();
+        decimal += ".0";
+        *this = LargeFloat(decimal);
+    }
+
     LargeFloat::~LargeFloat() {
         delete implementation;
     }
@@ -57,7 +63,7 @@ namespace LargeNumbers {
         return this->implementation->math.toString();
     }
 
-    LargeFloat LargeFloat::operator*(const LargeFloat &multiplier) {
+    LargeFloat LargeFloat::operator*(const LargeFloat &multiplier) const {
         LargeFloat copy = *this;
         copy *= multiplier;
         return copy;
@@ -68,7 +74,18 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeFloat LargeFloat::operator+(const LargeNumbers::LargeFloat &other) {
+    LargeFloat LargeFloat::operator/(const LargeNumbers::LargeFloat &other) const {
+        LargeFloat copy = *this;
+        copy /= other;
+        return copy;
+    }
+
+    LargeFloat &LargeFloat::operator/=(const LargeNumbers::LargeFloat &other) {
+        implementation->math.divide(other.implementation->math);
+        return *this;
+    }
+
+    LargeFloat LargeFloat::operator+(const LargeNumbers::LargeFloat &other) const {
         LargeFloat copy = *this;
         copy += other;
         return copy;
@@ -98,7 +115,7 @@ namespace LargeNumbers {
         return copy;
     }
 
-    LargeFloat LargeFloat::operator-(const LargeNumbers::LargeFloat &other) {
+    LargeFloat LargeFloat::operator-(const LargeNumbers::LargeFloat &other) const {
         LargeFloat copy = *this;
         copy -= other;
         return copy;
@@ -148,5 +165,14 @@ namespace LargeNumbers {
 
     bool LargeFloat::operator!=(const LargeFloat &other) const {
         return implementation->math.compare(other.implementation->math) != 0;
+    }
+
+    void LargeFloat::ceil() {
+        implementation->math.floor();
+        implementation->math.add(LargeFloatImplementation<CoefficientType>(1));
+    }
+
+    void LargeFloat::floor() {
+        implementation->math.floor();
     }
 }

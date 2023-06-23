@@ -39,7 +39,7 @@ namespace LargeNumbers {
 
         void negate();
 
-        std::string normalizeDecimalString(const std::string &number);
+        void normalizeDecimalString(std::string &number);
 
         void invertCoefficients();
 
@@ -48,7 +48,7 @@ namespace LargeNumbers {
     public:
         LargeIntImplementation();
 
-        explicit LargeIntImplementation(const std::string &number);
+        explicit LargeIntImplementation(std::string number);
 
         LargeIntImplementation(const std::vector<T> &coefficients, bool sign);
 

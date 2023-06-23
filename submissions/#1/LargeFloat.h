@@ -5,11 +5,14 @@
 #ifndef ND1_LARGEFLOAT_H
 #define ND1_LARGEFLOAT_H
 
+#include "LargeInt.h"
 #include <string>
 
 namespace LargeNumbers {
     class LargeFloat {
     private:
+        friend class LargeInt;
+
         class Implementation;
 
         Implementation *implementation;
@@ -33,15 +36,21 @@ namespace LargeNumbers {
 
         explicit LargeFloat(int n);
 
+        explicit LargeFloat(const LargeInt &n);
+
         ~LargeFloat();
 
         std::string toString() const;
 
-        LargeFloat operator*(const LargeFloat &multiplier);
+        LargeFloat operator*(const LargeFloat &multiplier) const;
 
         LargeFloat &operator*=(const LargeFloat &multiplier);
 
-        LargeFloat operator+(const LargeFloat &other);
+        LargeFloat operator/(const LargeFloat &other) const;
+
+        LargeFloat &operator/=(const LargeFloat &other);
+
+        LargeFloat operator+(const LargeFloat &other) const;
 
         LargeFloat &operator+=(const LargeFloat &other);
 
@@ -51,7 +60,7 @@ namespace LargeNumbers {
 
         LargeFloat operator+() const;
 
-        LargeFloat operator-(const LargeFloat &other);
+        LargeFloat operator-(const LargeFloat &other) const;
 
         LargeFloat &operator-=(const LargeFloat &other);
 
@@ -72,6 +81,10 @@ namespace LargeNumbers {
         bool operator==(const LargeFloat &other) const;
 
         bool operator!=(const LargeFloat &other) const;
+
+        void ceil();
+
+        void floor();
     };
 }
 

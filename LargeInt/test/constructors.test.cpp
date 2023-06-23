@@ -33,4 +33,7 @@ TEST(large_int, int_constructor) {
 
     LargeNumbers::LargeIntImplementation<uint8_t> n9(7877);
     EXPECT_EQ(n9.toString(), "7877");
+
+    LargeNumbers::LargeIntImplementation<uint8_t> n10(2);
+    EXPECT_EQ(n10.toString(), "2");
 }

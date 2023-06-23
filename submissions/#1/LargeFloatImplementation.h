@@ -35,14 +35,24 @@ namespace LargeNumbers {
 
         void adjustPrecision();
 
+        bool isCloseToOne() const;
+
+        LargeFloatImplementation getInitialGuess(const LargeFloatImplementation &divisor);
+
     public:
+        static LargeFloatImplementation<T> EPSILON;
+
         LargeFloatImplementation();
 
         LargeFloatImplementation(const LargeFloatImplementation<T> &other);
 
+        LargeFloatImplementation &operator=(const LargeFloatImplementation<T> &other);
+
         explicit LargeFloatImplementation(std::string number);
 
         explicit LargeFloatImplementation(int n);
+
+        LargeFloatImplementation(const LargeIntImplementation<T> &mantissa, exponent_type exponent);
 
         std::string toString() const;
 
@@ -57,6 +67,12 @@ namespace LargeNumbers {
         void negate();
 
         bool isNegative() const;
+
+        static void setDecimalPrecision(int precision);
+
+        void divide(LargeFloatImplementation divisor);
+
+        void floor();
     };
 }
 

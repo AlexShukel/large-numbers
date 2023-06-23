@@ -103,7 +103,7 @@ int myFind(myType *data, int n, myType value) {
 }
 
 bool compare(const myType &a, const myType &b) {
-    return a <= b;
+    return a < b;
 }
 
 void mySort(myType *data, int n) {

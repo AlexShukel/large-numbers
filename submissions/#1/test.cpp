@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string.h>
 #include "LargeFloat.h"
+#include "LargeMath.h"
 #include "bubbleSort.h"
 
 // other includes and definitions
@@ -14,6 +15,7 @@ class NotImplementedException {
 };
 
 using namespace std;
+using namespace LargeNumbers;
 
 // define your datatype here
 typedef LargeNumbers::LargeFloat myType;
@@ -59,17 +61,17 @@ int myFind(myType *data, int n, myType value);
 void mySort(myType *data, int n);
 
 myType myFactorial(int n) {
-    myType result(1);
-
-    for (int i = 2; i < n; ++i) {
-        result *= myType(i);
-    }
-
-    return result;
+    return myType(LargeInt(n));
 }
 
 myType myPrime(myType n) {
-    return n;
+    n.floor();
+
+    std::string decimal = n.toString();
+    decimal.erase(decimal.end() - 2, decimal.end());
+    LargeInt integer(decimal);
+
+    return myType(LargeNumbers::nextPrime(integer));
 }
 
 myType myPow(double d, int p) {
@@ -107,7 +109,7 @@ int myFind(myType *data, int n, myType value) {
 }
 
 bool compare(const myType &a, const myType &b) {
-    return a <= b;
+    return a < b;
 }
 
 void mySort(myType *data, int n) {

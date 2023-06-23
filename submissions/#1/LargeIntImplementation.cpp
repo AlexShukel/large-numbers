@@ -17,15 +17,15 @@ namespace LargeNumbers {
     LargeIntImplementation<T>::LargeIntImplementation(): sign(false), coefficients({0}) {}
 
     template<class T>
-    LargeIntImplementation<T>::LargeIntImplementation(const std::string &number) {
+    LargeIntImplementation<T>::LargeIntImplementation(std::string number) {
         if (!std::regex_match(number, std::regex("^-?\\d+$"))) {
             throw std::invalid_argument(R"(LargeInt validation error: number does not match regex format "^-?\d+$")");
         }
 
         sign = number[0] == '-';
-        std::string normalizedDecimal = normalizeDecimalString(number);
+        normalizeDecimalString(number);
 
-        if (isStringZero(normalizedDecimal)) {
+        if (number.empty()) {
             sign = false;
             coefficients.push_back(0);
             return;
@@ -34,9 +34,9 @@ namespace LargeNumbers {
         std::bitset<COEFFICIENT_BIT_SIZE> coefficient = 0;
         int coefficientSize = 0;
 
-        while (!isStringZero(normalizedDecimal)) {
+        while (!isStringZero(number)) {
             coefficient >>= 1;
-            coefficient[COEFFICIENT_BIT_SIZE - 1] = charToDigit(normalizedDecimal[normalizedDecimal.size() - 1]) % 2;
+            coefficient[COEFFICIENT_BIT_SIZE - 1] = charToDigit(number[number.size() - 1]) % 2;
             ++coefficientSize;
 
             if (coefficientSize == COEFFICIENT_BIT_SIZE) {
@@ -46,7 +46,7 @@ namespace LargeNumbers {
             }
 
             uint8_t nextAdditive = 0;
-            for (char &character: normalizedDecimal) {
+            for (char &character: number) {
                 uint8_t additive = nextAdditive;
                 uint8_t digit = charToDigit(character);
 
@@ -399,17 +399,16 @@ namespace LargeNumbers {
     }
 
     template<class T>
-    std::string LargeIntImplementation<T>::normalizeDecimalString(const std::string &number) {
-        bool numberSign = number[0] == '-';
-        auto from = std::find_if_not(number.begin() + numberSign, number.end(), [](const char &c) {
+    void LargeIntImplementation<T>::normalizeDecimalString(std::string &number) {
+        if (number[0] == '-') {
+            number.erase(number.begin());
+        }
+
+        auto from = std::find_if_not(number.begin(), number.end(), [](const char &c) {
             return c == '0';
         });
 
-        if (from == number.end()) {
-            return number;
-        }
-
-        return std::string(from, number.end());
+        number.erase(number.begin(), from);
     }
 
     template<class T>

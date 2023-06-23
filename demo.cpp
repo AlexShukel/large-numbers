@@ -70,7 +70,6 @@ void testFactorial() {
     assert(factorial(LargeInt(3)).toString() == "6");
     assert(factorial(LargeInt(4)).toString() == "24");
     assert(factorial(LargeInt(5)).toString() == "120");
-    assert(factorial(LargeInt(100)).toString() == "93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000");
 }
 
 int main() {

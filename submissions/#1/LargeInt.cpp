@@ -23,6 +23,8 @@ namespace LargeNumbers {
     LargeInt::LargeInt(const std::string &number) : implementation(
             new Implementation(LargeIntImplementation<CoefficientType>(number))) {}
 
+    LargeInt::LargeInt(int n) : implementation(new Implementation(LargeIntImplementation<CoefficientType>(n))) {}
+
     LargeInt::~LargeInt() {
         delete implementation;
     }
@@ -36,7 +38,7 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeInt LargeInt::operator+(const LargeNumbers::LargeInt &other) {
+    LargeInt LargeInt::operator+(const LargeNumbers::LargeInt &other) const {
         LargeInt copy = *this;
         copy += other;
         return copy;
@@ -80,7 +82,7 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeInt LargeInt::operator*(const LargeNumbers::LargeInt &other) {
+    LargeInt LargeInt::operator*(const LargeNumbers::LargeInt &other) const {
         LargeInt copy = *this;
         copy *= other;
         return copy;
@@ -91,7 +93,7 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeInt LargeInt::operator/(const LargeNumbers::LargeInt &other) {
+    LargeInt LargeInt::operator/(const LargeNumbers::LargeInt &other) const {
         LargeInt copy = *this;
         copy /= other;
         return copy;
@@ -102,7 +104,7 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeInt LargeInt::operator%(const LargeNumbers::LargeInt &other) {
+    LargeInt LargeInt::operator%(const LargeNumbers::LargeInt &other) const {
         LargeInt copy = *this;
         copy %= other;
         return copy;

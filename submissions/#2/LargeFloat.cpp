@@ -49,6 +49,12 @@ namespace LargeNumbers {
 
     LargeFloat::LargeFloat(int n) : implementation(new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
 
+    LargeFloat::LargeFloat(const LargeInt &n) : implementation(nullptr) {
+        std::string decimal = n.toString();
+        decimal += ".0";
+        *this = LargeFloat(decimal);
+    }
+
     LargeFloat::~LargeFloat() {
         delete implementation;
     }
@@ -162,6 +168,11 @@ namespace LargeNumbers {
     }
 
     void LargeFloat::ceil() {
-        implementation->math.ceil();
+        implementation->math.floor();
+        implementation->math.add(LargeFloatImplementation<CoefficientType>(1));
+    }
+
+    void LargeFloat::floor() {
+        implementation->math.floor();
     }
 }

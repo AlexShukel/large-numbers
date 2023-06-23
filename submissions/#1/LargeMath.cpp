@@ -5,10 +5,6 @@
 #include "LargeMath.h"
 
 namespace LargeNumbers {
-    LargeInt one(1);
-    LargeInt two(2);
-    LargeInt zero(0);
-
     LargeInt factorial(const LargeInt &n) {
         LargeInt result(1);
 
@@ -20,6 +16,9 @@ namespace LargeNumbers {
     }
 
     bool isPrime(const LargeInt &n) {
+        LargeInt one(1);
+        LargeInt zero(0);
+
         if (n == one) {
             return false;
         }
@@ -34,6 +33,8 @@ namespace LargeNumbers {
     }
 
     LargeInt nextPrime(LargeInt n) {
+        LargeInt two(2);
+
         if (n < two) {
             return two;
         }
@@ -46,6 +47,9 @@ namespace LargeNumbers {
     }
 
     LargeFloat pow(const LargeFloat &n, const LargeInt &p) {
+        LargeInt one(1);
+        LargeInt zero(0);
+
         if (p == zero) {
             return LargeFloat(1);
         }
