@@ -5,6 +5,7 @@
 #ifndef ND1_LARGEFLOAT_H
 #define ND1_LARGEFLOAT_H
 
+#include "LargeInt.h"
 #include <string>
 
 namespace LargeNumbers {
@@ -34,6 +35,8 @@ namespace LargeNumbers {
         explicit LargeFloat(const std::string &number);
 
         explicit LargeFloat(int n);
+
+        explicit LargeFloat(const LargeInt &n);
 
         ~LargeFloat();
 

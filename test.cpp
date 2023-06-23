@@ -3,8 +3,7 @@
 #include <string>
 #include <iostream>
 #include <string.h>
-#include "LargeFloat.h"
-#include "LargeInt.h"
+#include "LargeMath.h"
 #include "bubbleSort.h"
 
 // other includes and definitions
@@ -67,13 +66,7 @@ int myFind(myFloatType *data, int n, myFloatType value);
 void mySort(myFloatType *data, int n);
 
 myFloatType myFactorial(int n) {
-    myFloatType result(1);
-
-    for (int i = 2; i < n; ++i) {
-        result *= myFloatType(i);
-    }
-
-    return result;
+    return myFloatType(LargeNumbers::factorial(myIntType(n)));
 }
 
 bool isPrime(const myIntType &n) {

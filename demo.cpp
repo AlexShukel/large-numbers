@@ -2,8 +2,7 @@
 // Created by alexs on 2023-06-21.
 //
 
-#include "LargeFloat.h"
-#include "LargeInt.h"
+#include "LargeMath.h"
 #include "bubbleSort.h"
 #include <cassert>
 #include <iostream>
@@ -95,7 +94,18 @@ void testPrime() {
     assert(findPrime(LargeFloat("6920.0")).toString() == "6947.0");
 }
 
+void testFactorial() {
+    assert(factorial(LargeInt(0)).toString() == "1");
+    assert(factorial(LargeInt(1)).toString() == "1");
+    assert(factorial(LargeInt(2)).toString() == "2");
+    assert(factorial(LargeInt(3)).toString() == "6");
+    assert(factorial(LargeInt(4)).toString() == "24");
+    assert(factorial(LargeInt(5)).toString() == "120");
+    assert(factorial(LargeInt(100)).toString() == "93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000");
+}
+
 int main() {
+    testFactorial();
     testFind();
     testSort();
     testPrime();

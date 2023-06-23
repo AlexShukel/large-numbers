@@ -3,6 +3,7 @@
 #include <cassert>
 #include <bitset>
 #include <algorithm>
+#include <cmath>
 #include "LargeIntImplementation.h"
 
 /**
