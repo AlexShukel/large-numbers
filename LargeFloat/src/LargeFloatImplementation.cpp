@@ -220,29 +220,7 @@ namespace LargeNumbers {
     template<class T>
     bool LargeFloatImplementation<T>::roundFractionalString(std::string &fraction) const {
         if (fraction.size() > static_cast<size_t>(DECIMAL_PRECISION)) {
-            char last = fraction.back();
-            fraction.pop_back();
-
-            bool shouldIncrementIntegral = false;
-
-            if (last >= '5') {
-                for (auto it = fraction.rbegin(); it != fraction.rend(); ++it) {
-                    ++(*it);
-
-                    if (*it > '9') {
-                        *it = '0';
-                        shouldIncrementIntegral = true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-
-            trimBack(fraction, '0');
-
-            if (fraction.empty()) {
-                return shouldIncrementIntegral;
-            }
+            return roundStringNumber(fraction);
         }
 
         return false;

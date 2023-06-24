@@ -32,3 +32,31 @@ uint8_t euclideanDivision(std::string &binary) {
 
     return remainder;
 }
+
+bool roundStringNumber(std::string &number) {
+    char last = number.back();
+    number.pop_back();
+
+    bool shouldIncrementIntegral = false;
+
+    if (last >= '5') {
+        for (auto it = number.rbegin(); it != number.rend(); ++it) {
+            ++(*it);
+
+            if (*it > '9') {
+                *it = '0';
+                shouldIncrementIntegral = true;
+            } else {
+                break;
+            }
+        }
+    }
+
+    trimBack(number, '0');
+
+    if (number.empty()) {
+        return shouldIncrementIntegral;
+    }
+
+    return false;
+}

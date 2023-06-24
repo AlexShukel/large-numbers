@@ -4,6 +4,7 @@
 
 #include "LargeMath.h"
 #include "TemplateMath.h"
+#include "utils.h"
 
 namespace LargeNumbers {
     LargeInt factorial(const LargeInt &n) {
@@ -113,6 +114,13 @@ namespace LargeNumbers {
         LargeFloat temp = LargeFloat(2) * sqrt(LargeFloat(2)) / LargeFloat(9801);
         LargeFloat invertedPi = sum * temp;
 
-        return LargeFloat(1) / invertedPi;
+        LargeFloat pi = LargeFloat(1) / invertedPi;
+
+        std::string fraction = pi.toString().substr(2);
+        if (precision + 1 < fraction.size()) {
+            fraction.erase(fraction.begin() + precision + 1, fraction.end());
+            roundStringNumber(fraction);
+        }
+        return LargeFloat("3." + fraction);
     }
 }

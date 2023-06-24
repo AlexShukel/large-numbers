@@ -90,7 +90,7 @@ myType mySqrt(double d) {
 }
 
 myType myPi(int n) {
-    return myType("0.0");
+    return LargeNumbers::pi(n);
 }
 
 myType myAvg(myType *data, int n) {

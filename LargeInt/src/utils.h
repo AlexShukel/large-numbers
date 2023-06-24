@@ -19,6 +19,8 @@ bool isStringZero(const std::string &number);
 
 uint8_t euclideanDivision(std::string &binary);
 
+bool roundStringNumber(std::string &number);
+
 template<class T>
 bool areCoefficientsEmpty(const std::vector<T> &coefficients) {
     return std::all_of(coefficients.begin(), coefficients.end(), [](const T &c) {
