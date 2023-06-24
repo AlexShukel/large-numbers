@@ -369,7 +369,7 @@ namespace LargeNumbers {
         trimFront(mantissa.coefficients, mantissa.getSupplementDigit());
 
         if (mantissa.coefficients.empty()) {
-            mantissa.coefficients.push_back(0);
+            mantissa.coefficients.push_back(mantissa.getSupplementDigit());
             exponent = 0;
         } else {
             exponent = finalExponent;

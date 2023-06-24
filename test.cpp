@@ -78,7 +78,7 @@ myType myPow(double d, int p) {
 }
 
 myType myLog(double d) {
-    return myType("0.0");
+    return LargeNumbers::ln(LargeFloat(d));
 }
 
 myType mySin(double d) {

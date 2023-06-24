@@ -56,7 +56,9 @@ LargeFloat findPrime(LargeFloat n) {
 void testPrime() {
     assert(findPrime(LargeFloat("0.0")).toString() == "2.0");
     assert(findPrime(LargeFloat("0.1")).toString() == "2.0");
-    assert(findPrime(LargeFloat("1.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999")).toString() == "2.0");
+    assert(findPrime(LargeFloat(
+            "1.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999")).toString() ==
+           "2.0");
     assert(findPrime(LargeFloat("2.15")).toString() == "3.0");
     assert(findPrime(LargeFloat("6.33")).toString() == "7.0");
     assert(findPrime(LargeFloat("3275.0")).toString() == "3299.0");
@@ -78,13 +80,23 @@ void testPow() {
     assert(pow(LargeFloat("0.1"), LargeInt(2)).toString() == "0.01");
     assert(pow(LargeFloat("0.1"), LargeInt(3)).toString() == "0.001");
     assert(pow(LargeFloat("1.1"), LargeInt(3)).toString() == "1.331");
-    assert(pow(LargeFloat("94567342.94567132595"), LargeInt(4)).toString() == "79976933344681599935603491186526.49198674427702399196065870258573151927700625");
+    assert(pow(LargeFloat("94567342.94567132595"), LargeInt(4)).toString() ==
+           "79976933344681599935603491186526.49198674427702399196065870258573151927700625");
+}
+
+void testLn() {
+    assert(ln(LargeFloat(1)).toString() == "0.0");
+    assert(ln(LargeFloat(0.5)).toString() ==
+           "-0.6931471805599453094172321214581765680755001343602552541206800094933936219696947156058633269964186875");
+    assert(ln(LargeFloat("1.1")).toString() ==
+           "0.0953101798043248600439521232807650922206053653086441991852398081630010142358842328390575029130364931");
 }
 
 int main() {
     testFactorial();
     testPrime();
     testPow();
+    testLn();
     testFind();
     testSort();
 
