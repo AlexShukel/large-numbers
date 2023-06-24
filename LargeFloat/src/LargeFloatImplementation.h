@@ -68,7 +68,7 @@ namespace LargeNumbers {
 
         void negate();
 
-        bool isNegative() const;
+        bool getSign() const;
 
         static void setDecimalPrecision(int precision);
 

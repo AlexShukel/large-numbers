@@ -113,7 +113,7 @@ namespace LargeNumbers {
 
     LargeFloat LargeFloat::operator+() const {
         LargeFloat copy = *this;
-        if (copy.implementation->math.isNegative()) {
+        if (copy.implementation->math.getSign()) {
             copy.implementation->math.negate();
         }
         return copy;

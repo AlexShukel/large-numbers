@@ -153,7 +153,7 @@ namespace LargeNumbers {
     std::string LargeFloatImplementation<T>::toString() const {
         std::string result;
 
-        bool sign = isNegative();
+        bool sign = getSign();
         LargeIntImplementation<T> mantissaCopy = mantissa;
 
         if (sign) {
@@ -329,8 +329,8 @@ namespace LargeNumbers {
     void LargeFloatImplementation<T>::add(LargeFloatImplementation<T> other) {
         exponent_type finalExponent = std::max(exponent, other.exponent);
 
-        bool thisSign = isNegative();
-        bool otherSign = other.isNegative();
+        bool thisSign = getSign();
+        bool otherSign = other.getSign();
 
         if (thisSign) {
             mantissa.negate();
@@ -388,14 +388,14 @@ namespace LargeNumbers {
     }
 
     template<class T>
-    bool LargeFloatImplementation<T>::isNegative() const {
+    bool LargeFloatImplementation<T>::getSign() const {
         return mantissa.sign;
     }
 
     template<class T>
     int LargeFloatImplementation<T>::compare(const LargeFloatImplementation<T> &other) {
-        if (isNegative() != other.isNegative()) {
-            if (isNegative() > other.isNegative()) {
+        if (getSign() != other.getSign()) {
+            if (getSign() > other.getSign()) {
                 return -1;
             }
 
@@ -451,13 +451,13 @@ namespace LargeNumbers {
             throw std::invalid_argument("Cannot divide by zero!");
         }
 
-        bool quotientSign = isNegative() ^ divisor.isNegative();
+        bool quotientSign = getSign() ^ divisor.getSign();
 
-        if (isNegative()) {
+        if (getSign()) {
             mantissa.negate();
         }
 
-        if (divisor.isNegative()) {
+        if (divisor.getSign()) {
             divisor.mantissa.negate();
         }
 
@@ -497,7 +497,7 @@ namespace LargeNumbers {
         LargeFloatImplementation<T> copy = *this;
         copy.subtract(LargeFloatImplementation<T>(1));
 
-        if (copy.isNegative()) {
+        if (copy.getSign()) {
             copy.negate();
         }
 
