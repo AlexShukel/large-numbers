@@ -28,12 +28,12 @@ TEST(large_math, next_prime) {
 }
 
 TEST(large_math, power) {
-    EXPECT_EQ(pow(LargeFloat(0), LargeInt(0)).toString(), "1.0");
-    EXPECT_EQ(pow(LargeFloat("0.1"), LargeInt(1)).toString(), "0.1");
-    EXPECT_EQ(pow(LargeFloat("0.1"), LargeInt(2)).toString(), "0.01");
-    EXPECT_EQ(pow(LargeFloat("0.1"), LargeInt(3)).toString(), "0.001");
-    EXPECT_EQ(pow(LargeFloat("1.1"), LargeInt(3)).toString(), "1.331");
-    EXPECT_EQ(pow(LargeFloat("94567342.94567132595"), LargeInt(4)).toString(),
+    EXPECT_EQ(pow(LargeFloat(0), 0).toString(), "1.0");
+    EXPECT_EQ(pow(LargeFloat("0.1"), 1).toString(), "0.1");
+    EXPECT_EQ(pow(LargeFloat("0.1"), 2).toString(), "0.01");
+    EXPECT_EQ(pow(LargeFloat("0.1"), 3).toString(), "0.001");
+    EXPECT_EQ(pow(LargeFloat("1.1"), 3).toString(), "1.331");
+    EXPECT_EQ(pow(LargeFloat("94567342.94567132595"), 4).toString(),
               "79976933344681599935603491186526.49198674427702399196065870258573151927700625");
 }
 
@@ -56,8 +56,8 @@ TEST(large_math, ln) {
 }
 
 TEST(large_math, pi) {
-//    EXPECT_EQ(pi(100).toString(),
-//              "3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679");
+    EXPECT_EQ(pi(100).toString(),
+              "3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117068");
 }
 
 TEST(large_math, sqrt) {

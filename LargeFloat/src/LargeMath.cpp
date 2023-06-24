@@ -3,6 +3,7 @@
 //
 
 #include "LargeMath.h"
+#include "TemplateMath.h"
 
 namespace LargeNumbers {
     LargeInt factorial(const LargeInt &n) {
@@ -46,21 +47,12 @@ namespace LargeNumbers {
         return n;
     }
 
-    LargeFloat pow(const LargeFloat &n, const LargeInt &p) {
-        LargeInt one(1);
-        LargeInt zero(0);
+    LargeFloat pow(const LargeFloat &n, int p) {
+        return TemplateMath::pow(n, p);
+    }
 
-        if (p == zero) {
-            return LargeFloat(1);
-        }
-
-        LargeFloat result = n;
-
-        for (LargeInt i = one; i < p; ++i) {
-            result *= n;
-        }
-
-        return result;
+    LargeInt pow(const LargeInt &n, int p) {
+        return TemplateMath::pow(n, p);
     }
 
     LargeFloat ln(const LargeFloat &x) {
@@ -100,5 +92,27 @@ namespace LargeNumbers {
         }
 
         return x;
+    }
+
+    LargeFloat pi(int precision) {
+        LargeFloat sum(0);
+        LargeInt a(1103);
+        LargeInt b(26390);
+        LargeInt c(396);
+        int iterationCount = precision / 8 + 1;
+
+        for (int i = 0; i < iterationCount; ++i) {
+            LargeInt value = factorial(LargeInt(4 * i)) * (a + b * LargeInt(i));
+            LargeInt temp = factorial(LargeInt(i));
+            LargeInt secondValue = temp * temp * temp * temp * pow(c, 4 * i);
+
+            LargeFloat term = LargeFloat(value) / LargeFloat(secondValue);
+            sum += term;
+        }
+
+        LargeFloat temp = LargeFloat(2) * sqrt(LargeFloat(2)) / LargeFloat(9801);
+        LargeFloat invertedPi = sum * temp;
+
+        return LargeFloat(1) / invertedPi;
     }
 }

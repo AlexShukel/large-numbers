@@ -74,7 +74,7 @@ myType myPrime(myType n) {
 }
 
 myType myPow(double d, int p) {
-    return LargeNumbers::pow(myType(d), LargeInt(p));
+    return LargeNumbers::pow(myType(d), p);
 }
 
 myType myLog(double d) {
