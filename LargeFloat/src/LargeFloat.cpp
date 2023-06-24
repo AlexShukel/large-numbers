@@ -16,6 +16,9 @@ namespace LargeNumbers {
         explicit Implementation(const LargeFloatImplementation<CoefficientType> &impl) : math(impl) {}
     };
 
+    const LargeFloat LargeFloat::epsilon = LargeFloat(
+            new Implementation(LargeFloatImplementation<CoefficientType>::EPSILON));
+
     LargeFloat::LargeFloat() : implementation(new Implementation()) {}
 
     LargeFloat::LargeFloat(const LargeFloat &other) : implementation(
@@ -58,6 +61,8 @@ namespace LargeNumbers {
 
     LargeFloat::LargeFloat(double n) : implementation(
             new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
+
+    LargeFloat::LargeFloat(LargeNumbers::LargeFloat::Implementation *impl) : implementation(impl) {}
 
     LargeFloat::~LargeFloat() {
         delete implementation;
@@ -182,5 +187,15 @@ namespace LargeNumbers {
 
     bool LargeFloat::isZero() const {
         return implementation->math.isZero();
+    }
+
+    LargeFloat LargeFloat::abs() const {
+        LargeFloat copy = *this;
+
+        if (copy.implementation->math.getSign()) {
+            copy.implementation->math.negate();
+        }
+
+        return copy;
     }
 }

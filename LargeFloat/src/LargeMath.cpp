@@ -87,4 +87,18 @@ namespace LargeNumbers {
 
         return result;
     }
+
+    LargeFloat sqrt(const LargeFloat &value) {
+        LargeFloat x = value;
+        LargeFloat y(1);
+        LargeFloat two(2);
+
+        while ((x - y).abs() > LargeFloat::epsilon) {
+            x += y;
+            x /= two;
+            y = value / x;
+        }
+
+        return x;
+    }
 }

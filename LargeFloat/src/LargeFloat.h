@@ -40,6 +40,8 @@ namespace LargeNumbers {
 
         explicit LargeFloat(double n);
 
+        explicit LargeFloat(Implementation *impl);
+
         ~LargeFloat();
 
         std::string toString() const;
@@ -89,6 +91,10 @@ namespace LargeNumbers {
         void floor();
 
         bool isZero() const;
+
+        static const LargeFloat epsilon;
+
+        LargeFloat abs() const;
     };
 }
 

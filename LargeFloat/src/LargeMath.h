@@ -20,6 +20,9 @@ namespace LargeNumbers {
 
     // Finds the natural log of x
     LargeFloat ln(const LargeFloat &x);
+
+    // Finds the square root of x
+    LargeFloat sqrt(const LargeFloat &value);
 }
 
 #endif //ND1_LARGEMATH_H
