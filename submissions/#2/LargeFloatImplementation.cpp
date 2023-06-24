@@ -9,6 +9,9 @@
 #include <cctype>
 #include <iostream>
 #include <stdexcept>
+#include <limits>
+
+#define FLOAT_MAX_DIGITS_COUNT 1024
 
 namespace LargeNumbers {
     template<class T>
@@ -97,6 +100,14 @@ namespace LargeNumbers {
     LargeFloatImplementation<T>::LargeFloatImplementation(const LargeIntImplementation<T> &mantissa,
                                                           exponent_type exponent): mantissa(mantissa),
                                                                                    exponent(exponent) {}
+
+    template<class T>
+    LargeFloatImplementation<T>::LargeFloatImplementation(double n) : exponent(0) {
+        // TODO: optimize double conversion
+        char str[FLOAT_MAX_DIGITS_COUNT + sizeof(char)];
+        std::sprintf(str, "%.*f", std::numeric_limits<double>::digits10, n);
+        *this = LargeFloatImplementation<T>(std::string(str));
+    }
 
     template<class T>
     std::vector<T> LargeFloatImplementation<T>::getFractionSourceCoefficients(std::string source) const {
@@ -392,8 +403,8 @@ namespace LargeNumbers {
         }
 
         if (exponent != other.exponent) {
-            bool isFirstZero = mantissa.coefficients.empty();
-            bool isSecondZero = other.mantissa.coefficients.empty();
+            bool isFirstZero = mantissa.isZero();
+            bool isSecondZero = other.mantissa.isZero();
 
             if (isFirstZero) {
                 return -1;
@@ -413,7 +424,7 @@ namespace LargeNumbers {
 
         bool wasNegated = false;
 
-        if (firstMantissa.getSign()) {
+        if (firstMantissa.sign) {
             firstMantissa.negate();
             secondMantissa.negate();
             wasNegated = true;
