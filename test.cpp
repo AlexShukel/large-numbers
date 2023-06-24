@@ -94,7 +94,13 @@ myType myPi(int n) {
 }
 
 myType myAvg(myType *data, int n) {
-    return myType("0.0");
+    myType sum(0);
+
+    for (int i = 0; i < n; ++i) {
+        sum += data[i];
+    }
+
+    return sum / myType(n);
 }
 
 int myFind(myType *data, int n, myType value) {

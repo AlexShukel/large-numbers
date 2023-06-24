@@ -92,11 +92,25 @@ void testLn() {
            "0.0953101798043248600439521232807650922206053653086441991852398081630010142358842328390575029130364931");
 }
 
+void testAvg() {
+    LargeFloat numbers[] = {LargeFloat("512.0"), LargeFloat("0.0"), LargeFloat("1.5"), LargeFloat("-1.25")};
+    const int n = sizeof(numbers) / sizeof(LargeFloat);
+
+    LargeFloat sum(0);
+ 
+    for (const auto &number: numbers) {
+        sum += number;
+    }
+
+    assert((sum / LargeFloat(n)).toString() == "512.25");
+}
+
 int main() {
     testFactorial();
     testPrime();
     testPow();
     testLn();
+    testAvg();
     testFind();
     testSort();
 
