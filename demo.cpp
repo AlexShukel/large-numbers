@@ -97,12 +97,26 @@ void testAvg() {
     const int n = sizeof(numbers) / sizeof(LargeFloat);
 
     LargeFloat sum(0);
- 
+
     for (const auto &number: numbers) {
         sum += number;
     }
 
-    assert((sum / LargeFloat(n)).toString() == "512.25");
+    auto average = sum / LargeFloat(n);
+    assert(average.toString() == "128.0625");
+}
+
+void testSqrt() {
+    assert(sqrt(LargeFloat(1)).toString() == "1.0");
+    assert(sqrt(LargeFloat(2)).toString() ==
+           "1.4142135623730950488016887242096980785696718753769480731766797379907324784621070388503875343276415727");
+    assert(sqrt(LargeFloat("0.5")).toString() ==
+           "0.7071067811865475244008443621048490392848359376884740365883398689953662392310535194251937671638207864");
+    assert(sqrt(LargeFloat(4)).toString() == "2.0");
+    assert(sqrt(LargeFloat(13)).toString() ==
+           "3.6055512754639892931192212674704959462512965738452462127104530562271669482930104452046190820184907177");
+    assert(sqrt(LargeFloat("123.456")).toString() ==
+           "11.1110755554986664846214940411821923411863251901176006838596002616709755161536775238954125654646046818");
 }
 
 int main() {
@@ -110,6 +124,7 @@ int main() {
     testPrime();
     testPow();
     testLn();
+    testSqrt();
     testAvg();
     testFind();
     testSort();

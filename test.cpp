@@ -86,7 +86,7 @@ myType mySin(double d) {
 }
 
 myType mySqrt(double d) {
-    return myType("0.0");
+    return LargeNumbers::sqrt(LargeFloat(d));
 }
 
 myType myPi(int n) {
