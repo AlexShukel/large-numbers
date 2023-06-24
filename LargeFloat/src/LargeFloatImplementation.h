@@ -75,6 +75,8 @@ namespace LargeNumbers {
         void divide(LargeFloatImplementation divisor);
 
         void floor();
+
+        bool isZero() const;
     };
 }
 

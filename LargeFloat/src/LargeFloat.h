@@ -87,6 +87,8 @@ namespace LargeNumbers {
         void ceil();
 
         void floor();
+
+        bool isZero() const;
     };
 }
 

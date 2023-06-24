@@ -544,6 +544,11 @@ namespace LargeNumbers {
         return *this;
     }
 
+    template<class T>
+    bool LargeFloatImplementation<T>::isZero() const {
+        return mantissa.isZero();
+    }
+
     // For debugging
     template
     class LargeFloatImplementation<uint8_t>;

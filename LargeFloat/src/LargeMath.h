@@ -17,6 +17,9 @@ namespace LargeNumbers {
 
     // Raise n to the power p
     LargeFloat pow(const LargeFloat &n, const LargeInt &p);
+
+    // Finds the natural log of x
+    LargeFloat ln(const LargeFloat &x);
 }
 
 #endif //ND1_LARGEMATH_H

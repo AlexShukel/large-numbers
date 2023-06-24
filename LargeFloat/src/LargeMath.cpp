@@ -41,7 +41,7 @@ namespace LargeNumbers {
 
         do {
             ++n;
-        } while(!isPrime(n));
+        } while (!isPrime(n));
 
         return n;
     }
@@ -58,6 +58,31 @@ namespace LargeNumbers {
 
         for (LargeInt i = one; i < p; ++i) {
             result *= n;
+        }
+
+        return result;
+    }
+
+    LargeFloat ln(const LargeFloat &x) {
+        LargeFloat one(1);
+        LargeFloat zero(0);
+
+        if (x == one) {
+            return zero;
+        }
+
+        LargeFloat result;
+
+        LargeFloat currentTerm = x - one;
+
+        int terms = 331; // Number of Taylor series expansion terms
+        LargeFloat n(terms + 2);
+        LargeFloat temp = one - x;
+
+        for (LargeFloat i = LargeFloat(2); i < n; ++i) {
+            result += currentTerm;
+
+            currentTerm *= (i - one) * temp / i; // Recursive formula for n-th term of Taylor series expansion
         }
 
         return result;
