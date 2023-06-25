@@ -2,6 +2,7 @@
 // Created by Aleksandras on 2023-06-23.
 //
 
+#include <iostream>
 #include "LargeMath.h"
 #include "TemplateMath.h"
 #include "utils.h"
@@ -122,5 +123,47 @@ namespace LargeNumbers {
             roundStringNumber(fraction);
         }
         return LargeFloat("3." + fraction);
+    }
+
+    LargeFloat floor(const LargeFloat &x) {
+        std::string decimal = x.toString();
+
+        int pointIndex = static_cast<int>(decimal.find('.'));
+        decimal.erase(decimal.begin() + pointIndex, decimal.end());
+        decimal += ".0";
+
+        return LargeFloat(decimal);
+    }
+
+    LargeFloat sineTaylorSeries(const LargeFloat &x) {
+        LargeFloat result(0);
+        LargeFloat xSquared = x * x;
+        LargeFloat term = x;
+        const int N = 70; // Adjust the number of iterations for desired accuracy
+
+        for (int i = 1; i <= N; ++i) {
+            if (i % 2 == 0) {
+                result -= term;
+            } else {
+                result += term;
+            }
+
+            term /= LargeFloat((2 * i) * (2 * i + 1));
+            term *= xSquared;
+        }
+
+        return result;
+    }
+
+    LargeFloat reduceToRange(const LargeFloat &x) {
+        const LargeFloat twoPi = LargeFloat(2) * LargeFloat::pi;
+        LargeFloat xReduced = x - twoPi * floor(x / twoPi);
+        return xReduced;
+    }
+
+    LargeFloat sin(const LargeFloat &x) {
+        LargeFloat xReduced = reduceToRange(x);
+        LargeFloat result = sineTaylorSeries(xReduced);
+        return result;
     }
 }

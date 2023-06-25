@@ -19,6 +19,7 @@ namespace LargeNumbers {
 
     public:
         static const LargeFloat epsilon;
+        static const LargeFloat pi;
 
         LargeFloat();
 
