@@ -6,11 +6,11 @@
 #include "LargeFloatImplementation.h"
 
 TEST(large_float, division_basic) {
-    LargeNumbers::LargeFloatImplementation<uint8_t> zero("0.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n1("1.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n2("2.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n3("4.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n4("0.0625");
+    LargeNumbers::LargeFloatImplementation<uint32_t> zero("0.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n1("1.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n2("2.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n3("4.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n4("0.0625");
 
     EXPECT_THROW(n1.divide(zero), std::logic_error);
 
@@ -31,11 +31,11 @@ TEST(large_float, division_basic) {
 }
 
 TEST(large_float, division_without_fraction) {
-    LargeNumbers::LargeFloatImplementation<uint8_t> n1("256.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n2("16.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n3("-7.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n4("10.0");
-    LargeNumbers::LargeFloatImplementation<uint8_t> one("1.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n1("256.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n2("16.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n3("-7.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n4("10.0");
+    LargeNumbers::LargeFloatImplementation<uint32_t> one("1.0");
 
     n1.divide(one);
     EXPECT_EQ(n1.toString(), "256.0");
@@ -47,15 +47,15 @@ TEST(large_float, division_without_fraction) {
     EXPECT_EQ(n1.toString(),
               "-2.2857142857142857142857142857142857142857142857142857142857142857142857142857142857142857142857142857");
 
-    n1 = LargeNumbers::LargeFloatImplementation<uint8_t>("1000.0");
+    n1 = LargeNumbers::LargeFloatImplementation<uint32_t>("1000.0");
 
     n1.divide(n4);
     EXPECT_EQ(n1.toString(), "100.0");
 }
 
 TEST(large_float, division_large_numbers) {
-    LargeNumbers::LargeFloatImplementation<uint8_t> n1("456423123.1534867456123");
-    LargeNumbers::LargeFloatImplementation<uint8_t> n2("1254.332335");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n1("456423123.1534867456123");
+    LargeNumbers::LargeFloatImplementation<uint32_t> n2("1254.332335");
 
     n1.divide(n2);
 
