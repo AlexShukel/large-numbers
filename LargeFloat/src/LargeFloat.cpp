@@ -21,7 +21,7 @@ namespace LargeNumbers {
                     "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001")));
 
     // FIXME: make uint32_t version of pi
-    const LargeFloat LargeFloat::pi = LargeFloat(new Implementation(LargeFloatImplementation<uint8_t>(LargeIntImplementation<uint8_t>(
+    const LargeFloat LargeFloat::pi = LargeFloat(new Implementation(LargeFloatImplementation<CoefficientType>(LargeIntImplementation<CoefficientType>(
             {141, 72, 86, 253, 82, 1, 121, 177, 12, 57, 203, 15, 222, 146, 191, 13, 183, 170, 153, 141, 112, 153, 104,
              218, 216, 37, 2, 217, 215, 48, 247, 92, 10, 145, 101, 79, 142, 107, 43, 166, 86, 96, 104, 84, 190, 119, 19,
              208, 56, 230, 33, 40, 69, 137, 108, 78, 236, 152, 250, 46, 8, 208, 49, 159, 41, 34, 56, 9, 164, 68, 115,
