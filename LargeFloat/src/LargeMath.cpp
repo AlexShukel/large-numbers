@@ -2,7 +2,6 @@
 // Created by Aleksandras on 2023-06-23.
 //
 
-#include <iostream>
 #include "LargeMath.h"
 #include "TemplateMath.h"
 #include "utils.h"
