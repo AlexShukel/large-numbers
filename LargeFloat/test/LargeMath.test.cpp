@@ -33,6 +33,9 @@ TEST(large_math, power) {
     EXPECT_EQ(pow(LargeFloat("0.1"), 2).toString(), "0.01");
     EXPECT_EQ(pow(LargeFloat("0.1"), 3).toString(), "0.001");
     EXPECT_EQ(pow(LargeFloat("1.1"), 3).toString(), "1.331");
+    EXPECT_EQ(pow(LargeFloat("-1.0"), 2).toString(), "1.0");
+    EXPECT_EQ(pow(LargeFloat("-1.0"), 3).toString(), "-1.0");
+    EXPECT_EQ(pow(LargeFloat("-2.123456789123456789123456789123456789123456789"), 17).toString(), "-362859.3121876471452727494774693236136130360701610276859369364001940846981275182358216163561371534272929747");
     EXPECT_EQ(pow(LargeFloat("94567342.94567132595"), 4).toString(),
               "79976933344681599935603491186526.49198674427702399196065870258573151927700625");
 }

@@ -18,6 +18,8 @@ namespace LargeNumbers {
         Implementation *implementation;
 
     public:
+        static const LargeFloat epsilon;
+
         LargeFloat();
 
         // Copy constructor
@@ -34,13 +36,14 @@ namespace LargeNumbers {
 
         explicit LargeFloat(const std::string &number);
 
-        explicit LargeFloat(int n);
-
         explicit LargeFloat(const LargeInt &n);
 
-        explicit LargeFloat(double n);
-
         explicit LargeFloat(Implementation *impl);
+
+        // Primitive data type constructors
+        explicit LargeFloat(int n);
+
+        explicit LargeFloat(double n);
 
         ~LargeFloat();
 
@@ -91,8 +94,6 @@ namespace LargeNumbers {
         void floor();
 
         bool isZero() const;
-
-        static const LargeFloat epsilon;
 
         LargeFloat abs() const;
     };

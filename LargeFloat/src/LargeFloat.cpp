@@ -34,9 +34,6 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeFloat::LargeFloat(const std::string &number) : implementation(
-            new Implementation(LargeFloatImplementation<CoefficientType>(number))) {}
-
     LargeFloat::LargeFloat(LargeFloat &&other) noexcept: implementation(other.implementation) {
         other.implementation = nullptr;
     }
@@ -51,7 +48,8 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeFloat::LargeFloat(int n) : implementation(new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
+    LargeFloat::LargeFloat(const std::string &number) : implementation(
+            new Implementation(LargeFloatImplementation<CoefficientType>(number))) {}
 
     LargeFloat::LargeFloat(const LargeInt &n) : implementation(nullptr) {
         // TODO: optimize conversion
@@ -60,10 +58,12 @@ namespace LargeNumbers {
         *this = LargeFloat(decimal);
     }
 
+    LargeFloat::LargeFloat(LargeFloat::Implementation *impl) : implementation(impl) {}
+
+    LargeFloat::LargeFloat(int n) : implementation(new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
+
     LargeFloat::LargeFloat(double n) : implementation(
             new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
-
-    LargeFloat::LargeFloat(LargeNumbers::LargeFloat::Implementation *impl) : implementation(impl) {}
 
     LargeFloat::~LargeFloat() {
         delete implementation;
@@ -84,24 +84,24 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeFloat LargeFloat::operator/(const LargeNumbers::LargeFloat &other) const {
+    LargeFloat LargeFloat::operator/(const LargeFloat &other) const {
         LargeFloat copy = *this;
         copy /= other;
         return copy;
     }
 
-    LargeFloat &LargeFloat::operator/=(const LargeNumbers::LargeFloat &other) {
+    LargeFloat &LargeFloat::operator/=(const LargeFloat &other) {
         implementation->math.divide(other.implementation->math);
         return *this;
     }
 
-    LargeFloat LargeFloat::operator+(const LargeNumbers::LargeFloat &other) const {
+    LargeFloat LargeFloat::operator+(const LargeFloat &other) const {
         LargeFloat copy = *this;
         copy += other;
         return copy;
     }
 
-    LargeFloat &LargeFloat::operator+=(const LargeNumbers::LargeFloat &other) {
+    LargeFloat &LargeFloat::operator+=(const LargeFloat &other) {
         implementation->math.add(other.implementation->math);
         return *this;
     }
@@ -125,13 +125,13 @@ namespace LargeNumbers {
         return copy;
     }
 
-    LargeFloat LargeFloat::operator-(const LargeNumbers::LargeFloat &other) const {
+    LargeFloat LargeFloat::operator-(const LargeFloat &other) const {
         LargeFloat copy = *this;
         copy -= other;
         return copy;
     }
 
-    LargeFloat &LargeFloat::operator-=(const LargeNumbers::LargeFloat &other) {
+    LargeFloat &LargeFloat::operator-=(const LargeFloat &other) {
         implementation->math.subtract(other.implementation->math);
         return *this;
     }
