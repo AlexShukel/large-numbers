@@ -5,6 +5,7 @@
 #ifndef ND1_LARGEINTIMPLEMENTATION_H
 #define ND1_LARGEINTIMPLEMENTATION_H
 
+#include <cstdint>
 #include <vector>
 #include <string>
 

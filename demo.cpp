@@ -1,6 +1,8 @@
 //
 // Created by alexs on 2023-06-21.
 //
+// SEE https://github.com/AlexShukel/large-numbers/blob/main/README.md FOR IMPLEMENTATION DETAILS
+//
 
 #include "LargeMath.h"
 #include "bubbleSort.h"
