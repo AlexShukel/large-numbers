@@ -9,7 +9,7 @@
 
 namespace LargeNumbers {
     // The type of stored coefficient. For debugging, it is 8 bites. For final result - 32 bits.
-    using CoefficientType = uint32_t;
+    using CoefficientType = uint8_t;
     using exponent_type = int32_t;
 }
 

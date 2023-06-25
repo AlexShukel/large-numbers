@@ -22,7 +22,6 @@ namespace LargeNumbers {
 
         static constexpr size_t COEFFICIENT_BIT_SIZE = sizeof(T) * 8;
         static const T MAX_COEFFICIENT_VALUE;
-        static const uint64_t BASE;
 
         bool sign;
         std::vector<T> coefficients;

@@ -14,9 +14,6 @@ namespace LargeNumbers {
             0).flip().to_ulong());
 
     template<class T>
-    const uint64_t LargeIntImplementation<T>::BASE = static_cast<uint64_t>(MAX_COEFFICIENT_VALUE) + 1;
-
-    template<class T>
     LargeIntImplementation<T>::LargeIntImplementation(): sign(false), coefficients({0}) {}
 
     template<class T>
@@ -85,11 +82,11 @@ namespace LargeNumbers {
             n *= -1;
         }
 
-        auto convertedN = static_cast<uint64_t>(n);
+        int base = MAX_COEFFICIENT_VALUE + 1;
 
-        while (convertedN > 0) {
-            coefficients.push_back(convertedN % BASE);
-            convertedN /= BASE;
+        while (n > 0) {
+            coefficients.push_back(n % base);
+            n /= base;
         }
 
         if (coefficients.empty()) {
@@ -240,10 +237,11 @@ namespace LargeNumbers {
     template<class T>
     void LargeIntImplementation<T>::multiplyByCoefficient(T coefficient) {
         T carry = 0;
+        uint64_t base = MAX_COEFFICIENT_VALUE + 1;
         for (T &current: coefficients) {
-            uint64_t temp = carry + static_cast<uint64_t>(current) * static_cast<uint64_t>(coefficient);
-            current = static_cast<T>(temp % BASE);
-            carry = static_cast<T>(temp / BASE);
+            uint64_t temp = carry + current * coefficient;
+            current = static_cast<T>(temp % base);
+            carry = static_cast<T>(temp / base);
         }
 
         if (carry > 0) {
