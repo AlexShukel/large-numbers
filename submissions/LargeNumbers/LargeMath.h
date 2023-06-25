@@ -28,6 +28,11 @@ namespace LargeNumbers {
 
     // Finds number pi up to given precision
     LargeFloat pi(int precision);
+
+    // Fins the sine of x
+    LargeFloat sin(const LargeFloat &x);
+
+    LargeFloat floor(const LargeFloat &x);
 }
 
 #endif //ND1_LARGEMATH_H

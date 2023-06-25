@@ -20,6 +20,13 @@ namespace LargeNumbers {
             new Implementation(LargeFloatImplementation<CoefficientType>(
                     "0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001")));
 
+    // FIXME: make uint32_t version of pi
+    const LargeFloat LargeFloat::pi = LargeFloat(new Implementation(LargeFloatImplementation<uint8_t>(LargeIntImplementation<uint8_t>(
+            {141, 72, 86, 253, 82, 1, 121, 177, 12, 57, 203, 15, 222, 146, 191, 13, 183, 170, 153, 141, 112, 153, 104,
+             218, 216, 37, 2, 217, 215, 48, 247, 92, 10, 145, 101, 79, 142, 107, 43, 166, 86, 96, 104, 84, 190, 119, 19,
+             208, 56, 230, 33, 40, 69, 137, 108, 78, 236, 152, 250, 46, 8, 208, 49, 159, 41, 34, 56, 9, 164, 68, 115,
+             112, 3, 46, 138, 25, 19, 211, 8, 163, 133, 136, 106, 63, 36, 3}, false), 0)));
+
     LargeFloat::LargeFloat() : implementation(new Implementation()) {}
 
     LargeFloat::LargeFloat(const LargeFloat &other) : implementation(
@@ -33,9 +40,6 @@ namespace LargeNumbers {
 
         return *this;
     }
-
-    LargeFloat::LargeFloat(const std::string &number) : implementation(
-            new Implementation(LargeFloatImplementation<CoefficientType>(number))) {}
 
     LargeFloat::LargeFloat(LargeFloat &&other) noexcept: implementation(other.implementation) {
         other.implementation = nullptr;
@@ -51,7 +55,8 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeFloat::LargeFloat(int n) : implementation(new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
+    LargeFloat::LargeFloat(const std::string &number) : implementation(
+            new Implementation(LargeFloatImplementation<CoefficientType>(number))) {}
 
     LargeFloat::LargeFloat(const LargeInt &n) : implementation(nullptr) {
         // TODO: optimize conversion
@@ -60,10 +65,12 @@ namespace LargeNumbers {
         *this = LargeFloat(decimal);
     }
 
+    LargeFloat::LargeFloat(LargeFloat::Implementation *impl) : implementation(impl) {}
+
+    LargeFloat::LargeFloat(int n) : implementation(new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
+
     LargeFloat::LargeFloat(double n) : implementation(
             new Implementation(LargeFloatImplementation<CoefficientType>(n))) {}
-
-    LargeFloat::LargeFloat(LargeNumbers::LargeFloat::Implementation *impl) : implementation(impl) {}
 
     LargeFloat::~LargeFloat() {
         delete implementation;
@@ -84,24 +91,24 @@ namespace LargeNumbers {
         return *this;
     }
 
-    LargeFloat LargeFloat::operator/(const LargeNumbers::LargeFloat &other) const {
+    LargeFloat LargeFloat::operator/(const LargeFloat &other) const {
         LargeFloat copy = *this;
         copy /= other;
         return copy;
     }
 
-    LargeFloat &LargeFloat::operator/=(const LargeNumbers::LargeFloat &other) {
+    LargeFloat &LargeFloat::operator/=(const LargeFloat &other) {
         implementation->math.divide(other.implementation->math);
         return *this;
     }
 
-    LargeFloat LargeFloat::operator+(const LargeNumbers::LargeFloat &other) const {
+    LargeFloat LargeFloat::operator+(const LargeFloat &other) const {
         LargeFloat copy = *this;
         copy += other;
         return copy;
     }
 
-    LargeFloat &LargeFloat::operator+=(const LargeNumbers::LargeFloat &other) {
+    LargeFloat &LargeFloat::operator+=(const LargeFloat &other) {
         implementation->math.add(other.implementation->math);
         return *this;
     }
@@ -125,13 +132,13 @@ namespace LargeNumbers {
         return copy;
     }
 
-    LargeFloat LargeFloat::operator-(const LargeNumbers::LargeFloat &other) const {
+    LargeFloat LargeFloat::operator-(const LargeFloat &other) const {
         LargeFloat copy = *this;
         copy -= other;
         return copy;
     }
 
-    LargeFloat &LargeFloat::operator-=(const LargeNumbers::LargeFloat &other) {
+    LargeFloat &LargeFloat::operator-=(const LargeFloat &other) {
         implementation->math.subtract(other.implementation->math);
         return *this;
     }

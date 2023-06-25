@@ -82,7 +82,7 @@ myType myLog(double d) {
 }
 
 myType mySin(double d) {
-    return myType("0.0");
+    return LargeNumbers::sin(LargeFloat(d));
 }
 
 myType mySqrt(double d) {
