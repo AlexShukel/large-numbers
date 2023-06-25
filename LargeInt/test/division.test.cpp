@@ -26,7 +26,6 @@ TEST(large_int, simple_division) {
     EXPECT_EQ(integer.toString(), "0");
 }
 
-// TODO: fix large_int division
 TEST(large_int, large_numbers_division) {
     LargeNumbers::LargeIntImplementation<uint8_t> integer("163456132345312");
     integer.divide(LargeNumbers::LargeIntImplementation<uint8_t>("4561321"));

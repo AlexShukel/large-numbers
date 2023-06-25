@@ -241,7 +241,7 @@ namespace LargeNumbers {
     void LargeIntImplementation<T>::multiplyByCoefficient(T coefficient) {
         T carry = 0;
         for (T &current: coefficients) {
-            uint64_t temp = carry + current * coefficient;
+            uint64_t temp = carry + static_cast<uint64_t>(current) * static_cast<uint64_t>(coefficient);
             current = static_cast<T>(temp % BASE);
             carry = static_cast<T>(temp / BASE);
         }
